@@ -1,0 +1,95 @@
+{
+  "navItems": [
+    "Home",
+    "About Us",
+    "Works",
+    "Services"
+  ],
+  "techStack": [
+    "Figma",
+    "Webflow",
+    "Notion",
+    "Stripe",
+    "Framer",
+    "Analytics",
+    "CMS"
+  ],
+  "featuredWorks": [
+    {
+      "title": "Avara",
+      "subtitle": "Premium skincare experience",
+      "tag": "E‑commerce · Beauty",
+      "image": "/file.svg"
+    },
+    {
+      "title": "Health Core",
+      "subtitle": "Future of digital health",
+      "tag": "Healthcare · Platform",
+      "image": "/globe.svg"
+    },
+    {
+      "title": "Agency",
+      "subtitle": "Creative studio reimagined",
+      "tag": "Agency · Branding",
+      "image": "/window.svg"
+    },
+    {
+      "title": "Green Earth",
+      "subtitle": "Sustainability at scale",
+      "tag": "Environment · SaaS",
+      "image": "/next.svg"
+    },
+    {
+      "title": "Future Flow",
+      "subtitle": "Financial tools for tomorrow",
+      "tag": "Fintech · Product",
+      "image": "/vercel.svg"
+    },
+    {
+      "title": "Launchfolio",
+      "subtitle": "Launching bold ideas",
+      "tag": "Startups · Product",
+      "image": "/file.svg"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How do we get started?",
+      "a": "Share your goals, timeline, and a bit about your brand. We’ll follow up with a tailored plan, scope, and next steps — no generic proposals."
+    },
+    {
+      "q": "How long does a website take?",
+      "a": "Most crafted websites take 2–6 weeks depending on pages, content readiness, and interactions. We share a clear timeline before we begin."
+    },
+    {
+      "q": "Do you handle both design and development?",
+      "a": "Yes. We handle strategy, UX, visual design, development, testing, and launch — so you don’t have to juggle multiple teams."
+    },
+    {
+      "q": "Is everything responsive and future‑ready?",
+      "a": "Every layout is crafted mobile‑first, fully responsive, and built to scale as your brand and product evolve."
+    }
+  ],
+  "heroSlider": [
+    {
+      "src": "/assets/aset.webp",
+      "alt": "Project preview"
+    },
+    {
+      "src": "/assets/aset2.webp",
+      "alt": "Project preview"
+    },
+    {
+      "src": "/assets/aset3.webp",
+      "alt": "Project preview"
+    },
+    {
+      "src": "/assets/aset4.webp",
+      "alt": "Project preview"
+    },
+    {
+      "src": "/assets/aset5.png",
+      "alt": "Project preview"
+    }
+  ]
+}
