@@ -14,11 +14,23 @@ import {
   NavbarButton,
   NavbarBrand,
 } from "@/components/ui/resizable-navbar";
+import { InfiniteMarquee } from "@/components/ui/infinite-marquee";
 import homeContent from "@/constants/home.json";
+
+const BRAND_STACK = [
+  { name: "Wix Studio", src: "/assets/techStack/wix.avif" },
+  { name: "Stripe", src: "/assets/techStack/stripe.webp" },
+  { name: "Figma", src: "/assets/techStack/figma.webp" },
+  { name: "Webflow", src: "/assets/techStack/webflow.webp" },
+  { name: "Notion", src: "/assets/techStack/notion.webp" },
+  { name: "Adobe", src: "/assets/techStack/adobe.webp" },
+  { name: "Adobe Illustrator", src: "/assets/techStack/AI.webp" },
+  { name: "Shopify", src: "/assets/techStack/shopify.webp" },
+  { name: "Next.js", src: "/assets/techStack/Next.webp" },
+];
 
 const NAV_ITEMS = homeContent.navItems;
 const FEATURED_WORKS = homeContent.featuredWorks;
-const TECH_STACK = homeContent.techStack;
 const FAQS = homeContent.faqs;
 const HERO_SLIDER = homeContent.heroSlider;
 
@@ -188,7 +200,7 @@ const Page: React.FC = () => {
         </MobileNav>
       </Navbar>
 
-      <div className="mx-auto max-w-6xl px-4 pb-20 pt-10 md:px-6 md:pb-28 md:pt-20">
+      <div className="mx-auto max-w-6xl px-4 pb-20 pt-32 md:px-6 md:pb-28 md:pt-40">
         {/* Hero */}
         <BackgroundLines
           className="rounded-[2rem] py-2"
@@ -265,7 +277,7 @@ const Page: React.FC = () => {
                 </div>
 
                 {/* Sliding content */}
-                <div className="relative flex h-[60vh] max-h-[520px] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900">
+                <div className="relative flex h-[40vh] max-h-[400px] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900">
                   <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
                   <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10" />
 
@@ -293,25 +305,26 @@ const Page: React.FC = () => {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-slate-900/70 py-3 shadow-[0_20px_80px_rgba(15,23,42,0.95)]">
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-950 to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-950 to-transparent" />
+          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-slate-900/70 py-6 shadow-[0_20px_80px_rgba(15,23,42,0.95)]">
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-950 to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-950 to-transparent z-10" />
 
-            <div className="flex animate-marquee whitespace-nowrap">
-              {[...Array(2)].map((_, passIdx) => (
-                <div key={passIdx} className="flex items-center gap-6 px-4">
-                  {TECH_STACK.map((item) => (
-                    <div
-                      key={`${item}-${passIdx}`}
-                      className="flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/80 px-4 py-1.5 text-xs font-medium text-slate-200 shadow-[0_0_30px_rgba(15,23,42,0.9)]"
-                    >
-                      <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.9)]" />
-                      {item}
-                    </div>
-                  ))}
+            <InfiniteMarquee
+              items={BRAND_STACK}
+              itemClassName="gap-20 px-4"
+              renderItem={(item) => (
+                <div className="flex items-center gap-4 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                  <img
+                    src={item.src}
+                    alt={item.name}
+                    className="h-12 w-auto object-contain grayscale invert mix-blend-screen contrast-125"
+                  />
+                  <span className="text-xl font-semibold text-slate-200 tracking-tight">
+                    {item.name}
+                  </span>
                 </div>
-              ))}
-            </div>
+              )}
+            />
           </div>
         </section>
 

@@ -72,7 +72,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest > 100) {
       setVisible(true);
-    } else {
+    } else if (latest < 80) {
       setVisible(false);
     }
   });
@@ -80,8 +80,9 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   return (
     <motion.div
       ref={ref}
+      layout
       // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
-      className={cn("fixed inset-x-0 top-20 z-40 w-full", className)}
+      className={cn("fixed inset-x-0 top-20 z-40 w-full will-change-transform", className)}
     >
       <NavbarContext.Provider value={{ visible }}>
         {children}
@@ -97,9 +98,11 @@ export const NavbarBrand = () => {
       href="#"
       className="relative z-20 flex items-center gap-2 px-2 py-1"
     >
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 text-xs font-semibold text-slate-950 shadow-[0_0_40px_rgba(34,211,238,0.65)]">
-        FL
-      </div>
+      <img
+        src="/assets/logo2.png"
+        alt="Flucks Logo"
+        className="h-8 w-8 object-contain"
+      />
       <div className="leading-tight">
         <p className={cn(
           "text-sm font-semibold tracking-[0.18em]",
@@ -282,9 +285,11 @@ export const NavbarLogo = () => {
       href="#"
       className="relative z-20 mr-4 flex items-center gap-2 px-2 py-1"
     >
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 text-xs font-semibold text-slate-950 shadow-[0_0_40px_rgba(34,211,238,0.65)]">
-        FL
-      </div>
+      <img
+        src="/assets/logo.png"
+        alt="Flucks Logo"
+        className="h-8 w-8 object-contain"
+      />
       <div className="leading-tight">
         <p className="text-sm font-semibold tracking-[0.18em] text-slate-100">
           FLUCKS
