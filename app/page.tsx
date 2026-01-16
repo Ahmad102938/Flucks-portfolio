@@ -15,6 +15,7 @@ import {
   NavbarBrand,
 } from "@/components/ui/resizable-navbar";
 import { InfiniteMarquee } from "@/components/ui/infinite-marquee";
+import { HeroParallax } from "@/components/ui/hero-parallax";
 import homeContent from "@/constants/home.json";
 
 const BRAND_STACK = [
@@ -25,8 +26,25 @@ const BRAND_STACK = [
   { name: "Notion", src: "/assets/techStack/notion.webp" },
   { name: "Adobe", src: "/assets/techStack/adobe.webp" },
   { name: "Adobe Illustrator", src: "/assets/techStack/AI.webp" },
-  { name: "Shopify", src: "/assets/techStack/shopify.webp" },
   { name: "Next.js", src: "/assets/techStack/Next.webp" },
+];
+
+const PARALLAX_PRODUCTS = [
+  { title: "E-Commerce Reform", link: "#", thumbnail: "/assets/featuredWork/aset.webp" },
+  { title: "SaaS Dashboard", link: "#", thumbnail: "/assets/featuredWork/aset2.webp" },
+  { title: "Fintech App", link: "#", thumbnail: "/assets/featuredWork/aset3.webp" },
+  { title: "AI Platform", link: "#", thumbnail: "/assets/featuredWork/aset4.webp" },
+  { title: "Health Tech", link: "#", thumbnail: "/assets/featuredWork/aset5.webp" },
+  { title: "Real Estate", link: "#", thumbnail: "/assets/featuredWork/aset6.webp" },
+  { title: "Crypto Exchange", link: "#", thumbnail: "/assets/featuredWork/aset7.webp" },
+  { title: "Social Media", link: "#", thumbnail: "/assets/featuredWork/aset8.webp" },
+  { title: "EdTech Platform", link: "#", thumbnail: "/assets/featuredWork/aset9.webp" },
+  { title: "Marketing Tool", link: "#", thumbnail: "/assets/featuredWork/aset10.webp" },
+  { title: "Analytics Hub", link: "#", thumbnail: "/assets/featuredWork/aset11.webp" },
+  { title: "Cloud Systems", link: "#", thumbnail: "/assets/featuredWork/aset12.webp" },
+  { title: "Dev Tools", link: "#", thumbnail: "/assets/featuredWork/aset13.webp" },
+  { title: "Design System", link: "#", thumbnail: "/assets/featuredWork/aset14.webp" },
+  { title: "Enterprise CRM", link: "#", thumbnail: "/assets/featuredWork/aset.webp" },
 ];
 
 const NAV_ITEMS = homeContent.navItems;
@@ -329,65 +347,9 @@ const Page: React.FC = () => {
         </section>
 
         {/* Featured works */}
-        <section className="mt-16 space-y-6 md:mt-24">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">
-                Featured works
-              </p>
-              <h2 className="mt-2 text-xl font-semibold text-slate-50 md:text-2xl">
-                Bold, conversion‑ready experiences.
-              </h2>
-            </div>
-            <p className="max-w-sm text-xs text-slate-400">
-              From SaaS dashboards to editorial marketing sites, each build is
-              crafted with motion, story, and performance in mind.
-            </p>
-          </div>
-
-          <div className="relative mt-2 flex gap-4 overflow-x-auto pb-4 pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {FEATURED_WORKS.map((work, index) => (
-              <article
-                key={work.title}
-                className="relative min-w-[260px] max-w-xs flex-1 rounded-3xl border border-white/5 bg-slate-900/80 p-4 shadow-[0_22px_90px_rgba(15,23,42,0.95)] transition hover:-translate-y-1.5 hover:border-cyan-400/40 hover:bg-slate-900"
-              >
-                <div className="absolute inset-0 -z-10 rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16)_0,_transparent_60%)] opacity-0 transition-opacity duration-500 hover:opacity-100" />
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-xs text-slate-400">
-                    <p className="font-semibold text-slate-100">
-                      {work.title}
-                    </p>
-                    <p className="text-[11px]">{work.tag}</p>
-                  </div>
-                  <span className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] text-slate-300">
-                    Case {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                <div className="mt-4 h-32 overflow-hidden rounded-2xl border border-white/5 bg-slate-900">
-                  {(() => {
-                    const imageSrc =
-                      (work as { image?: string }).image || "/assets/UrbanGuest.png";
-                    return (
-                      <div
-                        className="h-full w-full bg-contain bg-no-repeat bg-center"
-                        style={{ backgroundImage: `url(${imageSrc})` }}
-                      />
-                    );
-                  })()}
-                </div>
-
-                <p className="mt-3 text-xs text-slate-300">{work.subtitle}</p>
-
-                <button className="mt-3 inline-flex items-center gap-2 text-[11px] font-medium text-cyan-300 hover:text-cyan-200">
-                  View project
-                  <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-cyan-400/60 text-[9px]">
-                    ↗
-                  </span>
-                </button>
-              </article>
-            ))}
-          </div>
+        {/* Featured works with Hero Parallax */}
+        <section className="relative w-full">
+          <HeroParallax products={PARALLAX_PRODUCTS} />
         </section>
 
         {/* Services + Approach */}
