@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { InfiniteMarquee } from "@/components/ui/infinite-marquee";
 import { HeroParallax } from "@/components/ui/hero-parallax";
+import { OurWorks } from "@/components/ui/our-works";
+import { OurServices } from "@/components/ui/our-services";
+import { OurApproach } from "@/components/ui/our-approach";
 import homeContent from "@/constants/home.json";
 
 const BRAND_STACK = [
@@ -352,16 +355,25 @@ const Page: React.FC = () => {
           <HeroParallax products={PARALLAX_PRODUCTS} />
         </section>
 
-        {/* Services + Approach */}
-        <section className="mt-16 grid gap-10 md:mt-24 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-          <div className="space-y-5">
+        {/* Our Works (Visuvate Style) */}
+        <OurWorks />
+
+        {/* Our Services */}
+        <OurServices />
+
+        {/* Our Approach (New) */}
+        <OurApproach />
+
+        {/* Services Summary Text */}
+        <section className="mt-16 md:mt-24">
+          <div className="space-y-5 max-w-2xl">
             <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">
               Services
             </p>
             <h2 className="text-xl font-semibold text-slate-50 md:text-2xl">
               Crafted websites, reimagined redesigns, and CMS‑driven builds.
             </h2>
-            <div className="grid gap-3 text-sm text-slate-300">
+            <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-2 md:grid-cols-3">
               <div className="rounded-2xl border border-white/5 bg-slate-900/70 p-4">
                 <p className="text-xs font-semibold text-slate-100">
                   Crafted Websites
@@ -387,43 +399,6 @@ const Page: React.FC = () => {
                 <p className="mt-1 text-[11px] text-slate-400">
                   Powerful CMS setups so you can publish blogs, case studies,
                   landing pages and more — without dev cycles.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">
-              Our approach
-            </p>
-            <div className="space-y-3 text-[11px] text-slate-300">
-              <div className="rounded-2xl border border-white/5 bg-slate-900/80 p-4">
-                <p className="text-xs font-semibold text-slate-100">
-                  Discovery first
-                </p>
-                <p className="mt-1 text-[11px] text-slate-400">
-                  Clear goals, audience, and brand voice. We map the journey
-                  before pushing pixels.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/5 bg-slate-900/80 p-4">
-                <p className="text-xs font-semibold text-slate-100">
-                  Design in motion
-                </p>
-                <p className="mt-1 text-[11px] text-slate-400">
-                  Subtle micro‑interactions, scroll‑based storytelling, and
-                  modern motion inspired by{" "}
-                  <span className="text-cyan-200">Visuvate&apos;s</span> visual
-                  language.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/5 bg-slate-900/80 p-4">
-                <p className="text-xs font-semibold text-slate-100">
-                  Seamless launch
-                </p>
-                <p className="mt-1 text-[11px] text-slate-400">
-                  QA, performance checks, and handover docs so you&apos;re
-                  confident post‑launch.
                 </p>
               </div>
             </div>
