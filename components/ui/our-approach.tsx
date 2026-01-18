@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, MotionValue } from "motion/react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ThreeDMarquee } from "./3d-marquee";
+import { RealTimeClock } from "./real-time-clock";
 
 const ApproachCard = ({
     title,
@@ -301,27 +302,79 @@ export const OurApproach = () => {
                 {/* 5. Seamless CMS Launch (Wide) */}
                 <div className="md:col-span-3">
                     <ApproachCard
-                        title="Seamless CMS Launch"
-                        description="Launched seamlessly with a powerful CMS, allowing you to update and manage your website content effortlessly after going live."
+                        title="Recent Events & Works"
+                        description="Stay updated with our latest projects, events, and milestones as we continue to push boundaries."
                         className="min-h-[500px] md:min-h-[600px] h-full"
                     >
-                        <div className="relative h-full w-full flex flex-col gap-3 pt-10 px-4 md:px-10">
-                            {[1, 2, 3].map((i) => (
-                                <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-slate-900/50 border border-white/5 backdrop-blur-sm transform transition-all duration-300 hover:bg-slate-800/80 hover:scale-[1.02] cursor-default">
-                                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center text-cyan-400">
-                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
+                        <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
+                            <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <pattern id="grid-pattern" width="32" height="32" patternUnits="userSpaceOnUse">
+                                        <path d="M0 32V.5H32" fill="none" stroke="currentColor" strokeOpacity="0.1" className="text-slate-500" />
+                                    </pattern>
+                                </defs>
+                                <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+                            </svg>
+                            <motion.div
+                                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+                                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute -top-20 -right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+                            />
+                            <motion.div
+                                animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+                                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                                className="absolute -bottom-20 -left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+                            />
+                        </div>
+                        <div className="relative z-10 h-full w-full flex flex-col pt-8 px-6 md:px-10">
+                            {/* Table Header */}
+                            <div className="grid grid-cols-12 gap-4 pb-4 border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                <div className="col-span-6 md:col-span-7 pl-2">Title</div>
+                                <div className="col-span-4 md:col-span-3">Date</div>
+                                <div className="col-span-2 text-right pr-2">Image</div>
+                            </div>
+
+                            {/* Table Body */}
+                            <div className="flex flex-col">
+                                {[
+                                    { title: "Mastering motion in web design: suck...", date: "5 August 2025", img: "aset.webp" },
+                                    { title: "Building a strong brand identity: key...", date: "14 July 2025", img: "aset2.webp" },
+                                    { title: "Designing responsive websites: best...", date: "28 June 2025", img: "aset3.webp" },
+                                    { title: "Elevate your brand. How to design y...", date: "8 June 2025", img: "aset5.webp" },
+                                    { title: "The ultimate guide to choosing the p...", date: "10 May 2025", img: "aset6.webp" },
+                                ].map((item, i) => (
+                                    <div key={i} className="group/row grid grid-cols-12 gap-4 py-4 border-b border-white/5 items-center hover:bg-white/5 transition-colors duration-300 rounded-lg px-2 -mx-2">
+                                        {/* Title Column */}
+                                        <div className="col-span-6 md:col-span-7 flex items-center gap-3 overflow-hidden">
+                                            <div className="shrink-0 text-slate-400 group-hover/row:text-slate-200 transition-colors">
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                            </div>
+                                            <span className="text-sm font-medium text-slate-300 truncate group-hover/row:text-white transition-colors">
+                                                {item.title}
+                                            </span>
+                                        </div>
+
+                                        {/* Date Column */}
+                                        <div className="col-span-4 md:col-span-3 text-xs md:text-sm text-slate-500 group-hover/row:text-slate-400 transition-colors">
+                                            {item.date}
+                                        </div>
+
+                                        {/* Image Column */}
+                                        <div className="col-span-2 flex justify-end">
+                                            <div className="relative w-12 h-8 md:w-16 md:h-10 rounded overflow-hidden border border-white/10 group-hover/row:border-white/20 transition-colors">
+                                                <Image
+                                                    src={`/assets/ourApproach/RecentEvents/${item.img}`}
+                                                    alt={item.title}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex-1">
-                                        <div className="h-2.5 w-24 bg-slate-700/50 rounded mb-2" />
-                                        <div className="h-2 w-32 bg-slate-800/50 rounded" />
-                                    </div>
-                                    <div className="h-6 w-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-400 flex items-center justify-center">
-                                        Published
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     </ApproachCard>
                 </div>
@@ -334,36 +387,8 @@ export const OurApproach = () => {
                         className="min-h-[500px] md:min-h-[600px] h-full"
                     >
                         <div className="relative h-full w-full flex items-center justify-center">
-                            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full border border-white/5 bg-slate-900/30 flex items-center justify-center group-hover:bg-slate-900/50 transition-colors duration-500">
-                                {/* Clock face ticks */}
-                                {[...Array(12)].map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="absolute w-1 h-3 bg-slate-700 rounded-full"
-                                        style={{
-                                            transform: `rotate(${i * 30}deg) translateY(-110px)`,
-                                            transformOrigin: "50% 120px"
-                                        }}
-                                    />
-                                ))}
-
-                                {/* Hour Hand */}
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-                                    className="absolute w-1.5 h-20 bg-slate-400 rounded-full origin-bottom top-[40px]"
-                                />
-
-                                {/* Minute Hand */}
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-                                    className="absolute w-1 h-32 bg-cyan-400/80 rounded-full origin-bottom top-[-8px] shadow-[0_0_15px_rgba(34,211,238,0.4)]"
-                                />
-
-                                {/* Center dot */}
-                                <div className="absolute w-4 h-4 bg-white rounded-full shadow-lg z-10" />
-                            </div>
+                            {/* Dark overlay for contrast if needed, but the clock component has its own bg */}
+                            <RealTimeClock className="w-full h-full bg-transparent" />
                         </div>
                     </ApproachCard>
                 </div>

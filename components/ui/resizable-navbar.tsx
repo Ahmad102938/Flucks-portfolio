@@ -1,14 +1,13 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
   motion,
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
 } from "motion/react";
-
-
+import { HamburgerToggle } from "@/components/ui/hamburger-toggle";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import React, { useRef, useState, createContext, useContext } from "react";
 
 const NavbarContext = createContext<{ visible: boolean }>({ visible: false });
@@ -106,7 +105,7 @@ export const NavbarBrand = () => {
       <div className="leading-tight">
         <p className={cn(
           "text-sm font-semibold tracking-[0.18em]",
-          "text-slate-900"
+          "text-slate-100"
         )}>
           FLUCKS
         </p>
@@ -247,9 +246,9 @@ export const MobileNavMenu = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{ opacity: 0, y: -20, scale: 0.95, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { type: "spring", bounce: 0.3, duration: 0.5 } }}
+          exit={{ opacity: 0, y: -20, scale: 0.95, filter: "blur(10px)", transition: { duration: 0.2, ease: "easeIn" } }}
           className={cn(
             "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-slate-900 px-4 py-8 shadow-xl border border-white/10",
             className,
@@ -269,13 +268,15 @@ export const MobileNavToggle = ({
   isOpen: boolean;
   onClick: () => void;
 }) => {
-  const { visible } = useNavbarContext();
-  const iconClass = visible ? "text-slate-200" : "text-slate-200";
-
-  return isOpen ? (
-    <IconX className={iconClass} onClick={onClick} />
-  ) : (
-    <IconMenu2 className={iconClass} onClick={onClick} />
+  return (
+    <button
+      onClick={onClick}
+      className="relative z-50 h-10 w-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 overflow-hidden"
+    >
+      <div className="scale-[0.58]">
+        <HamburgerToggle isOpen={isOpen} />
+      </div>
+    </button>
   );
 };
 
@@ -324,10 +325,20 @@ export const NavbarButton = ({
   const variantStyles = {
     primary:
       "shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-    secondary: cn("bg-transparent shadow-none text-slate-200 hover:bg-slate-800", !visible && "text-slate-200"),
+    secondary: cn(
+      "bg-transparent shadow-none text-slate-300 border border-transparent",
+      "hover:bg-white/10 hover:text-white hover:border-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]",
+      "focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-950 focus:outline-none",
+      "transition-all duration-300 ease-out"
+    ),
     dark: "bg-black text-white shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-    gradient:
-      "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
+    gradient: cn(
+      "bg-slate-50 text-slate-950 border border-white/20",
+      "hover:bg-white hover:scale-105 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)]",
+      "active:scale-95",
+      "focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-950 focus:outline-none",
+      "transition-all duration-300 ease-out"
+    ),
   };
 
   return (
