@@ -21,6 +21,7 @@ import { OurWorks } from "@/components/ui/our-works";
 import { OurServices } from "@/components/ui/our-services";
 import { OurApproach } from "@/components/ui/our-approach";
 import { FaqSection } from "@/components/ui/faq-section";
+import { LetsConnect } from "@/components/ui/lets-connect";
 import homeContent from "@/constants/home.json";
 
 const BRAND_STACK = [
@@ -398,87 +399,8 @@ const Page: React.FC = () => {
 
         <FaqSection />
 
-        {/* CTA Form */}
-        <section className="mt-16 md:mt-24 flex justify-center px-4 pb-20">
-          <div className="w-full max-w-lg">
-            <div className="flex flex-col justify-between gap-5">
-              <div className="rounded-3xl border border-cyan-400/40 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 p-5 shadow-[0_26px_100px_rgba(8,47,73,0.95)]">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">
-                  Let&apos;s build your next website
-                </p>
-                <p className="mt-2 text-sm font-semibold text-slate-50">
-                  Create bold. Deliver better.
-                </p>
-                <p className="mt-1 text-xs text-slate-300">
-                  Share a short brief (or even a rough idea) and we&apos;ll
-                  respond with a roadmap, timeline, and investment — no fluff.
-                </p>
-
-                <form
-                  className="mt-4 space-y-3 text-xs"
-                  onSubmit={(e) => e.preventDefault()}
-                >
-                  <div className="space-y-1.5">
-                    <label className="text-[11px] text-slate-300">
-                      What are you building?
-                    </label>
-                    <input
-                      placeholder="New marketing site, product launch, redesign..."
-                      className="w-full rounded-xl border border-white/15 bg-slate-950/60 px-3 py-2 text-[11px] text-slate-100 outline-none ring-0 placeholder:text-slate-500 focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/60"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[11px] text-slate-300">
-                      Preferred contact
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        className="rounded-xl border border-white/15 bg-slate-950/60 px-3 py-2 text-[11px] text-slate-200 transition hover:border-cyan-400/50 hover:bg-slate-900"
-                      >
-                        Email
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded-xl border border-white/15 bg-slate-950/60 px-3 py-2 text-[11px] text-slate-200 transition hover:border-cyan-400/50 hover:bg-slate-900"
-                      >
-                        WhatsApp
-                      </button>
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-900 shadow-[0_0_40px_rgba(248,250,252,0.8)] transition hover:bg-white"
-                  >
-                    Send brief
-                    <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-900 text-[9px] text-slate-50">
-                      →
-                    </span>
-                  </button>
-                  <p className="text-[10px] text-slate-400">
-                    No spam. Just one clear response with next steps and a clear
-                    path to launch.
-                  </p>
-                </form>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-400">
-                <p>India — working globally. Available for Q1 & Q2 collaborations.</p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="rounded-full border border-white/15 px-2 py-0.5">
-                    Portfolio
-                  </span>
-                  <span className="rounded-full border border-white/15 px-2 py-0.5">
-                    Templates
-                  </span>
-                  <span className="rounded-full border border-white/15 px-2 py-0.5">
-                    Blog
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* CTA Form - LetsConnect Component */}
+        <LetsConnect />
       </div>
 
       {/* Footer */}
