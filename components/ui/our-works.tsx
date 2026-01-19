@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import { Playfair_Display } from "next/font/google";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const playfair = Playfair_Display({ subsets: ["latin"], style: ["italic", "normal"] });
 
@@ -40,26 +41,28 @@ export const OurWorks = () => {
                     style={{ scale, opacity: imageOpacity }}
                     className="relative aspect-video w-full overflow-hidden rounded-2xl"
                 >
-                    <motion.div style={{ y: imageY }} className="w-full h-[120%] -y-[10%] relative">
-                        <img
-                            src="/assets/works/aset8.webp"
-                            alt="Featured Project"
-                            className="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                        />
-                    </motion.div>
+                    <Link href="/works" className="block w-full h-full relative">
+                        <motion.div style={{ y: imageY }} className="w-full h-[120%] -y-[10%] relative">
+                            <img
+                                src="/assets/works/aset8.webp"
+                                alt="Featured Project"
+                                className="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                            />
+                        </motion.div>
 
-                    {/* Overlay Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                        {/* Overlay Gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
 
-                    {/* Content Overlay */}
-                    <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full z-20">
-                        <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-                            <div>
-                                <h3 className="text-3xl md:text-5xl font-bold text-white mb-2">HealthCore</h3>
-                                <p className="text-slate-300 text-lg">Healthcare Platform Redesign</p>
+                        {/* Content Overlay */}
+                        <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full z-20">
+                            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+                                <div>
+                                    <h3 className="text-3xl md:text-5xl font-bold text-white mb-2">HealthCore</h3>
+                                    <p className="text-slate-300 text-lg">Healthcare Platform Redesign</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 </motion.div>
 
                 {/* Custom Cursor Follower */}
@@ -128,19 +131,21 @@ const WorkItem = ({ title, subtitle, image, index }: { title: string, subtitle: 
             transition={{ delay: index * 0.2, duration: 0.5 }}
             className="group relative aspect-[4/3] overflow-hidden rounded-2xl cursor-pointer"
         >
-            <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/0 transition-colors z-10" />
-            <img
-                src={image}
-                className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
-                alt={title}
-            />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
-                <div className={cn(playfair.className, "text-4xl italic text-white")}>View</div>
-            </div>
-            <div className="absolute bottom-6 left-6 z-20">
-                <h4 className="text-2xl font-bold text-white">{title}</h4>
-                <p className="text-slate-200 text-sm">{subtitle}</p>
-            </div>
+            <Link href="/works" className="block w-full h-full relative">
+                <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/0 transition-colors z-10" />
+                <img
+                    src={image}
+                    className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
+                    alt={title}
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
+                    <div className={cn(playfair.className, "text-4xl italic text-white")}>View</div>
+                </div>
+                <div className="absolute bottom-6 left-6 z-20">
+                    <h4 className="text-2xl font-bold text-white">{title}</h4>
+                    <p className="text-slate-200 text-sm">{subtitle}</p>
+                </div>
+            </Link>
         </motion.div>
     )
 }

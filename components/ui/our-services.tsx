@@ -14,6 +14,8 @@ import {
     IconTools
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { smoothScrollTo } from "@/lib/scroll";
 
 const SERVICES = [
     { title: "Crafted Websites", icon: IconWorld },
@@ -52,12 +54,15 @@ export const OurServices = () => {
                         transition={{ duration: 0.8, delay: 0.1 }}
                         className="flex gap-4"
                     >
-                        <button className="px-6 py-2 md:px-8 md:py-3 rounded-full bg-white text-black font-medium text-sm md:text-lg hover:bg-slate-200 transition-colors">
+                        <button
+                            onClick={() => smoothScrollTo("lets-connect")}
+                            className="px-6 py-2 md:px-8 md:py-3 rounded-full bg-white text-black font-medium text-sm md:text-lg hover:bg-slate-200 transition-colors cursor-pointer"
+                        >
                             Start a project
                         </button>
-                        <button className="px-6 py-2 md:px-8 md:py-3 rounded-full bg-white/10 text-white font-medium text-sm md:text-lg border border-white/20 hover:bg-white/20 transition-colors">
+                        <Link href="/works" className="px-6 py-2 md:px-8 md:py-3 rounded-full bg-white/10 text-white font-medium text-sm md:text-lg border border-white/20 hover:bg-white/20 transition-colors">
                             See our work
-                        </button>
+                        </Link>
                     </motion.div>
                 </div>
 

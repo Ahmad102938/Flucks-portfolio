@@ -12,7 +12,7 @@ export const SiteFooter = () => {
                     {/* Column 1: Logo/Brand */}
                     <div className="flex flex-col gap-6 col-span-1 md:col-span-1 items-center text-center">
                         <div className="flex flex-col gap-4 items-center">
-                            <div className="flex items-center gap-2">
+                            <Link href="/" className="flex items-center gap-2">
                                 <div className="h-10 w-10 relative flex items-center justify-center">
                                     <Image
                                         src="/assets/logo3.png"
@@ -22,7 +22,7 @@ export const SiteFooter = () => {
                                     />
                                 </div>
                                 <span className="text-xl font-bold text-white tracking-tight">{footerBranding.logoText}</span>
-                            </div>
+                            </Link>
                             <div className="flex flex-col gap-1 items-center">
                                 <p className="text-sm text-zinc-400 font-medium">{footerBranding.slogan}</p>
                                 <p className="text-sm text-zinc-500">{footerBranding.subSlogan}</p>

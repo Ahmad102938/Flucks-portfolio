@@ -20,7 +20,7 @@ export const LetsConnect = () => {
     const budgetOptions = ["$1k - $3k", "$3k - $5k", "$5k - $10k", "$10k+"];
 
     return (
-        <section ref={containerRef} className="relative z-10 w-full px-4 pt-10 pb-0 md:px-8 lg:pt-16 lg:pb-0">
+        <section id="lets-connect" ref={containerRef} className="relative z-10 w-full px-4 pt-10 pb-0 md:px-8 lg:pt-16 lg:pb-0">
 
             <div className="mx-auto max-w-7xl">
                 {/* Header Title */}

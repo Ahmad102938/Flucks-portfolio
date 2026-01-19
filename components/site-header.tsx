@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import homeContent from "@/constants/home.json";
+import { smoothScrollTo } from "@/lib/scroll";
 
 const NAV_ITEMS = homeContent.navItems;
 
@@ -38,17 +39,30 @@ export function SiteHeader() {
                 <NavbarBrand />
 
                 <NavItems
-                    items={NAV_ITEMS.map((item) => ({
-                        name: item,
-                        link: "#",
-                    }))}
+                    items={NAV_ITEMS.map((item) => {
+                        let link = "/";
+                        if (item === "Works") link = "/works";
+                        if (item === "Services") link = "/services";
+                        if (item === "About Us") link = "/about";
+                        return {
+                            name: item,
+                            link,
+                        };
+                    })}
                 />
 
                 <div className="flex items-center gap-2">
-                    <NavbarButton variant="secondary">See our work</NavbarButton>
+                    <NavbarButton variant="secondary" href="/works">See our work</NavbarButton>
                     <HoverBorderGradient
                         containerClassName="rounded-full group"
                         as="button"
+                        onClick={() => {
+                            if (window.location.pathname === "/") {
+                                smoothScrollTo("lets-connect");
+                            } else {
+                                window.location.href = "/?scroll=lets-connect";
+                            }
+                        }}
                         className="bg-slate-950 text-white flex items-center space-x-2 transition-all duration-300 hover:bg-slate-800 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),inset_0_-1px_0_0_rgba(0,0,0,0.4)]"
                     >
                         <span className="inline-block transition-transform duration-300 group-hover:scale-110">
@@ -71,19 +85,26 @@ export function SiteHeader() {
                     isOpen={mobileMenuOpen}
                     onClose={() => setMobileMenuOpen(false)}
                 >
-                    {NAV_ITEMS.map((item, idx) => (
-                        <a
-                            key={idx}
-                            href="#"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="text-sm font-medium text-slate-200 hover:text-white transition-colors"
-                        >
-                            {item}
-                        </a>
-                    ))}
+                    {NAV_ITEMS.map((item, idx) => {
+                        let link = "/";
+                        if (item === "Works") link = "/works";
+                        if (item === "Services") link = "/services";
+                        if (item === "About Us") link = "/about";
+                        return (
+                            <a
+                                key={idx}
+                                href={link}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="text-sm font-medium text-slate-200 hover:text-white transition-colors"
+                            >
+                                {item}
+                            </a>
+                        );
+                    })}
                     <div className="mt-2 flex flex-col gap-2 items-center">
                         <NavbarButton
                             variant="secondary"
+                            href="/works"
                             className="w-full rounded-full border border-white/20 hover:bg-white/10 hover:border-white/30 transition-all duration-300"
                         >
                             See our work
@@ -91,6 +112,14 @@ export function SiteHeader() {
                         <HoverBorderGradient
                             containerClassName="rounded-full w-full group"
                             as="button"
+                            onClick={() => {
+                                setMobileMenuOpen(false);
+                                if (window.location.pathname === "/") {
+                                    smoothScrollTo("lets-connect");
+                                } else {
+                                    window.location.href = "/?scroll=lets-connect";
+                                }
+                            }}
                             className="bg-slate-950 text-white flex items-center justify-center space-x-2 w-full transition-all duration-300 hover:bg-slate-800 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),inset_0_-1px_0_0_rgba(0,0,0,0.4)]"
                         >
                             <span className="inline-block transition-transform duration-300 group-hover:scale-110">

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, useMotionValue } from "motion/react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import {
   Navbar,
@@ -23,6 +24,7 @@ import { OurApproach } from "@/components/ui/our-approach";
 import { FaqSection } from "@/components/ui/faq-section";
 import { LetsConnect } from "@/components/ui/lets-connect";
 import { SiteFooter } from "@/components/site-footer";
+import { smoothScrollTo } from "@/lib/scroll";
 import homeContent from "@/constants/home.json";
 
 const BRAND_STACK = [
@@ -37,21 +39,21 @@ const BRAND_STACK = [
 ];
 
 const PARALLAX_PRODUCTS = [
-  { title: "E-Commerce Reform", link: "#", thumbnail: "/assets/featuredWork/aset.webp" },
-  { title: "SaaS Dashboard", link: "#", thumbnail: "/assets/featuredWork/aset2.webp" },
-  { title: "Fintech App", link: "#", thumbnail: "/assets/featuredWork/aset3.webp" },
-  { title: "AI Platform", link: "#", thumbnail: "/assets/featuredWork/aset4.webp" },
-  { title: "Health Tech", link: "#", thumbnail: "/assets/featuredWork/aset5.webp" },
-  { title: "Real Estate", link: "#", thumbnail: "/assets/featuredWork/aset6.webp" },
-  { title: "Crypto Exchange", link: "#", thumbnail: "/assets/featuredWork/aset7.webp" },
-  { title: "Social Media", link: "#", thumbnail: "/assets/featuredWork/aset8.webp" },
-  { title: "EdTech Platform", link: "#", thumbnail: "/assets/featuredWork/aset9.webp" },
-  { title: "Marketing Tool", link: "#", thumbnail: "/assets/featuredWork/aset10.webp" },
-  { title: "Analytics Hub", link: "#", thumbnail: "/assets/featuredWork/aset11.webp" },
-  { title: "Cloud Systems", link: "#", thumbnail: "/assets/featuredWork/aset12.webp" },
-  { title: "Dev Tools", link: "#", thumbnail: "/assets/featuredWork/aset13.webp" },
-  { title: "Design System", link: "#", thumbnail: "/assets/featuredWork/aset14.webp" },
-  { title: "Enterprise CRM", link: "#", thumbnail: "/assets/featuredWork/aset.webp" },
+  { title: "E-Commerce Reform", link: "/works", thumbnail: "/assets/featuredWork/aset.webp" },
+  { title: "SaaS Dashboard", link: "/works", thumbnail: "/assets/featuredWork/aset2.webp" },
+  { title: "Fintech App", link: "/works", thumbnail: "/assets/featuredWork/aset3.webp" },
+  { title: "AI Platform", link: "/works", thumbnail: "/assets/featuredWork/aset4.webp" },
+  { title: "Health Tech", link: "/works", thumbnail: "/assets/featuredWork/aset5.webp" },
+  { title: "Real Estate", link: "/works", thumbnail: "/assets/featuredWork/aset6.webp" },
+  { title: "Crypto Exchange", link: "/works", thumbnail: "/assets/featuredWork/aset7.webp" },
+  { title: "Social Media", link: "/works", thumbnail: "/assets/featuredWork/aset8.webp" },
+  { title: "EdTech Platform", link: "/works", thumbnail: "/assets/featuredWork/aset9.webp" },
+  { title: "Marketing Tool", link: "/works", thumbnail: "/assets/featuredWork/aset10.webp" },
+  { title: "Analytics Hub", link: "/works", thumbnail: "/assets/featuredWork/aset11.webp" },
+  { title: "Cloud Systems", link: "/works", thumbnail: "/assets/featuredWork/aset12.webp" },
+  { title: "Dev Tools", link: "/works", thumbnail: "/assets/featuredWork/aset13.webp" },
+  { title: "Design System", link: "/works", thumbnail: "/assets/featuredWork/aset14.webp" },
+  { title: "Enterprise CRM", link: "/works", thumbnail: "/assets/featuredWork/aset.webp" },
 ];
 
 const NAV_ITEMS = homeContent.navItems;
@@ -173,6 +175,23 @@ const InfiniteCarousel: React.FC<{
 const Page: React.FC = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check for scroll param
+    const scrollTarget = searchParams.get("scroll");
+    if (scrollTarget === "lets-connect") {
+      // Use a small timeout to ensure DOM is ready
+      setTimeout(() => {
+        smoothScrollTo("lets-connect");
+      }, 100);
+
+      // Clean up URL
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, "", newUrl);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -198,17 +217,30 @@ const Page: React.FC = () => {
           <NavbarBrand />
 
           <NavItems
-            items={NAV_ITEMS.map((item) => ({
-              name: item,
-              link: "#",
-            }))}
+            items={NAV_ITEMS.map((item) => {
+              let link = "/";
+              if (item === "Works") link = "/works";
+              if (item === "Services") link = "/services";
+              if (item === "About Us") link = "/about";
+              return {
+                name: item,
+                link,
+              };
+            })}
           />
 
           <div className="flex items-center gap-2">
-            <NavbarButton variant="secondary">See our work</NavbarButton>
+            <NavbarButton variant="secondary" href="/works">See our work</NavbarButton>
             <HoverBorderGradient
               containerClassName="rounded-full group"
               as="button"
+              onClick={() => {
+                if (window.location.pathname === "/") {
+                  smoothScrollTo("lets-connect");
+                } else {
+                  window.location.href = "/?scroll=lets-connect";
+                }
+              }}
               className="bg-slate-950 text-white flex items-center space-x-2 transition-all duration-300 hover:bg-slate-800 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),inset_0_-1px_0_0_rgba(0,0,0,0.4)]"
             >
               <span className="inline-block transition-transform duration-300 group-hover:scale-110">Let&apos;s connect</span>
@@ -229,21 +261,35 @@ const Page: React.FC = () => {
             isOpen={mobileMenuOpen}
             onClose={() => setMobileMenuOpen(false)}
           >
-            {NAV_ITEMS.map((item, idx) => (
-              <a
-                key={idx}
-                href="#"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-medium text-slate-200 hover:text-white transition-colors"
-              >
-                {item}
-              </a>
-            ))}
+            {NAV_ITEMS.map((item, idx) => {
+              let link = "/";
+              if (item === "Works") link = "/works";
+              if (item === "Services") link = "/services";
+              if (item === "About Us") link = "/about";
+              return (
+                <a
+                  key={idx}
+                  href={link}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-sm font-medium text-slate-200 hover:text-white transition-colors"
+                >
+                  {item}
+                </a>
+              );
+            })}
             <div className="mt-2 flex flex-col gap-2 items-center">
-              <NavbarButton variant="secondary" className="w-full rounded-full border border-white/20 hover:bg-white/10 hover:border-white/30 transition-all duration-300">See our work</NavbarButton>
+              <NavbarButton variant="secondary" href="/works" className="w-full rounded-full border border-white/20 hover:bg-white/10 hover:border-white/30 transition-all duration-300">See our work</NavbarButton>
               <HoverBorderGradient
                 containerClassName="rounded-full w-full group"
                 as="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (window.location.pathname === "/") {
+                    smoothScrollTo("lets-connect");
+                  } else {
+                    window.location.href = "/?scroll=lets-connect";
+                  }
+                }}
                 className="bg-slate-950 text-white flex items-center justify-center space-x-2 w-full transition-all duration-300 hover:bg-slate-800 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),inset_0_-1px_0_0_rgba(0,0,0,0.4)]"
               >
                 <span className="inline-block transition-transform duration-300 group-hover:scale-110">Let&apos;s connect</span>
@@ -285,15 +331,18 @@ const Page: React.FC = () => {
             </div>
 
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-              <button className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-5 py-2 text-xs font-semibold text-slate-900 shadow-[0_0_35px_rgba(248,250,252,0.9)] transition hover:bg-white">
+              <button
+                onClick={() => smoothScrollTo("lets-connect")}
+                className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-5 py-2 text-xs font-semibold text-slate-900 shadow-[0_0_35px_rgba(248,250,252,0.9)] transition hover:bg-white cursor-pointer"
+              >
                 Get in touch
                 <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-900 text-[9px] text-slate-50">
                   →
                 </span>
               </button>
-              <button className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/15 transition hover:bg-zinc-800">
+              <Link className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/15 transition hover:bg-zinc-800" href="/works">
                 See our work
-              </button>
+              </Link>
             </div>
 
             {/* Metric strip under CTAs */}

@@ -1,5 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import {
   motion,
   AnimatePresence,
@@ -93,8 +94,8 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 export const NavbarBrand = () => {
   const { visible } = useNavbarContext();
   return (
-    <a
-      href="#"
+    <Link
+      href="/"
       className="relative z-20 flex items-center gap-2 px-2 py-1"
     >
       <img
@@ -122,7 +123,7 @@ export const NavbarBrand = () => {
           )}
         </AnimatePresence>
       </div>
-    </a>
+    </Link>
   );
 };
 
@@ -282,8 +283,8 @@ export const MobileNavToggle = ({
 
 export const NavbarLogo = () => {
   return (
-    <a
-      href="#"
+    <Link
+      href="/"
       className="relative z-20 mr-4 flex items-center gap-2 px-2 py-1"
     >
       <img
@@ -296,7 +297,7 @@ export const NavbarLogo = () => {
           FLUCKS
         </p>
       </div>
-    </a>
+    </Link>
   );
 };
 
