@@ -31,9 +31,9 @@ export const LetsConnect = () => {
                     transition={{ duration: 1 }}
                     className="mb-8 text-center md:mb-12"
                 >
-                    <h2 className="flex flex-col items-center justify-center text-6xl font-bold leading-[0.9] tracking-tighter sm:text-8xl md:flex-row md:gap-6 md:text-[8rem] lg:text-[10rem]">
-                        <span className="text-white">Let&apos;s</span>
-                        <span className="font-fraunces font-light italic text-white md:mt-4">
+                    <h2 className="flex flex-row items-baseline justify-center gap-3 text-[3.5rem] leading-none tracking-tighter sm:text-[5rem] md:gap-6 md:text-[8rem] lg:text-[10rem]">
+                        <span className="text-white font-bold">Let&apos;s</span>
+                        <span className="font-fraunces font-light italic text-white">
                             Connect
                         </span>
                     </h2>

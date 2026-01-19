@@ -52,22 +52,22 @@ export const OurServices = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.1 }}
-                        className="flex gap-4"
+                        className="flex flex-nowrap gap-3 md:gap-4 w-full md:w-auto justify-center md:justify-start"
                     >
                         <button
                             onClick={() => smoothScrollTo("lets-connect")}
-                            className="px-6 py-2 md:px-8 md:py-3 rounded-full bg-white text-black font-medium text-sm md:text-lg hover:bg-slate-200 transition-colors cursor-pointer"
+                            className="px-5 py-2.5 md:px-8 md:py-3 rounded-full bg-white text-black font-medium text-sm md:text-lg hover:bg-slate-200 transition-colors cursor-pointer whitespace-nowrap"
                         >
                             Start a project
                         </button>
-                        <Link href="/works" className="px-6 py-2 md:px-8 md:py-3 rounded-full bg-white/10 text-white font-medium text-sm md:text-lg border border-white/20 hover:bg-white/20 transition-colors">
+                        <Link href="/works" className="px-5 py-2.5 md:px-8 md:py-3 rounded-full bg-white/10 text-white font-medium text-sm md:text-lg border border-white/20 hover:bg-white/20 transition-colors whitespace-nowrap">
                             See our work
                         </Link>
                     </motion.div>
                 </div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 h-auto">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 h-auto">
                     {SERVICES.map((service, index) => (
                         <ServiceCard key={index} {...service} index={index} />
                     ))}
@@ -85,15 +85,15 @@ const ServiceCard = ({ title, icon: Icon, index }: { title: string, icon: any, i
             whileHover={{ scale: 1.05 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="group relative flex flex-col items-center justify-center text-center p-6 lg:h-52 rounded-3xl border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02] cursor-default overflow-hidden"
+            className="group relative flex flex-col items-center justify-center text-center p-4 md:p-6 lg:h-52 rounded-2xl md:rounded-3xl border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02] cursor-default overflow-hidden"
         >
             {/* Hover Glow Effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-            <div className="mb-4 p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                <Icon size={28} className="text-white" stroke={1.5} />
+            <div className="mb-3 md:mb-4 p-2.5 md:p-3 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                <Icon className="text-white w-5 h-5 md:w-7 md:h-7" stroke={1.5} />
             </div>
-            <h3 className="text-lg font-medium text-slate-200 whitespace-pre-line leading-snug">
+            <h3 className="text-xs md:text-lg font-medium text-slate-200 whitespace-pre-line leading-tight md:leading-snug">
                 {title}
             </h3>
         </motion.div>
