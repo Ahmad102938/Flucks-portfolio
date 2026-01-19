@@ -25,7 +25,7 @@ const ApproachCard = ({
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className={cn(
-                "group relative flex flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 p-6 md:p-10",
+                "group relative flex flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-black p-6 md:p-10",
                 className
             )}
         >
@@ -123,7 +123,7 @@ const MobileFirstCard = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 min-h-[500px] md:min-h-[600px]"
+            className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-black min-h-[500px] md:min-h-[600px]"
         >
             {/* Full Background Video */}
             <div className="absolute inset-0 z-0 overflow-hidden">
@@ -179,7 +179,7 @@ const ConversionCard = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 min-h-[500px] md:min-h-[600px]"
+            className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-black min-h-[500px] md:min-h-[600px]"
         >
             {/* Full Background Image */}
             <div className="absolute inset-0 z-0 overflow-hidden">
@@ -237,15 +237,15 @@ const PixelPerfectCard = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="group relative flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950 min-h-[500px] md:min-h-[600px] h-full"
+            className="group relative flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-white/10 bg-black min-h-[500px] md:min-h-[600px] h-full"
         >
             {/* 3D Marquee Background */}
             <div className="absolute inset-0 z-0 overflow-hidden">
                 <ThreeDMarquee images={images} className="h-full w-full opacity-60" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/80" />
                 {/* Side fades for better integration */}
-                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-slate-950 to-transparent" />
-                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-slate-950 to-transparent" />
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent" />
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent" />
             </div>
 
             {/* Content Centered */}
@@ -263,7 +263,7 @@ const PixelPerfectCard = () => {
 
             {/* Hover glow effect */}
             <div className="pointer-events-none absolute -inset-px opacity-0 transition duration-500 group-hover:opacity-100 z-20">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
             </div>
         </motion.div>
     );

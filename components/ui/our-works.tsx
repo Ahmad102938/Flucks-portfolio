@@ -22,7 +22,7 @@ export const OurWorks = () => {
     const scale = useTransform(scrollYProgress, [0, 1], [0.95, 1.05]);
 
     return (
-        <section ref={containerRef} className="relative w-full py-32 bg-slate-950 overflow-hidden z-40">
+        <section ref={containerRef} className="relative w-full py-32 bg-black overflow-hidden z-40">
             {/* Header */}
             <div className="container mx-auto px-4 mb-20 relative z-10 flex justify-center items-center mt-20">
                 <motion.h2

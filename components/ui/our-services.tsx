@@ -30,7 +30,7 @@ const SERVICES = [
 
 export const OurServices = () => {
     return (
-        <section className="relative w-full py-16 bg-slate-950 text-white overflow-hidden z-30">
+        <section className="relative w-full py-16 bg-black text-white overflow-hidden z-30">
             <div className="container mx-auto px-6 md:px-12">
                 {/* Header */}
                 <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end mb-12 gap-8 text-center lg:text-left">

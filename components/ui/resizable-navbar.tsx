@@ -149,7 +149,7 @@ export const NavBody = ({ children, className }: NavBodyProps) => {
       }}
       className={cn(
         "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
-        visible && "bg-slate-900/90 backdrop-blur-md border border-white/10 shadow-sm px-6",
+        visible && "bg-black/90 backdrop-blur-md border border-white/10 shadow-sm px-6",
         className,
       )}
     >
@@ -212,7 +212,7 @@ export const MobileNav = ({ children, className }: MobileNavProps) => {
       }}
       className={cn(
         "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
-        visible && "bg-slate-900/90 backdrop-blur-md border border-white/10 shadow-sm",
+        visible && "bg-black/90 backdrop-blur-md border border-white/10 shadow-sm",
         className,
       )}
     >
@@ -250,7 +250,7 @@ export const MobileNavMenu = ({
           animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transition: { type: "spring", bounce: 0.3, duration: 0.5 } }}
           exit={{ opacity: 0, y: -20, scale: 0.95, filter: "blur(10px)", transition: { duration: 0.2, ease: "easeIn" } }}
           className={cn(
-            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-slate-900 px-4 py-8 shadow-xl border border-white/10",
+            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-black px-4 py-8 shadow-xl border border-white/10",
             className,
           )}
         >

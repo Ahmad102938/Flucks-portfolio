@@ -41,17 +41,17 @@ export const RealTimeClock = ({ className }: { className?: string }) => {
             {/* Highlight Bar (Right Side Only) */}
             <div className="absolute top-1/2 left-[calc(50%-20px)] right-0 -translate-y-1/2 h-5 z-10">
                 {/* The blue bar background - pill shaped left */}
-                <div className="absolute inset-y-0 left-0 w-[210px] min-[1100px]:w-[250px] bg-[#0f4c75] border-y border-cyan-500/30 rounded-l-full shadow-[0_4px_20px_rgba(0,0,0,0.3)]" />
+                <div className="absolute inset-y-0 left-0 w-[210px] min-[1100px]:w-[250px] bg-white border-y border-white/50 rounded-l-full shadow-[0_0_25px_rgba(255,255,255,0.5)]" />
 
                 {/* Flag Icon (Left end) - Centered on axis */}
-                <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#1e293b] border-2 border-[#0f4c75] flex items-center justify-center z-20 shadow-lg overflow-hidden">
+                <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900 border-2 border-white flex items-center justify-center z-20 shadow-[0_0_15px_rgba(255,255,255,0.4)] overflow-hidden">
                     <span className="text-2xl leading-none relative top-[1px]">🇮🇳</span>
                 </div>
 
                 {/* Static Colons for Time Separation */}
                 {/* Offsets based on ring radii + 20px centering offset. Colon 1: 128+20=148. Colon 2: 153+20=173 */}
-                <span className="absolute left-[148px] top-1/2 -translate-y-[55%] text-white/90 font-bold text-sm">:</span>
-                <span className="absolute left-[173px] top-1/2 -translate-y-[55%] text-white/90 font-bold text-sm">:</span>
+                <span className="absolute left-[148px] top-1/2 -translate-y-[55%] text-black font-bold text-sm">:</span>
+                <span className="absolute left-[173px] top-1/2 -translate-y-[55%] text-black font-bold text-sm">:</span>
             </div>
 
             {/* Container for rings */}
@@ -148,7 +148,7 @@ const ClockRing = ({ config, time }: { config: ClockRingConfig; time: Date }) =>
                         key={i}
                         className={cn(
                             "absolute flex items-center justify-center font-medium transition-all duration-300",
-                            isActive ? "text-white opacity-100 scale-110" : "opacity-70 scale-90"
+                            isActive ? "text-black opacity-100 scale-110" : "opacity-70 scale-90"
                         )}
                         style={{
                             left: x,
@@ -157,7 +157,7 @@ const ClockRing = ({ config, time }: { config: ClockRingConfig; time: Date }) =>
                             height: 40,
                             transform: `translate(-50%, -50%) rotate(${angleDeg}deg)`, // radial rotation
                             fontSize: fontSize,
-                            color: isActive ? 'white' : color,
+                            color: isActive ? 'black' : color,
                             fontWeight: isActive ? 600 : 400
                         }}
                     >

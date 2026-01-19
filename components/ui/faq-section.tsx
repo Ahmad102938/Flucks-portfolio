@@ -34,7 +34,7 @@ export const FaqSection = () => {
     };
 
     return (
-        <section className="w-full py-24 flex flex-col items-center justify-center bg-slate-950 text-slate-50 relative overflow-hidden">
+        <section className="w-full py-24 flex flex-col items-center justify-center bg-black text-slate-50 relative overflow-hidden">
             {/* Background glow for ambience */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.05)_0,_transparent_70%)] pointer-events-none" />
 
@@ -55,8 +55,8 @@ export const FaqSection = () => {
                             <div
                                 key={index}
                                 className={cn(
-                                    "border rounded-xl transition-all duration-300 bg-slate-900/40 backdrop-blur-sm overflow-hidden group",
-                                    isOpen ? "border-white/20 bg-slate-900/60" : "border-white/5 hover:border-white/10"
+                                    "border rounded-xl transition-all duration-300 bg-black/40 backdrop-blur-sm overflow-hidden group",
+                                    isOpen ? "border-white/20 bg-black/80" : "border-white/5 hover:border-white/10"
                                 )}
                             >
                                 <button

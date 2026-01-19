@@ -22,6 +22,7 @@ import { OurServices } from "@/components/ui/our-services";
 import { OurApproach } from "@/components/ui/our-approach";
 import { FaqSection } from "@/components/ui/faq-section";
 import { LetsConnect } from "@/components/ui/lets-connect";
+import { SiteFooter } from "@/components/site-footer";
 import homeContent from "@/constants/home.json";
 
 const BRAND_STACK = [
@@ -185,9 +186,9 @@ const Page: React.FC = () => {
   }, [mobileMenuOpen]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
-      {/* Background glows / grain */}
-      <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top,_#22d3ee_0,_transparent_55%),radial-gradient(circle_at_center,_#4f46e5_0,_transparent_60%),radial-gradient(circle_at_bottom,_#e11d48_0,_transparent_55%)] opacity-60" />
+    <main className="relative min-h-screen overflow-hidden bg-black text-slate-100">
+      {/* Background with slight grain or neutral gradient if desired, but sticking to black per request */}
+      <div className="pointer-events-none fixed inset-0 -z-20 bg-black" />
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[url('/window.svg')] mix-blend-soft-light opacity-[0.15]" />
 
       {/* Navigation - Resizable navbar inspired by Aceternity UI */}
@@ -259,7 +260,7 @@ const Page: React.FC = () => {
           svgOptions={{ duration: 10 }}
         >
           <section className="relative flex flex-col items-center text-center">
-            <p className="mb-6 inline-flex items-center justify-center rounded-full border border-white/10 bg-slate-900/80 px-4 py-1 text-[11px] font-semibold tracking-[0.22em] text-slate-100 shadow-[0_0_26px_rgba(15,23,42,0.9)]">
+            <p className="mb-6 inline-flex items-center justify-center rounded-full border border-white/10 bg-zinc-900 px-4 py-1 text-[11px] font-semibold tracking-[0.22em] text-slate-100 shadow-[0_0_26px_rgba(15,23,42,0.9)]">
               Design in Details
             </p>
 
@@ -290,14 +291,14 @@ const Page: React.FC = () => {
                   →
                 </span>
               </button>
-              <button className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/15 transition hover:bg-slate-800">
+              <button className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/15 transition hover:bg-zinc-800">
                 See our work
               </button>
             </div>
 
             {/* Metric strip under CTAs */}
             <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-400">
-              <div className="inline-flex items-center gap-2 rounded-full bg-slate-900/80 px-3 py-1 ring-1 ring-white/10">
+              <div className="inline-flex items-center gap-2 rounded-full bg-zinc-900/80 px-3 py-1 ring-1 ring-white/10">
                 <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
                 <span>Premium UX & motion‑driven builds</span>
               </div>
@@ -306,30 +307,30 @@ const Page: React.FC = () => {
 
             {/* Horizontal sliding frame just below hero */}
             <div className="relative mt-12 w-full">
-              <div className="pointer-events-none absolute -inset-x-24 -top-10 -z-10 h-56 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.5)_0,_transparent_60%)] opacity-90" />
-              <div className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-gradient-to-b from-slate-900 via-slate-950 to-black shadow-[0_40px_160px_rgba(15,23,42,1)]">
+              <div className="pointer-events-none absolute -inset-x-24 -top-10 -z-10 h-56 opacity-0" />
+              <div className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-black shadow-[0_40px_160px_rgba(15,23,42,1)]">
                 {/* Browser chrome */}
-                <div className="flex items-center justify-between gap-3 border-b border-white/5 bg-black/60 px-4 py-2 text-[10px] text-slate-300">
+                <div className="flex items-center justify-between gap-3 border-b border-white/5 bg-zinc-900 px-4 py-2 text-[10px] text-slate-300">
                   <div className="flex items-center gap-2">
                     <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
                     <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
                     <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
-                    <span className="ml-3 rounded-full bg-slate-900/80 px-3 py-1 text-[10px] text-slate-200">
-                      V
+                    <span className="ml-3 rounded-full bg-zinc-900 px-3 py-1 text-[10px] text-slate-200">
+                      F
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-full bg-slate-900/80 px-3 py-1 text-[10px] text-slate-400">
+                  <div className="flex items-center gap-2 rounded-full bg-zinc-800 px-3 py-1 text-[10px] text-slate-400">
                     <span className="h-1.5 w-10 rounded-full bg-slate-700/80" />
                     <span className="hidden h-1.5 w-10 rounded-full bg-slate-800/80 sm:inline-flex" />
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="h-6 w-6 rounded-full bg-slate-800" />
-                    <span className="hidden h-6 w-6 rounded-full bg-slate-800 sm:inline-flex" />
+                    <span className="h-6 w-6 rounded-full bg-zinc-800" />
+                    <span className="hidden h-6 w-6 rounded-full bg-zinc-800 sm:inline-flex" />
                   </div>
                 </div>
 
                 {/* Sliding content */}
-                <div className="relative flex h-[40vh] max-h-[400px] items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900">
+                <div className="relative flex h-[40vh] max-h-[400px] items-center justify-center overflow-hidden bg-black">
                   <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
                   <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10" />
 
@@ -352,12 +353,12 @@ const Page: React.FC = () => {
                 Design, development & systems that keep your site future‑ready.
               </p>
             </div>
-            <div className="rounded-full border border-white/10 bg-slate-900/60 px-3 py-1 text-[11px] text-slate-300 backdrop-blur">
+            <div className="rounded-full border border-white/10 bg-zinc-900/60 px-3 py-1 text-[11px] text-slate-300 backdrop-blur">
               Web · Product · Brand
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-slate-900/70 py-6 shadow-[0_20px_80px_rgba(15,23,42,0.95)]">
+          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-black/70 py-6 shadow-[0_20px_80px_rgba(15,23,42,0.95)]">
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-950 to-transparent z-10" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-950 to-transparent z-10" />
 
@@ -404,22 +405,7 @@ const Page: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 bg-slate-950/90 py-6 text-[11px] text-slate-400">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 md:px-6">
-          <div className="flex items-center gap-2 text-slate-300">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-slate-900 text-[11px] font-semibold text-slate-100 ring-1 ring-white/10">
-              FL
-            </span>
-            <span>© {new Date().getFullYear()} Flucks. Crafted in detail.</span>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <span>Process</span>
-            <span>FAQs</span>
-            <span>Privacy</span>
-            <span className="text-slate-300">Create bold. Deliver better.</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 };

@@ -20,7 +20,7 @@ export const LetsConnect = () => {
     const budgetOptions = ["$1k - $3k", "$3k - $5k", "$5k - $10k", "$10k+"];
 
     return (
-        <section ref={containerRef} className="relative z-10 w-full px-4 py-10 pb-10 md:px-8 lg:py-16">
+        <section ref={containerRef} className="relative z-10 w-full px-4 pt-10 pb-0 md:px-8 lg:pt-16 lg:pb-0">
 
             <div className="mx-auto max-w-7xl">
                 {/* Header Title */}
@@ -45,27 +45,24 @@ export const LetsConnect = () => {
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                    className="relative shadow-[inset_0_0_60px_rgba(0,0,0,0.6)] lg:rounded-[2.5rem] lg:border lg:border-white/10 lg:bg-black/60 lg:backdrop-blur-xl"
+                    className="relative shadow-[inset_0_0_60px_rgba(0,0,0,0.6)] rounded-[2.5rem] border border-white/10 bg-black/60 backdrop-blur-xl"
                 >
                     {/* Background Container - Rounded & Clipped (Desktop Only / Global Parent) */}
                     <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden rounded-[2.5rem]">
                         <motion.div style={{ y }} className="absolute inset-0 h-[120%] w-full">
                             <DottedGlowBackground
-                                color="rgba(0, 212, 255, 0.4)"
-                                glowColor="rgba(168, 85, 247, 0.6)"
+                                color="rgba(255, 255, 255, 0.4)"
+                                glowColor="rgba(255, 255, 255, 1)"
                                 gap={15}
                                 speedMin={0.5}
                                 speedMax={1.5}
                             />
-                            <div className="absolute -left-20 -top-20 h-[500px] w-[500px] bg-cyan-500/10 blur-[120px]" />
-                            <div className="absolute -bottom-20 -right-20 h-[500px] w-[500px] bg-purple-500/10 blur-[120px]" />
-                            <div className="absolute left-[30%] top-[40%] h-[600px] w-[800px] rotate-45 bg-[radial-gradient(circle,rgba(0,163,255,0.05)_0%,transparent_70%)] blur-[80px]" />
                         </motion.div>
                     </div>
 
                     <div className="grid gap-4 lg:gap-0 lg:grid-cols-[1.5fr,1fr]">
                         {/* Left Column: Form */}
-                        <div className="rounded-[2rem] border border-white/10 bg-black/60 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] p-6 backdrop-blur-xl sm:p-8 lg:bg-transparent lg:border-0 lg:border-r lg:shadow-none lg:backdrop-blur-none lg:rounded-none lg:p-10">
+                        <div className="p-6 sm:p-8 lg:p-10 lg:border-r lg:border-white/10">
                             <div className="mb-6">
                                 <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/5 text-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-message-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M8 9h8" /><path d="M8 13h6" /><path d="M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3z" /></svg>
@@ -73,7 +70,7 @@ export const LetsConnect = () => {
                                 <h3 className="mb-2 text-2xl font-semibold text-white">
                                     Start Your Project
                                 </h3>
-                                <p className="text-base text-slate-400">
+                                <p className="text-base text-zinc-400">
                                     Let us know how we can help bring{" "}
                                     <span className="text-white">your idea to life.</span>
                                 </p>
@@ -88,7 +85,7 @@ export const LetsConnect = () => {
                                         <input
                                             type="text"
                                             placeholder="Your Name"
-                                            className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-200 outline-none transition-all placeholder:text-slate-500 focus:bg-slate-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
                                         />
                                     </div>
                                     <div className="space-y-1.5">
@@ -98,7 +95,7 @@ export const LetsConnect = () => {
                                         <input
                                             type="email"
                                             placeholder="your@email.com"
-                                            className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-200 outline-none transition-all placeholder:text-slate-500 focus:bg-slate-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
                                         />
                                     </div>
                                 </div>
@@ -109,7 +106,7 @@ export const LetsConnect = () => {
                                             Country
                                         </label>
                                         <div className="relative">
-                                            <select className="w-full appearance-none rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-200 outline-none transition-all focus:bg-slate-800 focus:border-white focus:ring-2 focus:ring-white/20">
+                                            <select className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20">
                                                 <option>Select Country</option>
                                                 <option>United States</option>
                                                 <option>United Kingdom</option>
@@ -117,7 +114,7 @@ export const LetsConnect = () => {
                                                 <option>Canada</option>
                                                 <option>Australia</option>
                                             </select>
-                                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">
+                                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                                             </div>
                                         </div>
@@ -129,7 +126,7 @@ export const LetsConnect = () => {
                                         <input
                                             type="tel"
                                             placeholder="+1 (555) 000-0000"
-                                            className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-200 outline-none transition-all placeholder:text-slate-500 focus:bg-slate-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
                                         />
                                     </div>
                                 </div>
@@ -140,14 +137,14 @@ export const LetsConnect = () => {
                                             Project Type
                                         </label>
                                         <div className="relative">
-                                            <select className="w-full appearance-none rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-200 outline-none transition-all focus:bg-slate-800 focus:border-white focus:ring-2 focus:ring-white/20">
+                                            <select className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20">
                                                 <option>Select...</option>
                                                 <option>Web Design</option>
                                                 <option>Web Development</option>
                                                 <option>Full Website</option>
                                                 <option>Mobile App</option>
                                             </select>
-                                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">
+                                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                                             </div>
                                         </div>
@@ -157,14 +154,14 @@ export const LetsConnect = () => {
                                             Number of pages
                                         </label>
                                         <div className="relative">
-                                            <select className="w-full appearance-none rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-200 outline-none transition-all focus:bg-slate-800 focus:border-white focus:ring-2 focus:ring-white/20">
+                                            <select className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20">
                                                 <option>Select...</option>
                                                 <option>1-5</option>
                                                 <option>5-10</option>
                                                 <option>10-20</option>
                                                 <option>20+</option>
                                             </select>
-                                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500">
+                                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                                             </div>
                                         </div>
@@ -182,7 +179,7 @@ export const LetsConnect = () => {
                                                 onClick={() => setActiveBudget(option)}
                                                 className={`rounded-full border px-5 py-2 text-xs font-medium transition-all duration-300 ${activeBudget === option
                                                     ? "border-cyan-500 bg-cyan-500/10 text-cyan-400"
-                                                    : "border-white/10 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white"
+                                                    : "border-white/10 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-white"
                                                     }`}
                                             >
                                                 {option}
@@ -199,7 +196,7 @@ export const LetsConnect = () => {
                                         <textarea
                                             placeholder="Tell us what you're looking to create..."
                                             rows={2}
-                                            className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-200 outline-none transition-all placeholder:text-slate-500 focus:bg-slate-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
                                         />
                                     </div>
                                 </div>
@@ -215,7 +212,7 @@ export const LetsConnect = () => {
                                                     <motion.div layoutId="radio-indicator" className="h-2.5 w-2.5 rounded-full bg-cyan-400" />
                                                 )}
                                             </div>
-                                            <span className={`text-sm transition-colors ${preferredMethod === "email" ? "text-white" : "text-slate-400"}`}>Email</span>
+                                            <span className={`text-sm transition-colors ${preferredMethod === "email" ? "text-white" : "text-zinc-400"}`}>Email</span>
                                         </label>
                                         <label className="flex cursor-pointer items-center gap-2" onClick={() => setPreferredMethod("whatsapp")}>
                                             <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${preferredMethod === "whatsapp" ? "border-emerald-500" : "border-white/20"}`}>
@@ -223,7 +220,7 @@ export const LetsConnect = () => {
                                                     <motion.div layoutId="radio-indicator" className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
                                                 )}
                                             </div>
-                                            <span className={`text-sm transition-colors ${preferredMethod === "whatsapp" ? "text-white" : "text-slate-400"}`}>WhatsApp</span>
+                                            <span className={`text-sm transition-colors ${preferredMethod === "whatsapp" ? "text-white" : "text-zinc-400"}`}>WhatsApp</span>
                                         </label>
                                     </div>
                                 </div>
@@ -241,7 +238,7 @@ export const LetsConnect = () => {
                         </div>
 
                         {/* Right Column: Info - Sticky Behavior */}
-                        <div className="relative rounded-[2rem] border border-white/10 bg-slate-900/40 p-6 backdrop-blur-2xl sm:p-8 lg:bg-transparent lg:border-0 lg:backdrop-blur-none lg:p-10">
+                        <div className="relative p-6 sm:p-8 lg:p-10">
                             <div className="static lg:sticky lg:top-24 space-y-8 flex flex-col justify-between">
                                 <div className="space-y-8">
                                     {/* Email */}
@@ -249,7 +246,7 @@ export const LetsConnect = () => {
                                         <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
                                             <IconMail size={16} />
                                         </div>
-                                        <h4 className="mb-1 text-xs font-medium text-slate-400">Chat with us</h4>
+                                        <h4 className="mb-1 text-xs font-medium text-zinc-400">Chat with us</h4>
                                         <Link href="mailto:contact@flucks.in" className="text-lg font-medium text-white transition-colors hover:text-cyan-400">contact@flucks.in</Link>
                                     </div>
 
@@ -258,7 +255,7 @@ export const LetsConnect = () => {
                                         <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-emerald-500/20 group-hover:text-emerald-400">
                                             <IconBrandWhatsapp size={16} />
                                         </div>
-                                        <h4 className="mb-1 text-xs font-medium text-slate-400">WhatsApp</h4>
+                                        <h4 className="mb-1 text-xs font-medium text-zinc-400">WhatsApp</h4>
                                         <Link href="#" className="text-lg font-medium text-white transition-colors hover:text-emerald-400">+91 9278388499</Link>
                                     </div>
 
@@ -267,13 +264,13 @@ export const LetsConnect = () => {
                                         <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-purple-500/20 group-hover:text-purple-400">
                                             <IconMapPin size={16} />
                                         </div>
-                                        <h4 className="mb-1 text-xs font-medium text-slate-400">Visit us</h4>
+                                        <h4 className="mb-1 text-xs font-medium text-zinc-400">Visit us</h4>
                                         <p className="text-lg font-medium text-white">India - Working globally</p>
                                     </div>
                                 </div>
 
                                 {/* Footer Links */}
-                                <div className="mt-8 lg:mt-12 flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-500">
+                                <div className="mt-8 lg:mt-12 flex flex-wrap gap-x-5 gap-y-2 text-xs text-zinc-500">
                                     <Link href="#" className="hover:text-white hover:underline">Facebook</Link>
                                     <Link href="#" className="hover:text-white hover:underline">Instagram</Link>
                                     <Link href="#" className="hover:text-white hover:underline">LinkedIn</Link>
