@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { motion, useMotionValue } from "motion/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BackgroundLines } from "@/components/ui/background-lines";
@@ -172,26 +172,28 @@ const InfiniteCarousel: React.FC<{
   );
 };
 
-const Page: React.FC = () => {
-
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const ScrollHandler = () => {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   useEffect(() => {
-    // Check for scroll param
     const scrollTarget = searchParams.get("scroll");
     if (scrollTarget === "lets-connect") {
-      // Use a small timeout to ensure DOM is ready
       setTimeout(() => {
         smoothScrollTo("lets-connect");
       }, 100);
 
-      // Clean up URL
       const newUrl = window.location.pathname;
       window.history.replaceState({}, "", newUrl);
     }
   }, [searchParams]);
+
+  return null;
+};
+
+const Page: React.FC = () => {
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // useSearchParams moved to ScrollHandler
 
   useEffect(() => {
     const handleScroll = () => {
@@ -206,6 +208,9 @@ const Page: React.FC = () => {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-slate-100">
+      <Suspense fallback={null}>
+        <ScrollHandler />
+      </Suspense>
       {/* Background with slight grain or neutral gradient if desired, but sticking to black per request */}
       <div className="pointer-events-none fixed inset-0 -z-20 bg-black" />
       <div className="pointer-events-none fixed inset-0 -z-10 bg-[url('/window.svg')] mix-blend-soft-light opacity-[0.15]" />
