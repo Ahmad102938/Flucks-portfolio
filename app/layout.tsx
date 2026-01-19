@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
-import { SitePreloader } from "@/components/site-preloader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,7 +34,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
       >
-        <SitePreloader />
         <SmoothScroll />
         {children}
       </body>
