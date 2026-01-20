@@ -20,17 +20,28 @@ const NAV_ITEMS = homeContent.navItems;
 
 export function SiteHeader() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const ignoreScrollCloseUntilRef = React.useRef(0);
 
     useEffect(() => {
         const handleScroll = () => {
-            if (mobileMenuOpen) {
+            // Only close if menu is open AND the "ignore" window has passed
+            if (mobileMenuOpen && Date.now() > ignoreScrollCloseUntilRef.current) {
                 setMobileMenuOpen(false);
             }
         };
 
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, [mobileMenuOpen]);
+
+    const handleToggle = () => {
+        if (!mobileMenuOpen) {
+            // Opening the menu: ignore scroll events temporarily (800ms) to prevent immediate closing
+            // if the user's scroll momentum is still going.
+            ignoreScrollCloseUntilRef.current = Date.now() + 800;
+        }
+        setMobileMenuOpen((prev) => !prev);
+    };
 
     return (
         <Navbar className="top-0 z-50">
@@ -78,7 +89,7 @@ export function SiteHeader() {
                     <NavbarBrand />
                     <MobileNavToggle
                         isOpen={mobileMenuOpen}
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        onClick={handleToggle}
                     />
                 </MobileNavHeader>
                 <MobileNavMenu

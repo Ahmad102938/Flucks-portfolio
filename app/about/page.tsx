@@ -1,28 +1,39 @@
-"use client";
-
+import React from "react";
+import { BackgroundLines } from "@/components/ui/background-lines";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { motion } from "framer-motion";
+
+// About Page Components
+import { Hero } from "@/components/about/Hero";
+import { Mission } from "@/components/about/Mission";
+import { ServicesGrid } from "@/components/about/ServicesGrid";
+import { Metrics } from "@/components/about/Metrics";
+import { Awards } from "@/components/about/Awards";
+import { Testimonial } from "@/components/about/Testimonial";
+import { ProjectCTA } from "@/components/about/ProjectCTA";
+// import { TeamSection } from "@/components/about/TeamSection"; // Hidden for now
 
 export default function AboutPage() {
     return (
-        <div className="min-h-screen bg-black pt-32 text-white sm:pt-40">
+        <main className="relative min-h-screen bg-black text-slate-100 selection:bg-cyan-500/30">
+            {/* Navigation */}
             <SiteHeader />
-            <div className="container mx-auto px-4 mb-24 sm:px-6 md:mb-32 lg:px-8 lg:mb-40">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <h1 className="font-serif text-5xl font-medium sm:text-6xl md:text-7xl lg:text-8xl">
-                        About Us
-                    </h1>
-                    <p className="mt-8 text-xl text-zinc-400 max-w-2xl">
-                        We are a team of creators, designers, and developers building digital experiences that matter.
-                    </p>
-                </motion.div>
+
+            {/* Page Content */}
+            <div className="pt-0">
+                <Hero />
+                <Mission />
+                <Metrics />
+                <ServicesGrid />
+                <Awards />
+                <Testimonial />
+                <ProjectCTA />
+
+                {/* Team Section is ready but hidden as requested */}
+                {/* <TeamSection /> */}
             </div>
+
             <SiteFooter />
-        </div>
+        </main>
     );
 }

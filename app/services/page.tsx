@@ -1,28 +1,33 @@
 "use client";
 
+import React from "react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { motion } from "framer-motion";
+import { ServicesHero } from "@/components/services/ServicesHero";
+import { ServiceBlock } from "@/components/services/ServiceBlock";
+import { ServicesCTA } from "@/components/services/ServicesCTA";
+import { Testimonials } from "@/components/services/Testimonials";
+import { SERVICES_CONTENT } from "@/constants/services";
 
 export default function ServicesPage() {
     return (
-        <div className="min-h-screen bg-black pt-32 text-white sm:pt-40">
+        <main className="relative min-h-screen bg-black text-slate-100 selection:bg-cyan-500/30">
             <SiteHeader />
-            <div className="container mx-auto px-4 mb-24 sm:px-6 md:mb-32 lg:px-8 lg:mb-40">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <h1 className="font-serif text-5xl font-medium sm:text-6xl md:text-7xl lg:text-8xl">
-                        Our Services
-                    </h1>
-                    <p className="mt-8 text-xl text-zinc-400 max-w-2xl">
-                        Design, Development, and Strategy for ambitious brands.
-                    </p>
-                </motion.div>
+
+            <div className="flex flex-col w-full">
+                <ServicesHero />
+
+                <div className="flex flex-col">
+                    {SERVICES_CONTENT.services.map((service, idx) => (
+                        <ServiceBlock key={idx} service={service} index={idx} />
+                    ))}
+                </div>
+
+                <ServicesCTA />
+                <Testimonials />
             </div>
+
             <SiteFooter />
-        </div>
+        </main>
     );
 }

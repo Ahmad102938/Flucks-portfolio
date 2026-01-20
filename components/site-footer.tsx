@@ -6,8 +6,8 @@ import { IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin, IconBrandTwit
 
 export const SiteFooter = () => {
     return (
-        <footer className="relative w-full bg-black min-h-[40vh] flex flex-col justify-center overflow-hidden">
-            <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 lg:px-20 w-full flex-grow flex flex-col justify-center">
+        <footer className="relative w-full bg-black min-h-[40vh] flex flex-col justify-center overflow-hidden px-6 md:px-12">
+            <div className="relative z-10 mx-auto max-w-[1400px] w-full flex-grow flex flex-col justify-center">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-8 lg:gap-12 mb-24 md:mb-32 w-full">
                     {/* Column 1: Logo/Brand */}
                     <div className="flex flex-col gap-6 col-span-1 md:col-span-1 items-center text-center">

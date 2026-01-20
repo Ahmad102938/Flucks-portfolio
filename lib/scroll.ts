@@ -1,28 +1,41 @@
 export const smoothScrollTo = (elementId: string) => {
-    const element = document.getElementById(elementId);
-    if (!element) return;
+    const target = document.getElementById(elementId);
+    if (!target) return;
 
-    const targetPosition = element.getBoundingClientRect().top + window.scrollY;
+    const startPosition = window.scrollY;
+    // Calculate target position - accounting for potential navbar height if needed, 
+    // but usually exact top is fine if layout handles padding.
+    const targetPosition = target.getBoundingClientRect().top + startPosition;
+    const distance = targetPosition - startPosition;
 
-    // Initial scroll
-    window.scrollTo({
-        top: targetPosition,
-        behavior: "smooth",
-    });
+    const absDistance = Math.abs(distance);
+    // Dynamic duration: Scale minimal duration relative to distance, but cap it.
+    // Factor 1.5 means 1.5ms per pixel. 1000px = 1500ms. 4000px = ~4000ms (clamped at 3000ms).
+    // This makes short scrolls faster and long scrolls slower but not agonizingly slow.
+    const duration = Math.min(Math.max(absDistance * 1.5, 800), 3000);
+    let startTime: number | null = null;
 
-    // Retry after a delay to account for layout shifts (e.g. navbar becoming fixed)
-    // The delay should match or exceed the duration of typical scroll/layout animations
-    setTimeout(() => {
-        const newElement = document.getElementById(elementId);
-        if (newElement) {
-            const newTargetPosition = newElement.getBoundingClientRect().top + window.scrollY;
-            // Only scroll again if we are significantly off (e.g. > 10px)
-            if (Math.abs(window.scrollY - newTargetPosition) > 10) {
-                window.scrollTo({
-                    top: newTargetPosition,
-                    behavior: "smooth",
-                });
-            }
+    // Easing function: easeInOutCubic for smooth acceleration and deceleration
+    const easeInOutCubic = (t: number) => {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    };
+
+    const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+
+        const progress = Math.min(timeElapsed / duration, 1);
+        const ease = easeInOutCubic(progress);
+
+        window.scrollTo({
+            top: startPosition + distance * ease,
+            behavior: "auto"
+        });
+
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
         }
-    }, 400); // 400ms is a safe bet for most layout shifts to settle
+    };
+
+    requestAnimationFrame(animation);
 };

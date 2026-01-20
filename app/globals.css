@@ -6,7 +6,6 @@ body {
   @apply bg-slate-950 text-slate-100 antialiased;
   font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
     "SF Pro Text", "SF Pro Display", "Inter", ui-sans-serif, sans-serif;
-  scroll-behavior: smooth;
 }
 
 *,
@@ -49,6 +48,7 @@ main {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;
@@ -83,8 +83,8 @@ main {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-
