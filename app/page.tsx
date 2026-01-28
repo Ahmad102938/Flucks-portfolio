@@ -26,6 +26,13 @@ const BRAND_STACK = [
   { name: "Adobe", src: "/assets/techStack/adobe.webp" },
   { name: "Adobe Illustrator", src: "/assets/techStack/AI.webp" },
   { name: "Next.js", src: "/assets/techStack/Next.webp" },
+  { name: "Flutter", src: "/assets/techStack/flutter.webp" },
+  { name: "React-Native", src: "/assets/techStack/reactnative.png" },
+  { name: "LangChain", src: "/assets/techStack/langchain.png" },
+  { name: "LangGraph", src: "/assets/techStack/langgraph.png" },
+  { name: "N8N", src: "/assets/techStack/n8n.webp" },
+  { name: "Google AI Studio", src: "/assets/techStack/google.jpeg" },
+  { name: "OpenAI", src: "/assets/techStack/openai.jpeg" },
 ];
 
 const PARALLAX_PRODUCTS = [
@@ -203,26 +210,16 @@ const Page: React.FC = () => {
         >
           <section className="relative flex flex-col items-center text-center">
             <p className="mb-6 inline-flex items-center justify-center rounded-full border border-white/10 bg-zinc-900 px-4 py-1 text-[11px] font-semibold tracking-[0.22em] text-slate-100 shadow-[0_0_26px_rgba(15,23,42,0.9)]">
-              Design in Details
+              Engineering with taste
             </p>
 
             <div className="space-y-3">
               <div className="text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-slate-50 sm:text-[3.1rem] md:text-[3.6rem]">
-                <span className="block">Crafted{" "}Websites</span>
-                <span className="block text-slate-300">Lasting{" "}Impressions</span>
+                <span className="block">Digital products.</span>
+                <span className="block text-slate-300">Built with precision.</span>
               </div>
               <p className="mx-auto max-w-xl text-sm text-slate-300/90 md:text-[0.97rem]">
-                Premium websites crafted for bold brands — clean UX, precise
-                motion, and a focus on conversions, inspired by{" "}
-                <a
-                  href="https://www.visuvate.com/"
-                  target="_blank"
-                  className="underline decoration-cyan-400/60 underline-offset-4 hover:text-cyan-200"
-                  rel="noreferrer"
-                >
-                  Visuvate
-                </a>
-                .
+                A team of designers and engineers delivering web & app experiences, AI automation, and workflow integrations — with obsessive attention to detail.
               </p>
             </div>
 
@@ -245,9 +242,9 @@ const Page: React.FC = () => {
             <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-400">
               <div className="inline-flex items-center gap-2 rounded-full bg-zinc-900/80 px-3 py-1 ring-1 ring-white/10">
                 <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
-                <span>Premium UX & motion‑driven builds</span>
+                <span>Premium Product-grade builds</span>
               </div>
-              <span>Mobile‑first · Future‑ready · CMS friendly</span>
+              <span>Production-ready · Maintainable · Modern</span>
             </div>
 
             {/* Horizontal sliding frame just below hero */}
@@ -299,7 +296,7 @@ const Page: React.FC = () => {
               </p>
             </div>
             <div className="rounded-full border border-white/10 bg-zinc-900/60 px-3 py-1 text-[11px] text-slate-300 backdrop-blur">
-              Web · Product · Brand
+              Web · App · AI
             </div>
           </div>
 

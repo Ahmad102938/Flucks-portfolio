@@ -9,9 +9,11 @@ export const Testimonial = () => {
 
     return (
         <section className="w-full py-24 px-6 md:px-12 bg-zinc-900/20 text-white border-y border-white/5">
-            <div className="max-w-4xl mx-auto text-center">
-                <blockquote className="text-2xl md:text-4xl lg:text-5xl font-normal leading-[1.3] tracking-tight text-slate-200 mb-12">
-                    &quot;{testimonial.quote}&quot;
+            <div className="max-w-7xl mx-auto text-center">
+                <blockquote className="font-playfair text-3xl md:text-5xl lg:text-[3.5rem] font-normal leading-[1.1] text-slate-200 mb-12">
+                    &quot;{testimonial.quote.split("clients who share the vision")[0]}
+                    <span className="text-white font-medium">clients who share the vision</span>
+                    {testimonial.quote.split("clients who share the vision")[1]}&quot;
                 </blockquote>
 
                 <div className="flex items-center justify-center gap-4">

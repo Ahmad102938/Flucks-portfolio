@@ -12,13 +12,13 @@ export const Awards = () => {
             <div className="max-w-[1400px] mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
                     <h2 className="text-3xl md:text-5xl font-normal leading-tight max-w-2xl">
-                        Nominated as Agency of the Year amongst best Digital Agencies Worldwide.
+                        On a mission to become the digital backbone for modern businesses.
                     </h2>
                     <IconAward className="w-12 h-12 text-zinc-600 hidden md:block stroke-1" />
                 </div>
 
                 <div className="space-y-4">
-                    {awards.map((award, idx) => (
+                    {/* {awards.map((award, idx) => (
                         <div key={idx} className="group relative flex flex-col md:flex-row items-baseline md:items-center justify-between py-8 border-b border-white/10 hover:border-white/30 transition-colors">
                             <div className="flex items-center gap-8 md:w-1/3">
                                 <span className="text-sm font-medium text-zinc-500">{award.year}</span>
@@ -38,7 +38,7 @@ export const Awards = () => {
                                 </span>
                             </div>
                         </div>
-                    ))}
+                    ))} */}
                 </div>
             </div>
         </section>

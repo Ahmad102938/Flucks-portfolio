@@ -205,7 +205,7 @@ const ConversionCard = () => {
                         Conversion Driven
                     </h3>
                     <p className="mt-4 text-sm leading-relaxed text-slate-200 md:text-base font-medium drop-shadow-md">
-                        Websites built with strategy, designed to engage audiences, and crafted to turn visitors into customers.
+                        Your Application will be built with strategy, designed to engage audiences, and crafted to turn visitors into customers.
                     </p>
                 </div>
             </div>
@@ -337,11 +337,11 @@ export const OurApproach = () => {
                             {/* Table Body */}
                             <div className="flex flex-col">
                                 {[
-                                    { title: "Mastering motion in web design: suck...", date: "5 August 2025", img: "aset.webp" },
-                                    { title: "Building a strong brand identity: key...", date: "14 July 2025", img: "aset2.webp" },
-                                    { title: "Designing responsive websites: best...", date: "28 June 2025", img: "aset3.webp" },
-                                    { title: "Elevate your brand. How to design y...", date: "8 June 2025", img: "aset5.webp" },
-                                    { title: "The ultimate guide to choosing the p...", date: "10 May 2025", img: "aset6.webp" },
+                                    { title: "Complited rental management system for Urban Guest", date: "05 January 2026", img: "aset.webp" },
+                                    { title: "Complited real estate project with Urban Guest", date: "17 Dec 2025", img: "aset2.webp" },
+                                    { title: "Complited eCommerce project with react-native", date: "18 October 2025", img: "aset3.webp" },
+                                    { title: "Created MCP server for Notes Application", date: "25 July 2025", img: "aset5.webp" },
+                                    { title: "Complited AI podcast automation with Langchain", date: "10 June 2025", img: "aset6.webp" },
                                 ].map((item, i) => (
                                     <div key={i} className="group/row grid grid-cols-12 gap-4 py-4 border-b border-white/5 items-center hover:bg-white/5 transition-colors duration-300 rounded-lg px-2 -mx-2">
                                         {/* Title Column */}

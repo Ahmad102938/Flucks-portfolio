@@ -14,15 +14,27 @@ const FAQS = [
     },
     {
         q: "How long does it take to build a website?",
-        a: " timelines vary by scope. A typical comprehensive website project takes 4-8 weeks from kickoff to launch, including design, development, and testing."
+        a: "Timelines vary by scope. A typical comprehensive website project takes 4-6 weeks from kickoff to launch, including design, development, and testing."
     },
     {
         q: "Do you provide support after the website is launched?",
-        a: "Yes, we offer post-launch support packages to ensure your site stays secure, updated, and performing optimally as your business grows."
+        a: "Yes. We include complimentary minor updates and essential support for the first year after launch. After that, we offer flexible post-launch support packages to keep your website secure, updated, and performing at its best."
     },
     {
         q: "Do you create responsive and eCommerce websites?",
         a: "Absolutely. Mobile-first design is standard for us, and we specialize in building robust, scalable eCommerce solutions tailored to your products."
+    },
+    {
+        q: "Do you offer AI integration services?",
+        a: "Yes. We integrate AI into websites, apps, and internal systems — including chatbots, AI assistants, recommendation engines, and custom AI features tailored to your business needs."
+    },
+    {
+        q: "What kind of AI solutions can you build?",
+        a: "We build AI-powered chatbots, workflow automations, AI assistants, recommendation systems, document processing tools, and custom AI-driven products designed to solve real business problems."
+    },
+    {
+        q: "Can we order multiple services or products at the same time?",
+        a: "Yes. You can combine multiple services and products into a single project or package. We’ll help you structure a bundled solution that fits your goals, timeline, and budget."
     }
 ];
 

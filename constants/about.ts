@@ -4,13 +4,13 @@ export const ABOUT_CONTENT = {
     hero: {
         title: "About us.",
         subtitle: "We build digital products that matter.",
-        description: "A collective of designers, developers, and strategists crafting the future of digital interaction. We blend aesthetics with function to create lasting impressions.",
+        description: "A collective of designers, developers, and AI specialists crafting the future of digital interaction. We blend aesthetics with function to create lasting impressions.",
         cta: "Let's talk"
     },
     mission: {
-        heading: "Founded with a mission to redefine design through modern and friendly lens.",
-        description: "We became more than just a design agency; we’re a community of kindred spirits who share a passion for safety and innovation.",
-        subText: "We believe in the power of design to shape the world. Our collaborative approach ensures that every pixel serves a purpose, and every interaction feels natural.",
+        heading: "Founded with a mission to build websites, apps, and AI-powered solutions for growing businesses.",
+        description: "We’re more than an agency — we’re a multidisciplinary team of designers, engineers, and AI specialists building high-quality digital products and intelligent systems.",
+        subText: "We believe great products are crafted at the intersection of design, technology, and automation. Every detail is intentional. Every solution is built to scale.",
         images: [
             "/assets/office-1.webp", // Placeholder, will use dummy if not exists
             "/assets/office-2.webp"
@@ -39,33 +39,33 @@ export const ABOUT_CONTENT = {
         }
     ],
     metrics: [
-        { label: "Projects delivered", value: "150+" },
-        { label: "Years experience", value: "10+" },
-        { label: "Product releases", value: "30+" },
+        { label: "Projects delivered", value: "50+" },
+        { label: "Years experience", value: "3+" },
+        { label: "Product releases", value: "10+" },
         { label: "Support available", value: "24/7" }
     ],
     awards: [
-        {
-            year: "2024",
-            title: "Agency of the Year",
-            organization: "Awwwards",
-            description: "Nominated amongst best Digital Agencies Worldwide."
-        },
-        {
-            year: "2023",
-            title: "Site of the Day",
-            organization: "FWA",
-            description: "Recognized for outstanding innovation in web design."
-        },
-        {
-            year: "2022",
-            title: "Best UX Design",
-            organization: "Webby Awards",
-            description: "Honoring excellence on the internet."
-        }
+        // {
+        //     year: "2024",
+        //     title: "Agency of the Year",
+        //     organization: "Awwwards",
+        //     description: "Nominated amongst best Digital Agencies Worldwide."
+        // },
+        // {
+        //     year: "2023",
+        //     title: "Site of the Day",
+        //     organization: "FWA",
+        //     description: "Recognized for outstanding innovation in web design."
+        // },
+        // {
+        //     year: "2022",
+        //     title: "Best UX Design",
+        //     organization: "Webby Awards",
+        //     description: "Honoring excellence on the internet."
+        // }
     ],
     testimonial: {
-        quote: "I had an idea for a business, but no idea where to start. Flucks took my messy thoughts and turned them into a polished, highly converting brand identity. Absolutely blown away.",
+        quote: "We founded Flucks as a one-stop home for digital solutions, built through collaboration between designers, developers, innovators, and the clients who share the vision. If you care about building something impactful, you’re already part of this journey.",
         author: "Masum Ahmad Raza",
         role: "Co-founder, Flucks",
         college: "National Institute of Technology Durgapur",

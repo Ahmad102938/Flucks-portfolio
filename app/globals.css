@@ -88,3 +88,54 @@ main {
     @apply bg-background text-foreground;
   }
 }
+
+/* React Phone Number Input Overrides for Dark Theme */
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-size: inherit;
+  height: 100%;
+}
+
+/* Custom styling for the flag container */
+.PhoneInputCountry {
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.PhoneInputCountry:hover,
+.PhoneInputCountry:focus {
+  opacity: 1;
+}
+
+.PhoneInputCountrySelect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.PhoneInputCountrySelectArrow {
+  display: none;
+  /* We can hide standard arrow or style it */
+}
+
+/* Ensure nice focus state on the wrapper via Tailwind classes used in component */

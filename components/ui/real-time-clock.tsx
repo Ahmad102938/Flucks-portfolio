@@ -24,17 +24,49 @@ const RINGS: ClockRingConfig[] = [
 ];
 
 export const RealTimeClock = ({ className }: { className?: string }) => {
-    const [time, setTime] = useState(new Date());
+    const [time, setTime] = useState<Date | null>(null);
+    const [countryCode, setCountryCode] = useState<string | null>(null);
     const frameRef = useRef<number>(0);
 
+    // Get flag emoji from country code
+    const getFlagEmoji = (countryCode: string) => {
+        const codePoints = countryCode
+            .toUpperCase()
+            .split('')
+            .map(char => 127397 + char.charCodeAt(0));
+        return String.fromCodePoint(...codePoints);
+    };
+
     useEffect(() => {
+        // 1. Start Time Loop
         const update = () => {
             setTime(new Date());
             frameRef.current = requestAnimationFrame(update);
         };
         frameRef.current = requestAnimationFrame(update);
+
+        // 2. Fetch Location
+        const fetchLocation = async () => {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.country_code) {
+                        setCountryCode(data.country_code);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch location:", error);
+            }
+        };
+
+        fetchLocation();
+
         return () => cancelAnimationFrame(frameRef.current);
     }, []);
+
+    // Prevent hydration mismatch
+    if (!time) return <div className={cn("relative flex items-center justify-center bg-slate-950 min-h-[400px]", className)} />;
 
     return (
         <div className={cn("relative flex items-center justify-center bg-slate-950", className)}>
@@ -45,7 +77,9 @@ export const RealTimeClock = ({ className }: { className?: string }) => {
 
                 {/* Flag Icon (Left end) - Centered on axis */}
                 <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900 border-2 border-white flex items-center justify-center z-20 shadow-[0_0_15px_rgba(255,255,255,0.4)] overflow-hidden">
-                    <span className="text-2xl leading-none relative top-[1px]">🇮🇳</span>
+                    <span className="text-2xl leading-none relative top-[1px]">
+                        {countryCode ? getFlagEmoji(countryCode) : "🌐"}
+                    </span>
                 </div>
 
                 {/* Static Colons for Time Separation */}
