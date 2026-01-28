@@ -52,7 +52,7 @@ export const Mission = () => {
                         {/* Placeholder Image 1 */}
                         <div className="w-full h-full bg-zinc-900 rounded-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-700">
                             <Image
-                                src="/assets/featuredWork/aset5.webp"
+                                src="/assets/featuredWork/videoLabA4.png"
                                 alt="Office Culture"
                                 fill
                                 className="object-cover"

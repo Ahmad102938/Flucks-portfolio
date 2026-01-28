@@ -12,8 +12,8 @@ export const ABOUT_CONTENT = {
         description: "We’re more than an agency — we’re a multidisciplinary team of designers, engineers, and AI specialists building high-quality digital products and intelligent systems.",
         subText: "We believe great products are crafted at the intersection of design, technology, and automation. Every detail is intentional. Every solution is built to scale.",
         images: [
-            "/assets/office-1.webp", // Placeholder, will use dummy if not exists
-            "/assets/office-2.webp"
+            "/assets/featuredWork/videoLabA4.png", // Placeholder, will use dummy if not exists
+            "/assets/featuredWork/videoLabA4.png"
         ]
     },
     services: [

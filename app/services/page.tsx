@@ -24,7 +24,7 @@ export default function ServicesPage() {
                 </div>
 
                 <ServicesCTA />
-                <Testimonials />
+                {/* <Testimonials /> */}
             </div>
 
             <SiteFooter />
