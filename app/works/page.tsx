@@ -9,21 +9,21 @@ import { motion } from "framer-motion";
 const works = [
     {
         id: 1,
-        title: "Carento",
-        category: "Car Rental Platform",
-        image: "/assets/workspage/aset.webp",
+        title: "Automation",
+        category: "podcast and video Automation",
+        image: "/assets/workspage/videoLab.png",
     },
     {
         id: 2,
-        title: "FinTech Dashboard", // Dummy title
+        title: "Invoice Dashboard", // Dummy title
         category: "Finance",
-        image: "/assets/workspage/aset2.webp",
+        image: "/assets/workspage/invoice.png",
     },
     {
         id: 3,
-        title: "E-Commerce App", // Dummy title
-        category: "Mobile Application",
-        image: "/assets/workspage/aset3.webp",
+        title: "Gaming Web", // Dummy title
+        category: "Web Application",
+        image: "/assets/workspage/bgmi.png",
     },
     {
         id: 4,
