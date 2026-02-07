@@ -6,84 +6,35 @@ import { motion } from "framer-motion";
 
 // Generate work items based on available assets
 // Assets: aset.webp, aset2.webp ... aset12.webp
-const works = [
-    {
-        id: 1,
-        title: "Automation",
-        category: "podcast and video Automation",
-        image: "/assets/workspage/videoLab.png",
-    },
-    {
-        id: 2,
-        title: "Invoice Dashboard", // Dummy title
-        category: "Finance",
-        image: "/assets/workspage/invoice.png",
-    },
-    {
-        id: 3,
-        title: "Gaming Web", // Dummy title
-        category: "Web Application",
-        image: "/assets/workspage/bgmi.png",
-    },
-    {
-        id: 4,
-        title: "Travel Agency", // Dummy title
-        category: "Web Design",
-        image: "/assets/workspage/aset4.webp",
-    },
-    {
-        id: 5,
-        title: "SaaS Landing", // Dummy title
-        category: "Development",
-        image: "/assets/workspage/aset5.webp",
-    },
-    {
-        id: 6,
-        title: "Portfolio V1", // Dummy title
-        category: "Personal Brand",
-        image: "/assets/workspage/aset6.webp",
-    },
-    {
-        id: 7,
-        title: "Restaurant OS", // Dummy title
-        category: "Management System",
-        image: "/assets/workspage/aset7.webp",
-    },
-    {
-        id: 8,
-        title: "Crypto Wallet", // Dummy title
-        category: "Blockchain",
-        image: "/assets/workspage/aset8.webp",
-    },
-    {
-        id: 9,
-        title: "Health Tracker", // Dummy title
-        category: "Mobile App",
-        image: "/assets/workspage/aset9.webp",
-    },
-    {
-        id: 10,
-        title: "AI Chatbot", // Dummy title
-        category: "Artificial Intelligence",
-        image: "/assets/workspage/aset10.webp",
-    },
-    {
-        id: 11,
-        title: "Learning Hub", // Dummy title
-        category: "Education",
-        image: "/assets/workspage/aset11.webp",
-    },
-    {
-        id: 12,
-        title: "Social Connect", // Dummy title
-        category: "Social Network",
-        image: "/assets/workspage/aset12.webp",
-    },
-];
+
+interface WorkItem {
+    id: string;
+    title: string;
+    category: string;
+    image: string;
+    link?: string | null;
+}
 
 import { SiteHeader } from "@/components/site-header";
+import { useEffect, useState } from "react";
 
 export default function WorksPage() {
+    const [works, setWorks] = useState<WorkItem[]>([]);
+
+    useEffect(() => {
+        async function fetchWorks() {
+            try {
+                const response = await fetch("/api/works");
+                if (response.ok) {
+                    const data = await response.json();
+                    setWorks(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch works:", error);
+            }
+        }
+        fetchWorks();
+    }, []);
     return (
         <div className="min-h-screen bg-black pt-32 text-white sm:pt-40">
             <SiteHeader />
@@ -114,6 +65,8 @@ export default function WorksPage() {
                                 title={work.title}
                                 category={work.category}
                                 imageSrc={work.image}
+                                href={work.link || "#"}
+                                showLink={!!work.link}
                             />
                         </motion.div>
                     ))}
