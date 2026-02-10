@@ -28,7 +28,7 @@ export const footerLinks = [
         title: "The Cool",
         links: [
             { label: "Instagram", href: "https://instagram.com" },
-            { label: "Twitter", href: "https://twitter.com/" },
+            { label: "Twitter", href: "https://twitter.com/flucks" },
             { label: "LinkedIn", href: "https://linkedin.com" },
             { label: "GitHub", href: "https://github.com/Flucks-Hub" },
         ]
