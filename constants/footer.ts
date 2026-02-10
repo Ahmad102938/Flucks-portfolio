@@ -1,8 +1,8 @@
 export const footerBranding = {
     logoText: "FLUCKS",
-    slogan: "Design in details,",
-    subSlogan: "build to convert.",
-    copyrightText: "© 2025 Flucks. All rights reserved."
+    slogan: "Engineering With Teste,",
+    subSlogan: "build to Innovate.",
+    copyrightText: "© 2026 Flucks. All rights reserved."
 };
 
 export const footerLinks = [
@@ -18,19 +18,19 @@ export const footerLinks = [
     {
         title: "The Boring",
         links: [
-            { label: "Terms of Use", href: "/terms" },
-            { label: "Privacy Policy", href: "/privacy" },
-            { label: "Legal", href: "/legal" },
-            { label: "Credits", href: "/credits" },
+            { label: "Terms of Use", href: "/" },
+            { label: "Privacy Policy", href: "/" },
+            { label: "Legal", href: "/" },
+            { label: "Credits", href: "/" },
         ]
     },
     {
         title: "The Cool",
         links: [
             { label: "Instagram", href: "https://instagram.com" },
-            { label: "Twitter", href: "https://twitter.com" },
+            { label: "Twitter", href: "https://twitter.com/" },
             { label: "LinkedIn", href: "https://linkedin.com" },
-            { label: "GitHub", href: "https://github.com" },
+            { label: "GitHub", href: "https://github.com/Flucks-Hub" },
         ]
     },
 ];

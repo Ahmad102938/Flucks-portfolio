@@ -1,3 +1,21 @@
+export type TextTestimonial = {
+    type: "text";
+    quote: string;
+    author: string;
+    role: string;
+    rating: number;
+};
+
+export type VideoTestimonial = {
+    type: "video";
+    videoSrc: string;
+    videoThumbnail?: string;
+    author: string;
+    role: string;
+};
+
+export type TestimonialItem = TextTestimonial | VideoTestimonial;
+
 export type ServiceItem = {
     title: string;
     description: string;
@@ -71,20 +89,52 @@ export const SERVICES_CONTENT = {
         button: "Start a Project"
     },
     testimonials: [
+        // Column 1
         {
+            type: "text",
             quote: "Flucks transformed our digital presence completely. The attention to detail in the UI and the smoothness of the animations are just world-class.",
             author: "Sarah Jenkins",
-            role: "CMO, BrightPath"
+            role: "CMO, BrightPath",
+            rating: 5
         },
         {
-            quote: "The AI integration they built for our internal dashboard saved us 20 hours a week per employee. It's not just code; it's business logic perfected.",
+            type: "video",
+            videoSrc: "/assets/ourApproach/mobile/mobilefirst.mp4",
+            videoThumbnail: "/assets/services/appdesign.jpg",
             author: "David Ross",
             role: "Founder, NexaTech"
         },
+
+        // Column 2
         {
-            quote: "From the initial design concepts to the final mobile app deployment, the process was seamless. Highly recommended for any serious startup.",
-            author: "Elena Rodriguez",
+            type: "video",
+            videoSrc: "/assets/ourApproach/mobile/mobilefirst.mp4",
+            videoThumbnail: "/assets/services/appdesign.jpg",
+            author: "Elena Rodriguez", // Using Elena for video variety in name at least
             role: "Product Lead, Ocular"
+        },
+        {
+            type: "text",
+            quote: "From the initial design concepts to the final mobile app deployment, the process was seamless. Highly recommended for any serious startup.",
+            author: "Michael Chen",
+            role: "CTO, FinFlow",
+            rating: 5
+        },
+
+        // Column 3
+        {
+            type: "text",
+            quote: "The AI integration they built for our internal dashboard saved us 20 hours a week per employee. It's not just code; it's business logic perfected.",
+            author: "Emily White",
+            role: "VP of Product, DataSync",
+            rating: 5
+        },
+        {
+            type: "video",
+            videoSrc: "/assets/ourApproach/mobile/mobilefirst.mp4",
+            videoThumbnail: "/assets/services/appdesign.jpg",
+            author: "James Wilson",
+            role: "Director, TechCorp"
         }
-    ]
+    ] as TestimonialItem[]
 };

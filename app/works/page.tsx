@@ -2,6 +2,7 @@
 
 import { WorkCard } from "@/components/ui/work-card";
 import { SiteFooter } from "@/components/site-footer";
+import { Testimonials } from "@/components/testimonials";
 import { motion } from "framer-motion";
 
 // Generate work items based on available assets
@@ -72,6 +73,9 @@ export default function WorksPage() {
                     ))}
                 </div>
             </div>
+
+            {/* Testimonials Section */}
+            <Testimonials />
 
             {/* Footer */}
             <SiteFooter />

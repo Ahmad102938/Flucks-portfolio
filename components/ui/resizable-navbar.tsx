@@ -118,7 +118,7 @@ export const NavbarBrand = () => {
               exit={{ opacity: 0, height: 0 }}
               className="text-[11px] text-slate-400 overflow-hidden whitespace-nowrap"
             >
-              Design in details. Build to convert.
+              Egineering With Teste. Build to Innovate.
             </motion.p>
           )}
         </AnimatePresence>

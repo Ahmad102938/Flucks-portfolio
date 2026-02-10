@@ -6,7 +6,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { ServicesHero } from "@/components/services/ServicesHero";
 import { ServiceBlock } from "@/components/services/ServiceBlock";
 import { ServicesCTA } from "@/components/services/ServicesCTA";
-import { Testimonials } from "@/components/services/Testimonials";
 import { SERVICES_CONTENT } from "@/constants/services";
 
 export default function ServicesPage() {
@@ -24,7 +23,6 @@ export default function ServicesPage() {
                 </div>
 
                 <ServicesCTA />
-                {/* <Testimonials /> */}
             </div>
 
             <SiteFooter />
