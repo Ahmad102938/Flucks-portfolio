@@ -14,6 +14,7 @@ interface WorkItem {
     category: string;
     image: string;
     link?: string | null;
+    slug?: string;
 }
 
 import { SiteHeader } from "@/components/site-header";
@@ -68,6 +69,7 @@ export default function WorksPage() {
                                 imageSrc={work.image}
                                 href={work.link || "#"}
                                 showLink={!!work.link}
+                                slug={work.slug}
                             />
                         </motion.div>
                     ))}
