@@ -71,13 +71,13 @@ export const OurWorks = () => {
 
             <div className="container mx-auto px-4 mt-24 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <WorkItem
-                    title="Automation"
-                    subtitle="multi-cast podcast"
+                    title="Automarion"
+                    subtitle="Multi-Audio Pod Automation"
                     image="/assets/works/videoLab.png"
                     index={1}
                 />
                 <WorkItem
-                    title="Music"
+                    title="Music App"
                     subtitle="Music Streaming App"
                     image="/assets/works/tringbox.png"
                     index={2}
