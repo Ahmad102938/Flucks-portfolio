@@ -11,29 +11,43 @@ export async function GET() {
             .sort_by("created_at", "desc")
             .execute();
 
-        const works = result.resources.map((resource: any) => ({
-            id: resource.public_id,
-
-            title:
+        const works = result.resources.map((resource: any) => {
+            const title =
                 resource.context?.custom?.title ||
                 resource.context?.title ||
                 resource.metadata?.title ||
-                "Untitled Project",
+                "Untitled Project";
 
-            category:
-                resource.context?.custom?.category ||
-                resource.context?.category ||
-                resource.metadata?.category ||
-                "Uncategorized",
+            const slugify = (text: string) =>
+                text
+                    .toString()
+                    .toLowerCase()
+                    .trim()
+                    .replace(/\s+/g, "-")
+                    .replace(/[^\w\-]+/g, "")
+                    .replace(/\-\-+/g, "-");
 
-            image: resource.secure_url,
+            const slug = resource.context?.custom?.slug || slugify(title);
 
-            link:
-                resource.context?.custom?.link ||
-                resource.context?.link ||
-                resource.metadata?.link ||
-                null,
-        }));
+            return {
+                id: resource.public_id,
+                title,
+                slug,
+                category:
+                    resource.context?.custom?.category ||
+                    resource.context?.category ||
+                    resource.metadata?.category ||
+                    "Uncategorized",
+
+                image: resource.secure_url,
+
+                link:
+                    resource.context?.custom?.link ||
+                    resource.context?.link ||
+                    resource.metadata?.link ||
+                    null,
+            };
+        });
 
         return NextResponse.json(works);
     } catch (error) {

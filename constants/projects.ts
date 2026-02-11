@@ -53,7 +53,7 @@ export const PROJECTS: Record<string, ProjectContent> = {
         slug: "agency",
         heroMedia: {
             type: "video",
-            url: "https://res.cloudinary.com/dbzb0hvnnnnlh/video/upload/v1770756081/agency-portfolio/agency-hero.mp4" // Placeholder, will use image if video fails or update later
+            url: "https://res.cloudinary.com/dbzb0hvlh/video/upload/v1770756081/agency-portfolio/agency-hero.mp4" // Placeholder, will use image if video fails or update later
         },
         category: "Agency",
         shortDescription: "A premium agency portfolio template designed to showcase creative work with clean typography and immersive interactions.",
