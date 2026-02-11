@@ -451,7 +451,7 @@ export const LetsConnect = () => {
                                             <IconMail size={16} />
                                         </div>
                                         <h4 className="mb-1 text-xs font-medium text-zinc-400">Give us a Mail/collaboration</h4>
-                                        <Link href="mailto:contact@flucks.in" className="text-lg font-medium text-white transition-colors hover:text-cyan-400">flucks.dev@gmail.com</Link>
+                                        <Link href="mailto:contact@flucks.in" className="text-lg font-medium text-white transition-colors hover:text-cyan-400">contact@flucks.in</Link>
                                     </div>
 
                                     {/* WhatsApp */}
