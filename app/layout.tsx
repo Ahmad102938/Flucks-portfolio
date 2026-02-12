@@ -25,8 +25,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Flucks",
-  description: "A team of designers and engineers delivering web & app experiences, AI automation, and workflow integrations",
+  title: "Flucks Developer",
+  description: "A team of designers and engineers delivering web & app experiences, AI automation, and workflow integrations.",
 };
 
 export default function RootLayout({

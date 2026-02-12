@@ -44,7 +44,7 @@ export const OurWorks = () => {
                     <Link href="/works" className="block w-full h-full relative">
                         <motion.div style={{ y: imageY }} className="w-full h-[120%] -y-[10%] relative">
                             <img
-                                src="/assets/works/aset8.webp"
+                                src="/assets/works/dreamblend.png"
                                 alt="Featured Project"
                                 className="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                             />
@@ -58,7 +58,7 @@ export const OurWorks = () => {
                             <div className="flex flex-col md:flex-row justify-between items-end gap-6">
                                 <div>
                                     <h3 className="text-3xl md:text-5xl font-bold text-white mb-2">HealthCore</h3>
-                                    <p className="text-slate-300 text-lg">Healthcare Platform Redesign</p>
+                                    <p className="text-slate-300 text-lg">Healthcare App Development</p>
                                 </div>
                             </div>
                         </div>
@@ -71,15 +71,15 @@ export const OurWorks = () => {
 
             <div className="container mx-auto px-4 mt-24 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <WorkItem
-                    title="Fintech"
-                    subtitle="Banking App"
-                    image="/assets/works/aset9.webp"
+                    title="Automation"
+                    subtitle="multi-cast podcast"
+                    image="/assets/works/videoLab.png"
                     index={1}
                 />
                 <WorkItem
-                    title="Agency"
-                    subtitle="Portfolio Site"
-                    image="/assets/works/aset2.webp"
+                    title="Music"
+                    subtitle="Music Streaming App"
+                    image="/assets/works/tringbox.png"
                     index={2}
                 />
             </div>
