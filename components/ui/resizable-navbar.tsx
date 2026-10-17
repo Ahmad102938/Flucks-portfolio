@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation";
 import {
   motion,
   AnimatePresence,
+  LayoutGroup,
   useScroll,
   useMotionValueEvent,
 } from "motion/react";
 import { HamburgerToggle } from "@/components/ui/hamburger-toggle";
-import React, { useRef, useState, createContext, useContext } from "react";
+import React, { useEffect, useRef, useState, createContext, useContext } from "react";
 
 const NavbarContext = createContext<{ visible: boolean }>({ visible: false });
 
@@ -78,15 +79,19 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   });
 
   return (
-    <div
+    <motion.div
       ref={ref}
+      data-site-nav=""
+      // Fixed element: measure layout animations (the nav lens) relative to the bar itself,
+      // otherwise page scroll gets mixed into the measurements and the lens jumps
+      layoutRoot
       // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
       className={cn("fixed inset-x-0 top-20 z-40 w-full", className)}
     >
       <NavbarContext.Provider value={{ visible }}>
         {children}
       </NavbarContext.Provider>
-    </div>
+    </motion.div>
   );
 };
 
@@ -160,64 +165,85 @@ export const NavBody = ({ children, className }: NavBodyProps) => {
 const isActiveLink = (pathname: string, link: string) =>
   link === "/" ? pathname === "/" : pathname === link || pathname.startsWith(`${link}/`);
 
-// Springy slide between items, like the iOS tab bar's liquid-glass selector
-const lensSpring = { type: "spring", stiffness: 420, damping: 32, mass: 0.9 } as const;
+// Unhurried glide between items, like the iOS tab bar's liquid-glass selector. Close to
+// critically damped, so it eases in and settles without bouncing past the target.
+const lensSpring = { type: "spring", stiffness: 170, damping: 26, mass: 1 } as const;
+
+// Hover intent: the lens only follows once the pointer settles on an item, so sweeping or
+// zigzagging across the bar doesn't drag it back and forth.
+const HOVER_SETTLE_MS = 110;
+const LEAVE_SETTLE_MS = 220;
 
 export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<number | null>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const settleHover = (idx: number | null, delay: number) => {
+    clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setHovered(idx), delay);
+  };
+  useEffect(() => () => clearTimeout(hoverTimer.current), []);
+  // Every page mounts its own navbar. A fresh layout group per mount stops the lens from
+  // flying in from where it sat on the previous page; it simply starts on the current item.
+  const [layoutGroupId] = useState(() => `nav-${Math.random().toString(36).slice(2)}`);
   const activeIdx = items.findIndex((item) => isActiveLink(pathname, item.link));
   // The lens rests on the current page and follows the pointer while hovering
   const lensIdx = hovered ?? (activeIdx === -1 ? null : activeIdx);
 
   return (
-    <motion.div
-      onMouseLeave={() => setHovered(null)}
-      className={cn(
-        "hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium lg:flex lg:space-x-2",
-        className,
-      )}
-    >
-      {items.map((item, idx) => (
-        <motion.div key={`link-${idx}`} whileTap={{ scale: 0.95 }} className="relative">
-          <Link
-            onMouseEnter={() => setHovered(idx)}
-            onFocus={() => setHovered(idx)}
-            onBlur={() => setHovered(null)}
-            onClick={onItemClick}
-            aria-current={idx === activeIdx ? "page" : undefined}
-            className={cn(
-              "relative block whitespace-nowrap px-4 py-2 font-medium outline-none transition-colors duration-300",
-              lensIdx === idx ? "text-white" : "text-slate-300 hover:text-slate-50",
-            )}
-            href={item.link}
-          >
-            <AnimatePresence>
-              {lensIdx === idx && (
-                <motion.span
-                  layoutId="nav-lens"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ layout: lensSpring, opacity: { duration: 0.2 } }}
-                  className="absolute inset-0 rounded-full"
-                >
-                  {/* Re-keyed on every move: squashes then wobbles back, the "liquid" stretch */}
-                  <motion.span
-                    key={idx}
-                    initial={{ scaleX: 1.14, scaleY: 0.84 }}
-                    animate={{ scaleX: 1, scaleY: 1 }}
-                    transition={{ type: "spring", stiffness: 380, damping: 14, mass: 0.6 }}
-                    className="glass-lens absolute inset-0 rounded-full"
-                  />
-                </motion.span>
+    <LayoutGroup id={layoutGroupId}>
+      <motion.div
+        onMouseLeave={() => settleHover(null, LEAVE_SETTLE_MS)}
+        className={cn(
+          "hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium lg:flex lg:space-x-2",
+          className,
+        )}
+      >
+        {items.map((item, idx) => (
+          <motion.div key={`link-${idx}`} whileTap={{ scale: 0.95 }} className="relative">
+            <Link
+              onMouseEnter={() => settleHover(idx, HOVER_SETTLE_MS)}
+              // Keyboard focus is deliberate, so it moves the lens right away
+              onFocus={() => settleHover(idx, 0)}
+              onBlur={() => settleHover(null, LEAVE_SETTLE_MS)}
+              onClick={onItemClick}
+              aria-current={idx === activeIdx ? "page" : undefined}
+              className={cn(
+                "relative block whitespace-nowrap px-4 py-2 font-medium outline-none transition-colors duration-300",
+                lensIdx === idx ? "text-white" : "text-slate-300 hover:text-slate-50",
               )}
-            </AnimatePresence>
-            <span className="relative z-20">{item.name}</span>
-          </Link>
-        </motion.div>
-      ))}
-    </motion.div>
+              href={item.link}
+            >
+              <AnimatePresence initial={false}>
+                {lensIdx === idx && (
+                  <motion.span
+                    layoutId="nav-lens"
+                    // Only animate when the lens actually changes item, not on unrelated
+                    // re-renders like the bar resizing on scroll
+                    layoutDependency={lensIdx}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ layout: lensSpring, opacity: { duration: 0.35, ease: "easeOut" } }}
+                    className="absolute inset-0 rounded-full"
+                  >
+                    {/* Re-keyed on every move: a gentle squash that eases back, the "liquid" stretch */}
+                    <motion.span
+                      key={idx}
+                      initial={{ scaleX: 1.06, scaleY: 0.94 }}
+                      animate={{ scaleX: 1, scaleY: 1 }}
+                      transition={{ type: "spring", stiffness: 160, damping: 18, mass: 0.8 }}
+                      className="glass-lens absolute inset-0 rounded-full"
+                    />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+              <span className="relative z-20">{item.name}</span>
+            </Link>
+          </motion.div>
+        ))}
+      </motion.div>
+    </LayoutGroup>
   );
 };
 

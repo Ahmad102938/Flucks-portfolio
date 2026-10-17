@@ -1,15 +1,13 @@
 "use client";
 
 import React from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { SERVICES_CONTENT } from "@/constants/services";
-import { smoothScrollTo } from "@/lib/scroll";
+import { useGoToContact } from "@/lib/use-go-to-contact";
 import { IconArrowUpRight } from "@tabler/icons-react";
 
 export const ServicesCTA = () => {
     const { title, button } = SERVICES_CONTENT.cta;
-    const pathname = usePathname();
-    const router = useRouter();
+    const goToContact = useGoToContact();
 
     return (
         <section className="w-full py-32 px-6 md:px-12 bg-black border-t border-white/10 relative overflow-hidden">
@@ -22,13 +20,7 @@ export const ServicesCTA = () => {
                 </h2>
 
                 <button
-                    onClick={() => {
-                        if (pathname === "/") {
-                            smoothScrollTo("lets-connect");
-                        } else {
-                            router.push("/?scroll=lets-connect");
-                        }
-                    }}
+                    onClick={goToContact}
                     className="group flex items-center gap-3 px-10 py-5 rounded-full bg-white hover:bg-zinc-200 text-black text-lg font-medium transition-all duration-300"
                 >
                     <span>{button}</span>

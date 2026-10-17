@@ -1,10 +1,15 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Testimonials } from "@/components/testimonials";
+import { ReviewsShowcase } from "@/components/reviews-showcase";
 import { WorksGrid, WorksHeading } from "@/components/works/works-grid";
 import { getWorks } from "@/lib/works";
 
 export const revalidate = 3600;
+
+// "Loved by Builders" (video + text testimonials, desktop and mobile layouts) is parked for
+// now, not deleted. Flip this to true to bring it back; ReviewsShowcase replaces it meanwhile.
+const SHOW_LOVED_BY_BUILDERS = false;
 
 export default async function WorksPage() {
     const works = await getWorks();
@@ -21,7 +26,7 @@ export default async function WorksPage() {
             </div>
 
             {/* Testimonials Section */}
-            <Testimonials />
+            {SHOW_LOVED_BY_BUILDERS ? <Testimonials /> : <ReviewsShowcase />}
 
             {/* Footer */}
             <SiteFooter />

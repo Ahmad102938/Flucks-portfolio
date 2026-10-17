@@ -2,21 +2,18 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { smoothScrollTo } from "@/lib/scroll";
+import { arriveAt, CONTACT_ID } from "@/lib/scroll";
 
 export const ScrollHandler = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const scrollTarget = searchParams.get("scroll");
-    if (scrollTarget === "lets-connect") {
-      setTimeout(() => {
-        smoothScrollTo("lets-connect");
-      }, 100);
+    if (searchParams.get("scroll") !== CONTACT_ID) return;
 
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, "", newUrl);
-    }
+    // Not cancelled on cleanup: dropping the query below re-renders this effect, and the
+    // arrival must keep running through that. arriveAt ignores repeat calls.
+    void arriveAt(CONTACT_ID);
+    window.history.replaceState(window.history.state, "", window.location.pathname + window.location.hash);
   }, [searchParams]);
 
   return null;

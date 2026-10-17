@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import {
     Navbar,
     NavBody,
@@ -17,23 +16,15 @@ import {
 import { GlassButton } from "@/components/ui/glass-button";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import homeContent from "@/constants/home.json";
-import { smoothScrollTo } from "@/lib/scroll";
+import { useGoToContact } from "@/lib/use-go-to-contact";
 
 const NAV_ITEMS = homeContent.navItems;
 
 export function SiteHeader() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const ignoreScrollCloseUntilRef = React.useRef(0);
-    const pathname = usePathname();
-    const router = useRouter();
+    const goToContact = useGoToContact();
 
-    const goToContact = () => {
-        if (pathname === "/") {
-            smoothScrollTo("lets-connect");
-        } else {
-            router.push("/?scroll=lets-connect");
-        }
-    };
 
     useEffect(() => {
         const handleScroll = () => {
