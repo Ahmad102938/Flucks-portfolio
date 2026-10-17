@@ -1,41 +1,28 @@
+import type Lenis from "lenis";
+
+// Shared Lenis instance, registered by <SmoothScroll /> so programmatic scrolls
+// go through the same loop as wheel/touch scrolling instead of fighting it.
+let lenisInstance: Lenis | null = null;
+
+export const setLenis = (lenis: Lenis | null) => {
+    lenisInstance = lenis;
+};
+
+export const getLenis = () => lenisInstance;
+
 export const smoothScrollTo = (elementId: string) => {
     const target = document.getElementById(elementId);
     if (!target) return;
 
-    const startPosition = window.scrollY;
-    // Calculate target position - accounting for potential navbar height if needed, 
-    // but usually exact top is fine if layout handles padding.
-    const targetPosition = target.getBoundingClientRect().top + startPosition;
-    const distance = targetPosition - startPosition;
+    if (lenisInstance) {
+        const distance = Math.abs(target.getBoundingClientRect().top);
+        // Scale duration with distance so short hops feel snappy and long ones don't drag.
+        const duration = Math.min(Math.max(distance / 1500, 0.8), 2);
+        lenisInstance.scrollTo(target, { duration });
+        return;
+    }
 
-    const absDistance = Math.abs(distance);
-    // Dynamic duration: Scale minimal duration relative to distance, but cap it.
-    // Factor 1.5 means 1.5ms per pixel. 1000px = 1500ms. 4000px = ~4000ms (clamped at 3000ms).
-    // This makes short scrolls faster and long scrolls slower but not agonizingly slow.
-    const duration = Math.min(Math.max(absDistance * 1.5, 800), 3000);
-    let startTime: number | null = null;
-
-    // Easing function: easeInOutCubic for smooth acceleration and deceleration
-    const easeInOutCubic = (t: number) => {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    };
-
-    const animation = (currentTime: number) => {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-
-        const progress = Math.min(timeElapsed / duration, 1);
-        const ease = easeInOutCubic(progress);
-
-        window.scrollTo({
-            top: startPosition + distance * ease,
-            behavior: "auto"
-        });
-
-        if (timeElapsed < duration) {
-            requestAnimationFrame(animation);
-        }
-    };
-
-    requestAnimationFrame(animation);
+    // Fallback when Lenis is disabled (e.g. prefers-reduced-motion)
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
 };

@@ -85,7 +85,7 @@ export const PROJECTS: Record<string, ProjectContent> = {
         category: "E-commerce",
         shortDescription: "A revolutionary juice blending subscription service.",
         stats: {
-            industry: "Food & Bev",
+            industry: "Food & Beverage",
             year: "2024",
             platform: "Shopify",
             services: ["Branding", "Web Design"]

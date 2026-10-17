@@ -52,7 +52,7 @@ export async function POST(req: Request) {
             <p><strong>Project Type:</strong> ${projectType || "N/A"}</p>
             <p><strong>Pages:</strong> ${numberOfPages || "N/A"}</p>
             <p><strong>Budget:</strong> ${budget || "N/A"}</p>
-            <p><strong>Preferred Method:</strong> ${preferredResponseMethod || "N/A"}</p>
+            <p><strong>Preferred Response Method:</strong> ${preferredResponseMethod || "N/A"}</p>
             <br/>
             <p><strong>Message:</strong></p>
             <p>${message}</p>

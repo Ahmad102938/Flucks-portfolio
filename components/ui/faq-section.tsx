@@ -1,3 +1,4 @@
+"use client";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -6,15 +7,15 @@ import { cn } from "@/lib/utils";
 const FAQS = [
     {
         q: "How do I get started with Flucks?",
-        a: "Simply reach out through our contact form or book a discovery call. We'll discuss your goals, timeline, and how we can help elevate your brand."
+        a: "Simply reach out through our contact form or book a discovery call. We’ll discuss your goals, timeline, and how we can help elevate your brand."
     },
     {
         q: "How involved do I need to be during the project?",
-        a: "We believe in collaboration but respect your time. We'll need your input during key checkpoints—strategy, design approval, and content—but we handle the heavy lifting."
+        a: "We believe in collaboration but respect your time. We’ll need your input during key checkpoints — strategy, design approval, and content—but we handle the heavy lifting."
     },
     {
         q: "How long does it take to build a website?",
-        a: "Timelines vary by scope. A typical comprehensive website project takes 4-6 weeks from kickoff to launch, including design, development, and testing."
+        a: "Timelines vary by scope. A typical comprehensive website project takes 4–6 weeks from kickoff to launch, including design, development, and testing."
     },
     {
         q: "Do you provide support after the website is launched?",

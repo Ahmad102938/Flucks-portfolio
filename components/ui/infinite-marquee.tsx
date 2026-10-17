@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, ReactNode } from "react";
-import { motion, useMotionValue } from "motion/react";
+import { motion, useInView, useMotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface InfiniteMarqueeProps<T> {
@@ -24,90 +24,50 @@ export const InfiniteMarquee = <T,>({
 
     const x = useMotionValue(0);
     const [contentWidth, setContentWidth] = useState(0);
-    const [containerWidth, setContainerWidth] = useState(0);
-
-    useEffect(() => {
-        // Measure content width based on an estimate or real measurement
-        // For simplicity in this marquee, we'll rely on the assumption that
-        // the duplicated items cover enough width.
-        // A more robust way is to measure the ref, but let's try a pure CSS/motion approach first
-        // mirroring the carousel logic which used fixed widths.
-        // However, for variable text width, we might need a different approach.
-
-        // Let's use a simpler duration-based animation loop that doesn't depend on exact pixel measurement of children
-        // OR we can stick to the user's request of "same speed" effectively.
-
-        // The Hero carousel uses: duration = items.length * 4s.
-        // Let's approximate a "normal" speed.
-    }, []);
-
-    // Actually, to match the Hero Carousel EXACTLY, we should try to reuse the exact logic.
-    // The Hero logic moves 'x' from 0 to -halfWayPoint.
-    // We need to measure the width of the content.
 
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
+    const isInView = useInView(containerRef);
 
+    // Width of ONE set of items = offset of the first item of the second set.
+    // Re-measured via ResizeObserver so it stays correct once images load.
     useEffect(() => {
-        if (!contentRef.current) return;
+        const content = contentRef.current;
+        if (!content) return;
 
         const calculateWidth = () => {
-            if (contentRef.current) {
-                // The content width of ONE set of items
-                // Since we quadruple, we dividing total scroll width by 4 is tricky if we don't know exact wrap.
-                // Let's assume we want to scroll the width of the ORIGINAL items.
-                // A safe bet for "seamless" is to scroll until the first set is fully out, then reset.
-                // But we don't know the width of the first set easily without wrapping it.
-
-                // Let's simply measure the full scrollable width and divide by duplication factor.
-                const totalWidth = contentRef.current.scrollWidth;
-                const singleSetWidth = totalWidth / 4;
-                setContentWidth(singleSetWidth);
-            }
+            const first = content.children[0] as HTMLElement | undefined;
+            const secondSet = content.children[items.length] as HTMLElement | undefined;
+            if (!first || !secondSet) return;
+            setContentWidth(secondSet.offsetLeft - first.offsetLeft);
         };
 
         calculateWidth();
-        // Re-calc on resize might be needed
-        window.addEventListener("resize", calculateWidth);
-        return () => window.removeEventListener("resize", calculateWidth);
+        const ro = new ResizeObserver(calculateWidth);
+        ro.observe(content);
+        return () => ro.disconnect();
     }, [items]);
 
-
+    // Constant pixel speed; paused while off screen, resumes from the same position
     useEffect(() => {
-        if (contentWidth === 0) return;
+        if (contentWidth === 0 || !isInView) return;
 
-        // Speed normalization: 
-        // Hero carousel: 4s per item? No, it was duration = length * 4 * 1000.
-        // Let's aim for a constant pixel/second speed for consistency.
-        // If Hero card is ~40vw wide (say 400px) and takes 4s, that's 100px/s.
-
-        const pixelsPerSecond = 50; // Slower for text usually looks better, but user said "same speed". 
-        // Let's try to match the "feel".
-
-        const duration = (contentWidth / pixelsPerSecond) * 1000;
-
-        let startTime = performance.now();
+        const pixelsPerSecond = 50;
+        let last = performance.now();
         let animationFrameId: number;
-        let isRunning = true;
 
-        const animate = (currentTime: number) => {
-            if (!isRunning) return;
-
-            const elapsed = currentTime - startTime;
-            const progress = (elapsed % duration) / duration;
-            const currentX = -progress * contentWidth;
-
-            x.set(currentX);
+        const animate = (now: number) => {
+            const dt = (now - last) / 1000;
+            last = now;
+            let next = x.get() - dt * pixelsPerSecond;
+            if (next <= -contentWidth) next += contentWidth;
+            x.set(next);
             animationFrameId = requestAnimationFrame(animate);
         };
 
         animationFrameId = requestAnimationFrame(animate);
-
-        return () => {
-            isRunning = false;
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, [x, contentWidth]);
+        return () => cancelAnimationFrame(animationFrameId);
+    }, [x, contentWidth, isInView]);
 
     return (
         <div
@@ -117,7 +77,7 @@ export const InfiniteMarquee = <T,>({
             <motion.div
                 ref={contentRef}
                 className={cn("flex items-center w-max", itemClassName)}
-                style={{ x }}
+                style={{ x, willChange: "transform" }}
             >
                 {duplicatedItems.map((item, idx) => (
                     <React.Fragment key={idx}>

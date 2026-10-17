@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { smoothScrollTo } from "@/lib/scroll";
 import { ABOUT_CONTENT } from "@/constants/about";
@@ -9,6 +10,8 @@ import { IconArrowRight } from "@tabler/icons-react";
 
 export const Hero = () => {
     const { title, subtitle, description, cta } = ABOUT_CONTENT.hero;
+    const pathname = usePathname();
+    const router = useRouter();
 
     return (
         <section className="relative w-full flex flex-col pt-32 sm:pt-40 px-6 md:px-12 bg-black text-white overflow-hidden pb-12">
@@ -34,10 +37,10 @@ export const Hero = () => {
                     <div>
                         <button
                             onClick={() => {
-                                if (window.location.pathname === "/") {
+                                if (pathname === "/") {
                                     smoothScrollTo("lets-connect");
                                 } else {
-                                    window.location.href = "/?scroll=lets-connect";
+                                    router.push("/?scroll=lets-connect");
                                 }
                             }}
                             className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black text-sm font-medium hover:bg-slate-200 transition-all duration-300 overflow-hidden"

@@ -50,9 +50,9 @@ export const Mission = () => {
                         className="relative aspect-[4/5] w-full md:w-[90%] md:translate-y-12"
                     >
                         {/* Placeholder Image 1 */}
-                        <div className="w-full h-full bg-zinc-900 rounded-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-700">
+                        <div className="w-full h-full bg-zinc-900 rounded-lg overflow-hidden relative grayscale hover:grayscale-0 transition-[filter] duration-700">
                             <Image
-                                src="/assets/featuredWork/videoLabA4.png"
+                                src="/assets/featuredWork/videoLabA4.webp"
                                 alt="Office Culture"
                                 fill
                                 className="object-cover"
@@ -69,7 +69,7 @@ export const Mission = () => {
                         className="relative aspect-[4/3] w-full mt-12 md:mt-0"
                     >
                         {/* Placeholder Image 2 */}
-                        <div className="w-full h-full bg-zinc-900 rounded-lg overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-700">
+                        <div className="w-full h-full bg-zinc-900 rounded-lg overflow-hidden relative grayscale hover:grayscale-0 transition-[filter] duration-700">
                             <Image
                                 src="/assets/featuredWork/aset2.webp"
                                 alt="Team Collaboration"

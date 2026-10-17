@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -17,8 +18,12 @@ export const ThreeDMarquee = ({
     const start = colIndex * chunkSize;
     return images.slice(start, start + chunkSize);
   });
+  const ref = useRef<HTMLDivElement>(null);
+  // Columns drift forever; only run the animation while the marquee is on screen
+  const isInView = useInView(ref, { margin: "100px" });
   return (
     <div
+      ref={ref}
       className={cn(
         "mx-auto block h-[600px] overflow-hidden rounded-2xl max-sm:h-100",
         className,
@@ -34,12 +39,12 @@ export const ThreeDMarquee = ({
           >
             {chunks.map((subarray, colIndex) => (
               <motion.div
-                animate={{ y: colIndex % 2 === 0 ? 100 : -100 }}
-                transition={{
+                animate={{ y: isInView ? (colIndex % 2 === 0 ? 100 : -100) : 0 }}
+                transition={isInView ? {
                   duration: colIndex % 2 === 0 ? 10 : 15,
                   repeat: Infinity,
                   repeatType: "reverse",
-                }}
+                } : { duration: 0 }}
                 key={colIndex + "marquee"}
                 className="flex flex-col items-start gap-8 will-change-transform"
               >
@@ -63,7 +68,7 @@ export const ThreeDMarquee = ({
                         width={500}
                         height={360}
                         className="object-cover w-full h-full"
-                        sizes="(max-width: 768px) 100vw, 300px"
+                        sizes="(max-width: 640px) 220px, 420px"
                       />
                     </motion.div>
                   </div>

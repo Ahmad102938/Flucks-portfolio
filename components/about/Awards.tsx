@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { ABOUT_CONTENT } from "@/constants/about";
 import { IconAward } from "@tabler/icons-react";

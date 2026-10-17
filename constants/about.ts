@@ -12,8 +12,8 @@ export const ABOUT_CONTENT = {
         description: "We’re more than an agency — we’re a multidisciplinary team of designers, engineers, and AI specialists building high-quality digital products and intelligent systems.",
         subText: "We believe great products are crafted at the intersection of design, technology, and automation. Every detail is intentional. Every solution is built to scale.",
         images: [
-            "/assets/featuredWork/videoLabA4.png", // Placeholder, will use dummy if not exists
-            "/assets/featuredWork/videoLabA4.png"
+            "/assets/featuredWork/videoLabA4.webp", // Placeholder, will use dummy if not exists
+            "/assets/featuredWork/videoLabA4.webp"
         ]
     },
     services: [
@@ -34,13 +34,13 @@ export const ABOUT_CONTENT = {
         },
         {
             title: "Workflow \nAutomation",
-            description: "Optimizing business processes to save time and reduce error.",
+            description: "Optimizing business processes to save time and reduce errors.",
             tags: ["Zapier", "Custom APIs", "System Design"]
         }
     ],
     metrics: [
         { label: "Projects delivered", value: "50+" },
-        { label: "Years experience", value: "3+" },
+        { label: "Years of experience", value: "3+" },
         { label: "Product releases", value: "10+" },
         { label: "Support available", value: "24/7" }
     ],

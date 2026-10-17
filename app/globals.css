@@ -83,10 +83,6 @@ main {
   * {
     @apply border-border;
   }
-
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
 /* React Phone Number Input Overrides for Dark Theme */
@@ -139,3 +135,362 @@ main {
 }
 
 /* Ensure nice focus state on the wrapper via Tailwind classes used in component */
+/* Apple-style frosted glass. The blur is static; only opacity transitions,
+   so toggling it on scroll stays on the compositor. */
+@layer components {
+  .glass-surface {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02)),
+      rgba(16, 16, 20, 0.42);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+      0 10px 40px -8px rgba(0, 0, 0, 0.55),
+      0 1px 2px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Gradient hairline border, brighter at the top-left like light catching glass */
+  .glass-surface::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0.06) 35%,
+      rgba(255, 255, 255, 0.02) 65%,
+      rgba(255, 255, 255, 0.18)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+
+  .glass-surface[data-visible="true"] {
+    opacity: 1;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-surface {
+      background: rgba(12, 12, 16, 0.92);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-surface {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: rgba(12, 12, 16, 0.96);
+    }
+  }
+}
+
+/* Liquid-glass lens for the nav selector (iOS tab bar style) */
+@layer components {
+  .glass-lens {
+    background:
+      radial-gradient(120% 140% at 50% 0%, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 60%),
+      rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(10px) saturate(200%) brightness(1.15);
+    backdrop-filter: blur(10px) saturate(200%) brightness(1.15);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.08),
+      inset 0 0 12px rgba(255, 255, 255, 0.06),
+      0 4px 16px -4px rgba(0, 0, 0, 0.45);
+    will-change: transform;
+  }
+
+  .glass-lens::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.55),
+      rgba(255, 255, 255, 0.08) 40%,
+      rgba(255, 255, 255, 0.04) 60%,
+      rgba(255, 255, 255, 0.3)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-lens {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: rgba(255, 255, 255, 0.14);
+    }
+  }
+}
+
+/* Glass buttons (navbar CTAs) — crystal-clear "water bubble" glass.
+   The button itself is transparent; .glass-bubble is the glass and scales on
+   interaction (see GlassButton). Hover rules are gated behind (hover: hover)
+   so touch devices never get a stuck hover state after a tap. */
+@layer components {
+  .glass-btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #fff;
+    background: transparent;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    outline: none;
+  }
+
+  .glass-btn__label {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    will-change: transform;
+  }
+
+  /* The bubble: barely tinted, lightly blurred so it reads as clear water,
+     with rim light at the top, a refraction glow at the bottom and a soft shadow */
+  .glass-bubble {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 50% 115%, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 60%),
+      rgba(255, 255, 255, 0.025);
+    -webkit-backdrop-filter: blur(3px) saturate(170%) brightness(1.12);
+    backdrop-filter: blur(3px) saturate(170%) brightness(1.12);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.6),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.22),
+      inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
+      inset 0 7px 10px -8px rgba(255, 255, 255, 0.4),
+      inset 0 -8px 14px -8px rgba(255, 255, 255, 0.22),
+      0 10px 24px -12px rgba(0, 0, 0, 0.55);
+    transition: opacity 0.25s ease;
+    will-change: transform;
+  }
+
+  /* Glossy reflection along the top of the bubble */
+  .glass-bubble::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 14%;
+    right: 14%;
+    height: 42%;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0));
+    opacity: 0.75;
+  }
+
+  /* Specular glint that follows the mouse via --mx/--my (set on the button) */
+  .glass-bubble::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle 60px at var(--mx, 50%) var(--my, 0%),
+      rgba(255, 255, 255, 0.28),
+      rgba(255, 255, 255, 0) 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Clear: no bubble (and no border) until the user interacts */
+  .glass-btn--clear .glass-bubble {
+    opacity: 0;
+  }
+  .glass-btn--clear:active .glass-bubble,
+  .glass-btn--clear:focus-visible .glass-bubble {
+    opacity: 1;
+  }
+
+  /* Tinted: the bubble is always present, with a faint glow so it reads as primary */
+  .glass-btn--tinted .glass-bubble {
+    background:
+      radial-gradient(120% 90% at 50% 115%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 60%),
+      rgba(255, 255, 255, 0.06);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.65),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.25),
+      inset 0 0 0 0.5px rgba(255, 255, 255, 0.22),
+      inset 0 7px 10px -8px rgba(255, 255, 255, 0.45),
+      inset 0 -8px 14px -8px rgba(255, 255, 255, 0.25),
+      0 0 18px -6px rgba(255, 255, 255, 0.25),
+      0 10px 24px -12px rgba(0, 0, 0, 0.55);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .glass-btn--clear:hover .glass-bubble {
+      opacity: 1;
+    }
+    .glass-btn:hover .glass-bubble::after {
+      opacity: 1;
+    }
+  }
+
+  /* Press glint on every device, touch included */
+  .glass-btn:active .glass-bubble::after {
+    opacity: 1;
+  }
+
+  .glass-btn:focus-visible .glass-bubble {
+    outline: 2px solid rgba(255, 255, 255, 0.75);
+    outline-offset: 3px;
+  }
+
+  .glass-btn:disabled,
+  .glass-btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-bubble,
+    .glass-btn--tinted .glass-bubble {
+      background: rgba(60, 60, 70, 0.85);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-bubble,
+    .glass-btn--tinted .glass-bubble {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: rgba(60, 60, 70, 0.95);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass-bubble,
+    .glass-bubble::after {
+      transition: none;
+    }
+  }
+
+  /* Windows high-contrast strips glass effects, so give the bubble a real border */
+  @media (forced-colors: active) {
+    .glass-bubble {
+      border: 1px solid ButtonText;
+    }
+  }
+}
+
+/* Crystal glass sheet over a work card on hover, like a layer of clear water (Apple-style).
+   No real blur and no dimming: the work underneath stays sharp and vivid. The "glass" comes
+   from bright rims, a curved top reflection and a soft caustic glow along the bottom. */
+@layer components {
+  .crystal-sheet {
+    isolation: isolate;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.06) 22%,
+      rgba(255, 255, 255, 0) 45%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    -webkit-backdrop-filter: blur(0.5px) saturate(180%) brightness(1.04) contrast(1.05);
+    backdrop-filter: blur(0.5px) saturate(180%) brightness(1.04) contrast(1.05);
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.9),
+      inset 1px 0 0 rgba(255, 255, 255, 0.35),
+      inset -1px 0 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1.5px 0 rgba(255, 255, 255, 0.45),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      inset 0 50px 70px -50px rgba(255, 255, 255, 0.55),
+      inset 0 -50px 70px -50px rgba(255, 255, 255, 0.3),
+      inset 0 0 60px rgba(255, 255, 255, 0.06);
+  }
+
+  /* Curved, glossy reflection across the top, like light on a water surface */
+  .crystal-sheet::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 2%;
+    left: 3%;
+    right: 3%;
+    height: 42%;
+    border-radius: 1.75rem 1.75rem 50% 50% / 1.75rem 1.75rem 100% 100%;
+    background: radial-gradient(
+      ellipse 85% 100% at 50% 0%,
+      rgba(255, 255, 255, 0.38),
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 75%
+    );
+    pointer-events: none;
+  }
+
+  /* Soft shade behind the "View Project" label only, so it reads on bright screenshots */
+  .crystal-sheet__scrim {
+    background: radial-gradient(
+      ellipse 62% 45% at 50% 50%,
+      rgba(0, 0, 0, 0.82),
+      rgba(0, 0, 0, 0.5) 45%,
+      rgba(0, 0, 0, 0) 85%
+    );
+  }
+
+  /* Caustic glow pooling along the bottom edge */
+  .crystal-sheet::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: auto 0 0 0;
+    height: 35%;
+    background: radial-gradient(
+      ellipse 70% 100% at 50% 100%,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0) 70%
+    );
+    pointer-events: none;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .crystal-sheet {
+      background-color: rgba(10, 10, 14, 0.35);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .crystal-sheet {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: rgba(10, 10, 14, 0.7);
+    }
+  }
+}

@@ -12,19 +12,19 @@ interface ServiceBlockProps {
 }
 
 export const ServiceBlock = ({ service, index }: ServiceBlockProps) => {
-    const isreversed = index % 2 !== 0;
+    const isReversed = index % 2 !== 0;
 
     return (
         <section className={`w-full py-24 md:py-32 px-6 md:px-12 ${index % 2 === 0 ? "bg-black" : "bg-zinc-950/30"}`}>
-            <div className={`max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-24 items-center ${isreversed ? "lg:flex-row-reverse" : ""}`}>
+            <div className={`max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-24 items-center ${isReversed ? "lg:flex-row-reverse" : ""}`}>
 
                 {/* Text Content */}
                 <motion.div
-                    initial={{ opacity: 0, x: isreversed ? 50 : -50 }}
+                    initial={{ opacity: 0, x: isReversed ? 50 : -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className={`order-2 ${isreversed ? "lg:order-2" : "lg:order-1"}`}
+                    className={`order-2 ${isReversed ? "lg:order-2" : "lg:order-1"}`}
                 >
                     <h2 className="text-3xl md:text-5xl font-light text-white mb-8 tracking-tight">
                         {service.title}
@@ -42,7 +42,7 @@ export const ServiceBlock = ({ service, index }: ServiceBlockProps) => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 1, ease: "easeOut" }}
-                    className={`order-1 ${isreversed ? "lg:order-1" : "lg:order-2"} w-full aspect-square md:aspect-[4/3] max-w-[600px] mx-auto relative flex items-center justify-center`}
+                    className={`order-1 ${isReversed ? "lg:order-1" : "lg:order-2"} w-full aspect-square md:aspect-[4/3] max-w-[600px] mx-auto relative flex items-center justify-center`}
                 >
                     {/* Abstract Container */}
                     <div className="relative w-full h-full overflow-hidden rounded-2xl bg-zinc-900/10 border border-white/5 group">
@@ -62,9 +62,7 @@ export const ServiceBlock = ({ service, index }: ServiceBlockProps) => {
                                                group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 
                                                opacity-70 group-hover:opacity-100
                                                mix-blend-lighten"
-                                    quality={90}
-                                    priority={index < 2}
-                                    unoptimized
+                                    sizes="(max-width: 1024px) 100vw, 600px"
                                 />
                             </div>
                         </div>

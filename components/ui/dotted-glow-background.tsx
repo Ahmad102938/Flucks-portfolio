@@ -40,7 +40,8 @@ type DottedGlowBackgroundProps = {
  * Canvas-based dotted background that randomly glows and dims.
  * - Uses a stable grid of dots.
  * - Each dot gets its own phase + speed producing organic shimmering.
- * - Handles high-DPI and resizes via ResizeObserver.
+ * - Handles high-DPI (capped) and resizes via ResizeObserver.
+ * - Only animates while on screen; renders a single static frame for reduced motion.
  */
 export const DottedGlowBackground = ({
   className,
@@ -130,7 +131,7 @@ export const DottedGlowBackground = ({
     const mo = new MutationObserver(() => compute());
     mo.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["class", "style"],
+      attributeFilter: ["class"],
     });
 
     return () => {
@@ -157,29 +158,38 @@ export const DottedGlowBackground = ({
     if (!ctx) return;
 
     let raf = 0;
-    let stopped = false;
+    let running = false;
+    let width = 0;
+    let height = 0;
 
-    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    // Cap DPR: dots are tiny, extra pixels cost a lot and add nothing visible
+    const dpr = Math.min(Math.max(1, window.devicePixelRatio || 1), 1.5);
+    const reducedMotion = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const FRAME_INTERVAL = 1000 / 30;
+    const ALPHA_BUCKETS = 8;
 
-    const resize = () => {
-      const { width, height } = container.getBoundingClientRect();
-      el.width = Math.max(1, Math.floor(width * dpr));
-      el.height = Math.max(1, Math.floor(height * dpr));
-      el.style.width = `${Math.floor(width)}px`;
-      el.style.height = `${Math.floor(height)}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
+    // Pre-rendered glow sprite replaces per-dot shadowBlur (very expensive on canvas)
+    const glowRadius = radius + 6;
+    const sprite = document.createElement("canvas");
+    const spriteSize = Math.ceil(glowRadius * 2 * dpr);
+    sprite.width = spriteSize;
+    sprite.height = spriteSize;
+    const sctx = sprite.getContext("2d");
+    if (sctx) {
+      const c = spriteSize / 2;
+      const g = sctx.createRadialGradient(c, c, radius * dpr * 0.5, c, c, c);
+      g.addColorStop(0, resolvedGlowColor);
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      sctx.fillStyle = g;
+      sctx.fillRect(0, 0, spriteSize, spriteSize);
+    }
 
-    const ro = new ResizeObserver(resize);
-    ro.observe(container);
-    resize();
-
-    // Precompute dot metadata for a medium-sized grid and regenerate on resize
     let dots: { x: number; y: number; phase: number; speed: number }[] = [];
 
     const regenDots = () => {
       dots = [];
-      const { width, height } = container.getBoundingClientRect();
       const cols = Math.ceil(width / gap) + 2;
       const rows = Math.ceil(height / gap) + 2;
       const min = Math.min(speedMin, speedMax);
@@ -197,22 +207,10 @@ export const DottedGlowBackground = ({
       }
     };
 
-    const regenThrottled = () => {
-      regenDots();
-    };
+    const buckets: Path2D[] = [];
 
-    regenDots();
-
-    let last = performance.now();
-
-    const draw = (now: number) => {
-      if (stopped) return;
-      const dt = (now - last) / 1000; // seconds
-      last = now;
-      const { width, height } = container.getBoundingClientRect();
-
-      ctx.clearRect(0, 0, el.width, el.height);
-      ctx.globalAlpha = opacity;
+    const render = (now: number) => {
+      ctx.clearRect(0, 0, width, height);
 
       // optional subtle background fade for depth (defaults to 0 = transparent)
       if (backgroundOpacity > 0) {
@@ -229,15 +227,15 @@ export const DottedGlowBackground = ({
           1,
           `rgba(0,0,0,${Math.min(Math.max(backgroundOpacity, 0), 1)})`,
         );
-        ctx.fillStyle = grad as unknown as CanvasGradient;
+        ctx.globalAlpha = opacity;
+        ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
       }
 
-      // animate dots
-      ctx.save();
-      ctx.fillStyle = resolvedColor;
+      for (let b = 0; b < ALPHA_BUCKETS; b++) buckets[b] = new Path2D();
 
       const time = (now / 1000) * Math.max(speedScale, 0);
+      const spriteCss = glowRadius * 2;
       for (let i = 0; i < dots.length; i++) {
         const d = dots[i];
         // Linear triangle wave 0..1..0 for linear glow/dim
@@ -248,36 +246,77 @@ export const DottedGlowBackground = ({
         // draw glow when bright
         if (a > 0.6) {
           const glow = (a - 0.6) / 0.4; // 0..1
-          ctx.shadowColor = resolvedGlowColor;
-          ctx.shadowBlur = 6 * glow;
-        } else {
-          ctx.shadowColor = "transparent";
-          ctx.shadowBlur = 0;
+          ctx.globalAlpha = glow * opacity;
+          ctx.drawImage(sprite, d.x - glowRadius, d.y - glowRadius, spriteCss, spriteCss);
         }
 
-        ctx.globalAlpha = a * opacity;
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, radius, 0, Math.PI * 2);
-        ctx.fill();
+        const bucket = Math.min(ALPHA_BUCKETS - 1, Math.floor(lin * ALPHA_BUCKETS));
+        const path = buckets[bucket];
+        path.moveTo(d.x + radius, d.y);
+        path.arc(d.x, d.y, radius, 0, Math.PI * 2);
       }
-      ctx.restore();
 
-      raf = requestAnimationFrame(draw);
+      // One fill per alpha level instead of one per dot
+      ctx.fillStyle = resolvedColor;
+      for (let b = 0; b < ALPHA_BUCKETS; b++) {
+        const a = 0.25 + 0.55 * ((b + 0.5) / ALPHA_BUCKETS);
+        ctx.globalAlpha = a * opacity;
+        ctx.fill(buckets[b]);
+      }
+      ctx.globalAlpha = 1;
     };
 
-    const handleResize = () => {
-      resize();
-      regenThrottled();
+    let last = 0;
+    const loop = (now: number) => {
+      if (!running) return;
+      raf = requestAnimationFrame(loop);
+      if (now - last < FRAME_INTERVAL) return;
+      last = now;
+      render(now);
     };
 
-    window.addEventListener("resize", handleResize);
-    raf = requestAnimationFrame(draw);
+    const start = () => {
+      if (running || reducedMotion) return;
+      running = true;
+      raf = requestAnimationFrame(loop);
+    };
+
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+
+    const resize = (w: number, h: number) => {
+      width = w;
+      height = h;
+      el.width = Math.max(1, Math.floor(width * dpr));
+      el.height = Math.max(1, Math.floor(height * dpr));
+      el.style.width = `${Math.floor(width)}px`;
+      el.style.height = `${Math.floor(height)}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      regenDots();
+      render(performance.now());
+    };
+
+    const rect = container.getBoundingClientRect();
+    resize(rect.width, rect.height);
+
+    const ro = new ResizeObserver((entries) => {
+      const box = entries[0]?.contentRect;
+      if (box) resize(box.width, box.height);
+    });
+    ro.observe(container);
+
+    const io = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? start() : stop()),
+      { rootMargin: "100px" },
+    );
+    io.observe(container);
 
     return () => {
-      stopped = true;
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", handleResize);
+      stop();
       ro.disconnect();
+      io.disconnect();
     };
   }, [
     gap,

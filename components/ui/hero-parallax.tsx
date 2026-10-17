@@ -30,7 +30,8 @@ export const HeroParallax = ({
     offset: ["start start", "end start"],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+  // Softer springs: Lenis already smooths scroll, stiff springs on top feel rubbery
+  const springConfig = { stiffness: 120, damping: 30, restDelta: 0.001 };
 
   const translateX = useSpring(
     useTransform(scrollYProgress, [0, 1], [0, 1000]),
@@ -149,6 +150,7 @@ export const ProductCard = ({
           src={product.thumbnail}
           height="600"
           width="600"
+          sizes="480px"
           className="object-cover object-left-top absolute h-full w-full inset-0"
           alt={product.title}
         />

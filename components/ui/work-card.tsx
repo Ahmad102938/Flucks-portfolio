@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { MoveUpRight } from "lucide-react";
@@ -19,7 +17,7 @@ export function WorkCard({ imageSrc, title, category, href = "#", showLink = fal
     return (
         <div className="group block w-full space-y-4 rounded-[2rem] focus:outline-none">
             {/* Image Container - Links to Internal Page */}
-            <Link href={internalLink} className="block relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] bg-slate-900 ring-1 ring-white/10 transition-all duration-500 group-hover:ring-white/20">
+            <Link href={internalLink} aria-label={`View project: ${title}`} className="group/img block relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] bg-slate-900 ring-1 ring-white/10 outline-none transition-all duration-500 group-hover:ring-white/25 focus-visible:ring-2 focus-visible:ring-white/70">
                 <Image
                     src={imageSrc}
                     alt={title}
@@ -28,10 +26,24 @@ export function WorkCard({ imageSrc, title, category, href = "#", showLink = fal
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-black/40 backdrop-blur-sm">
-                    <span className="font-serif text-3xl md:text-4xl text-white font-medium tracking-wide translate-y-4 transition-transform duration-500 group-hover:translate-y-0 italic">
+                {/* Hover overlay: the whole card turns into a sheet of crystal-clear glass */}
+                <div
+                    aria-hidden
+                    className="crystal-sheet pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible/img:opacity-100"
+                >
+                    {/* Light sweep across the glass */}
+                    <div className="absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-[transform,opacity] duration-[1100ms] ease-out group-hover:translate-x-[300%] group-hover:opacity-100 motion-reduce:hidden" />
+
+                    {/* Soft shadow behind the label only, so the glass itself stays bright */}
+                    <div className="crystal-sheet__scrim absolute inset-0" />
+
+                    <span className="relative flex items-center gap-3 font-playfair text-4xl md:text-5xl text-white font-normal italic antialiased [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] translate-y-3 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 group-focus-visible/img:translate-y-0">
                         View Project
+                        {/* ↗ swings round to → as the card is hovered */}
+                        <MoveUpRight
+                            strokeWidth={1.75}
+                            className="h-8 w-8 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-transform duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-45 group-focus-visible/img:rotate-45"
+                        />
                     </span>
                 </div>
             </Link>
