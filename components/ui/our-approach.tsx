@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "motion/react";
+import React, { useEffect, useRef } from "react";
+import { motion, useInView, useScroll, useTransform, MotionValue } from "motion/react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ThreeDMarquee } from "./3d-marquee";
@@ -72,7 +72,8 @@ const DiscoveryFirstCard = () => {
                 {/* Background Layer Left */}
                 <motion.div style={{ x: xBackLeft }} className="absolute bottom-10 -left-20 w-[60%] h-[80%] opacity-40 grayscale hover:grayscale-0 transition-all duration-500 z-0">
                     <Image
-                        src="/assets/ourApproach/discorvery/aset10.webp"
+                        src="/assets/ourApproach/discovery/aset10.webp"
+                        sizes="(max-width: 768px) 60vw, 35vw"
                         alt="Discovery Wireframe"
                         fill
                         className="object-contain object-bottom"
@@ -82,7 +83,8 @@ const DiscoveryFirstCard = () => {
                 {/* Background Layer Right */}
                 <motion.div style={{ x: xBackRight }} className="absolute bottom-20 -right-20 w-[60%] h-[80%] opacity-40 grayscale hover:grayscale-0 transition-all duration-500 z-0">
                     <Image
-                        src="/assets/ourApproach/discorvery/aset11.webp"
+                        src="/assets/ourApproach/discovery/aset11.webp"
+                        sizes="(max-width: 768px) 60vw, 35vw"
                         alt="Discovery Data"
                         fill
                         className="object-contain object-bottom"
@@ -93,7 +95,8 @@ const DiscoveryFirstCard = () => {
                 <motion.div style={{ x: xMiddle }} className="absolute bottom-0 left-0 right-0 h-full z-10">
                     <div className="relative h-full w-full transform transition-transform duration-500 hover:scale-[1.02]">
                         <Image
-                            src="/assets/ourApproach/discorvery/aset8.webp"
+                            src="/assets/ourApproach/discovery/aset8.webp"
+                            sizes="(max-width: 768px) 100vw, 60vw"
                             alt="Discovery Process"
                             fill
                             className="object-contain object-bottom drop-shadow-2xl"
@@ -104,6 +107,56 @@ const DiscoveryFirstCard = () => {
         </ApproachCard>
     );
 }
+
+// Background video that only downloads/plays while near the viewport
+const LazyVideo = ({ src, poster, className }: { src: string; poster?: string; className?: string }) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const isInView = useInView(videoRef, { margin: "200px" });
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+        if (isInView) {
+            if (!video.src) video.src = src;
+            video.play().catch(() => { });
+        } else {
+            video.pause();
+        }
+    }, [isInView, src]);
+
+    return (
+        <video
+            ref={videoRef}
+            poster={poster}
+            preload="none"
+            loop
+            muted
+            playsInline
+            className={className}
+        />
+    );
+};
+
+// Decorative glowing orbs; the infinite loop only runs while visible
+const AmbientOrbs = () => {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref);
+
+    return (
+        <div ref={ref} className="absolute inset-0">
+            <motion.div
+                animate={isInView ? { scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] } : { scale: 1, opacity: 0.3 }}
+                transition={isInView ? { duration: 8, repeat: Infinity, ease: "easeInOut" } : { duration: 0 }}
+                className="absolute -top-20 -right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl will-change-transform"
+            />
+            <motion.div
+                animate={isInView ? { scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] } : { scale: 1, opacity: 0.3 }}
+                transition={isInView ? { duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 } : { duration: 0 }}
+                className="absolute -bottom-20 -left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
+            />
+        </div>
+    );
+};
 
 // Component for Mobile First with simple scroll shift
 const MobileFirstCard = () => {
@@ -128,15 +181,11 @@ const MobileFirstCard = () => {
             {/* Full Background Video */}
             <div className="absolute inset-0 z-0 overflow-hidden">
                 <motion.div style={{ x: xInfo }} className="h-full w-[120%] -ml-[10%] relative">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
+                    <LazyVideo
+                        src="/assets/ourApproach/mobile/mobilefirst.mp4"
+                        poster="/assets/ourApproach/mobile/mobilefirst-poster.webp"
                         className="h-full w-full object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-100"
-                    >
-                        <source src="/assets/ourApproach/mobile/mobilefirst.mp4" type="video/mp4" />
-                    </video>
+                    />
                 </motion.div>
                 {/* Overlay for text readability - stronger gradient at top for text and bottom for style */}
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-transparent to-slate-950/40" />
@@ -189,6 +238,7 @@ const ConversionCard = () => {
                 >
                     <Image
                         src="/assets/ourApproach/statistic.webp"
+                        sizes="(max-width: 768px) 120vw, 50vw"
                         alt="Conversion Statistics"
                         fill
                         className="object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-100"
@@ -205,7 +255,7 @@ const ConversionCard = () => {
                         Conversion Driven
                     </h3>
                     <p className="mt-4 text-sm leading-relaxed text-slate-200 md:text-base font-medium drop-shadow-md">
-                        Your Application will be built with strategy, designed to engage audiences, and crafted to turn visitors into customers.
+                        Your application will be built with strategy, designed to engage audiences, and crafted to turn visitors into customers.
                     </p>
                 </div>
             </div>
@@ -228,8 +278,8 @@ const PixelPerfectCard = () => {
         "/assets/ourApproach/pixelperfect/ast4.webp",
         "/assets/ourApproach/pixelperfect/ast5.webp",
     ];
-    // Duplicate for density - need heavily populated grid to cover the large container
-    const images = [...baseImages, ...baseImages, ...baseImages, ...baseImages, ...baseImages, ...baseImages];
+    // Repeat for density: 24 images = 6 per marquee column, enough to cover the container
+    const images = Array.from({ length: 24 }, (_, i) => baseImages[i % baseImages.length]);
 
     return (
         <motion.div
@@ -315,16 +365,7 @@ export const OurApproach = () => {
                                 </defs>
                                 <rect width="100%" height="100%" fill="url(#grid-pattern)" />
                             </svg>
-                            <motion.div
-                                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -top-20 -right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
-                            />
-                            <motion.div
-                                animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
-                                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                                className="absolute -bottom-20 -left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
-                            />
+                            <AmbientOrbs />
                         </div>
                         <div className="relative z-10 h-full w-full flex flex-col pt-8 px-6 md:px-10">
                             {/* Table Header */}
@@ -337,11 +378,11 @@ export const OurApproach = () => {
                             {/* Table Body */}
                             <div className="flex flex-col">
                                 {[
-                                    { title: "Complited rental management system for Urban Guest", date: "05 January 2026", img: "aset.webp" },
-                                    { title: "Complited real estate project with Urban Guest", date: "17 Dec 2025", img: "aset2.webp" },
-                                    { title: "Complited eCommerce project with react-native", date: "18 October 2025", img: "aset3.webp" },
-                                    { title: "Created MCP server for Notes Application", date: "25 July 2025", img: "aset5.webp" },
-                                    { title: "Complited AI podcast automation with Langchain", date: "10 June 2025", img: "aset6.webp" },
+                                    { title: "Completed rental management system for Urban Guest", date: "05 January 2026", img: "aset.webp" },
+                                    { title: "Completed real estate project with Urban Guest", date: "17 December 2025", img: "aset2.webp" },
+                                    { title: "Completed eCommerce project with React Native", date: "18 October 2025", img: "aset3.webp" },
+                                    { title: "Created MCP server for a notes application", date: "25 July 2025", img: "aset5.webp" },
+                                    { title: "Completed AI podcast automation with LangChain", date: "10 June 2025", img: "aset6.webp" },
                                 ].map((item, i) => (
                                     <div key={i} className="group/row grid grid-cols-12 gap-4 py-4 border-b border-white/5 items-center hover:bg-white/5 transition-colors duration-300 rounded-lg px-2 -mx-2">
                                         {/* Title Column */}
@@ -366,6 +407,7 @@ export const OurApproach = () => {
                                             <div className="relative w-12 h-8 md:w-16 md:h-10 rounded overflow-hidden border border-white/10 group-hover/row:border-white/20 transition-colors">
                                                 <Image
                                                     src={`/assets/ourApproach/RecentEvents/${item.img}`}
+                                                    sizes="64px"
                                                     alt={item.title}
                                                     fill
                                                     className="object-cover"

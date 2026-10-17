@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { footerLinks, footerBranding } from "@/constants/footer";
-import { IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin, IconBrandTwitter } from "@tabler/icons-react";
 
 export const SiteFooter = () => {
     return (
@@ -18,6 +17,7 @@ export const SiteFooter = () => {
                                         src="/assets/logo3.png"
                                         alt="Flucks Logo"
                                         fill
+                                        sizes="40px"
                                         className="object-contain"
                                     />
                                 </div>

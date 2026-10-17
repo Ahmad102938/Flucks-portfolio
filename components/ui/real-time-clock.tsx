@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState, useMemo, memo } from "react";
+import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 
 type ClockRingType = "years" | "seconds" | "minutes" | "hours" | "days" | "months" | "day-names";
@@ -26,7 +27,8 @@ const RINGS: ClockRingConfig[] = [
 export const RealTimeClock = ({ className }: { className?: string }) => {
     const [time, setTime] = useState<Date | null>(null);
     const [countryCode, setCountryCode] = useState<string | null>(null);
-    const frameRef = useRef<number>(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(containerRef, { margin: "200px" });
 
     // Get flag emoji from country code
     const getFlagEmoji = (countryCode: string) => {
@@ -37,39 +39,55 @@ export const RealTimeClock = ({ className }: { className?: string }) => {
         return String.fromCodePoint(...codePoints);
     };
 
+    // Tick once per second, aligned to the second boundary, only while visible
     useEffect(() => {
-        // 1. Start Time Loop
-        const update = () => {
-            setTime(new Date());
-            frameRef.current = requestAnimationFrame(update);
+        if (!isInView) return;
+        let timeout: ReturnType<typeof setTimeout>;
+        const tick = () => {
+            const now = new Date();
+            setTime(now);
+            timeout = setTimeout(tick, 1000 - now.getMilliseconds());
         };
-        frameRef.current = requestAnimationFrame(update);
+        tick();
+        return () => clearTimeout(timeout);
+    }, [isInView]);
 
-        // 2. Fetch Location
+    // Fetch location once per session (ipapi is rate-limited)
+    useEffect(() => {
+        const CACHE_KEY = "flucks:country";
+        try {
+            const cached = sessionStorage.getItem(CACHE_KEY);
+            if (cached) {
+                setCountryCode(cached);
+                return;
+            }
+        } catch { }
+
+        const controller = new AbortController();
         const fetchLocation = async () => {
             try {
-                const res = await fetch('https://ipapi.co/json/');
+                const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
                 if (res.ok) {
                     const data = await res.json();
                     if (data.country_code) {
                         setCountryCode(data.country_code);
+                        try { sessionStorage.setItem(CACHE_KEY, data.country_code); } catch { }
                     }
                 }
             } catch (error) {
-                console.error("Failed to fetch location:", error);
+                if ((error as Error).name !== "AbortError") console.error("Failed to fetch location:", error);
             }
         };
 
         fetchLocation();
-
-        return () => cancelAnimationFrame(frameRef.current);
+        return () => controller.abort();
     }, []);
 
     // Prevent hydration mismatch
-    if (!time) return <div className={cn("relative flex items-center justify-center bg-slate-950 min-h-[400px]", className)} />;
+    if (!time) return <div ref={containerRef} className={cn("relative flex items-center justify-center bg-slate-950 min-h-[400px]", className)} />;
 
     return (
-        <div className={cn("relative flex items-center justify-center bg-slate-950", className)}>
+        <div ref={containerRef} className={cn("relative flex items-center justify-center bg-slate-950", className)}>
             {/* Highlight Bar (Right Side Only) */}
             <div className="absolute top-1/2 left-[calc(50%-20px)] right-0 -translate-y-1/2 h-5 z-10">
                 {/* The blue bar background - pill shaped left */}
@@ -91,14 +109,27 @@ export const RealTimeClock = ({ className }: { className?: string }) => {
             {/* Container for rings */}
             <div className="relative z-20 w-full h-full flex items-center justify-center origin-center">
                 {RINGS.map((ring) => (
-                    <ClockRing key={ring.type} config={ring} time={time} />
+                    <ClockRing key={ring.type} config={ring} currentValue={getRingValue(ring.type, time)} />
                 ))}
             </div>
         </div>
     );
 };
 
-const ClockRing = ({ config, time }: { config: ClockRingConfig; time: Date }) => {
+const getRingValue = (type: ClockRingType, time: Date) => {
+    switch (type) {
+        case "seconds": return time.getSeconds();
+        case "minutes": return time.getMinutes();
+        case "hours": return time.getHours();
+        case "days": return time.getDate() - 1; // 0-indexed for array
+        case "months": return time.getMonth();
+        case "years": return time.getFullYear() - 2020;
+        case "day-names": return time.getDay();
+    }
+};
+
+// Memoized so only rings whose value changed re-render each tick
+const ClockRing = memo(function ClockRing({ config, currentValue }: { config: ClockRingConfig; currentValue: number }) {
     const { type, radius, fontSize, color } = config;
 
     // Generate values using useMemo to avoid regenerating every frame
@@ -134,15 +165,6 @@ const ClockRing = ({ config, time }: { config: ClockRingConfig; time: Date }) =>
     // Wait, CodePen rotates the *face* by NEGATIVE this amount?
     // "clockFace.style.transform = `rotate(${newAngle * -1}deg)`"
     // Yes.
-
-    let currentValue = 0;
-    if (config.type === "seconds") currentValue = time.getSeconds();
-    else if (config.type === "minutes") currentValue = time.getMinutes();
-    else if (config.type === "hours") currentValue = time.getHours();
-    else if (config.type === "days") currentValue = time.getDate() - 1; // 0-indexed for array
-    else if (config.type === "months") currentValue = time.getMonth();
-    else if (config.type === "years") currentValue = time.getFullYear() - 2020;
-    else if (config.type === "day-names") currentValue = time.getDay();
 
     const targetAngle = stepAngle * currentValue;
     const lastAngle = useRef(0);
@@ -181,7 +203,7 @@ const ClockRing = ({ config, time }: { config: ClockRingConfig; time: Date }) =>
                     <div
                         key={i}
                         className={cn(
-                            "absolute flex items-center justify-center font-medium transition-all duration-300",
+                            "absolute flex items-center justify-center font-medium transition-[opacity,color] duration-300",
                             isActive ? "text-black opacity-100 scale-110" : "opacity-70 scale-90"
                         )}
                         style={{
@@ -201,4 +223,4 @@ const ClockRing = ({ config, time }: { config: ClockRingConfig; time: Date }) =>
             })}
         </div>
     );
-}
+});

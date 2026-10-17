@@ -1,10 +1,20 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { getProject } from "@/constants/projects";
+import { getProject, PROJECTS } from "@/constants/projects";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ArrowLeft, Briefcase, Calendar, Copy, Monitor, Eye } from "lucide-react";
+
+export function generateStaticParams() {
+    return Object.keys(PROJECTS).map((slug) => ({ slug }));
+}
+
+// Let Cloudinary serve a compressed, browser-appropriate encoding
+const optimizedVideoUrl = (url: string) =>
+    url.includes("res.cloudinary.com") && url.includes("/upload/v")
+        ? url.replace("/upload/", "/upload/q_auto,f_auto/")
+        : url;
 
 export default async function WorkDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -98,12 +108,13 @@ export default async function WorkDetailsPage({ params }: { params: Promise<{ sl
                             {project.gallery.map((item, index) => (
                                 <div key={index} className="flex-none w-[85vw] md:w-[60vw] lg:w-[50vw] aspect-video relative rounded-2xl overflow-hidden snap-center border border-white/10 bg-zinc-900 group">
                                     {item.type === 'video' ? (
-                                        <video src={item.url} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                                        <video src={optimizedVideoUrl(item.url)} autoPlay loop muted playsInline preload="metadata" className="w-full h-full object-cover" />
                                     ) : (
                                         <Image
                                             src={item.url}
                                             alt={`Gallery image ${index + 1}`}
                                             fill
+                                            sizes="(max-width: 768px) 85vw, (max-width: 1024px) 60vw, 50vw"
                                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
                                     )}

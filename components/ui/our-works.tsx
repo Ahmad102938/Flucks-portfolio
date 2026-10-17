@@ -1,11 +1,8 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring } from "motion/react";
-import { Playfair_Display } from "next/font/google";
-import { cn } from "@/lib/utils";
+import React, { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
-
-const playfair = Playfair_Display({ subsets: ["latin"], style: ["italic", "normal"] });
+import Image from "next/image";
 
 export const OurWorks = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +28,7 @@ export const OurWorks = () => {
                     className="text-4xl md:text-8xl lg:text-9xl text-white tracking-tighter text-center flex flex-wrap justify-center items-center gap-2 md:gap-4"
                 >
                     <span className="font-sans font-light">Our</span>
-                    <span className={cn(playfair.className, "italic font-normal")}>Works</span>
+                    <span className="font-playfair italic font-normal">Works</span>
                 </motion.h2>
             </div>
 
@@ -43,10 +40,12 @@ export const OurWorks = () => {
                 >
                     <Link href="/works" className="block w-full h-full relative">
                         <motion.div style={{ y: imageY }} className="w-full h-[120%] -y-[10%] relative">
-                            <img
-                                src="/assets/works/dreamblend.png"
+                            <Image
+                                src="/assets/works/dreamblend.webp"
                                 alt="Featured Project"
-                                className="object-cover w-full h-full opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                                fill
+                                sizes="90vw"
+                                className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                             />
                         </motion.div>
 
@@ -71,15 +70,15 @@ export const OurWorks = () => {
 
             <div className="container mx-auto px-4 mt-24 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <WorkItem
-                    title="Automarion"
-                    subtitle="Multi-Audio Pod Automation"
-                    image="/assets/works/videoLab.png"
+                    title="Automation"
+                    subtitle="Multi-Audio Podcast Automation"
+                    image="/assets/works/videoLab.webp"
                     index={1}
                 />
                 <WorkItem
                     title="Music App"
                     subtitle="Music Streaming App"
-                    image="/assets/works/tringbox.png"
+                    image="/assets/works/tringbox.webp"
                     index={2}
                 />
             </div>
@@ -95,9 +94,19 @@ const CursorFollower = () => {
         const parent = parentRef.current?.parentElement;
         if (!parent) return;
 
+        // Cache the rect while hovered instead of forcing layout on every mousemove
+        let rect = parent.getBoundingClientRect();
+        const cacheRect = () => {
+            rect = parent.getBoundingClientRect();
+        };
+        const onEnter = () => {
+            cacheRect();
+            window.addEventListener("scroll", cacheRect, { passive: true });
+        };
+        const onLeave = () => window.removeEventListener("scroll", cacheRect);
+
         const moveCursor = (e: MouseEvent) => {
             if (cursorRef.current) {
-                const rect = parent.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
 
@@ -105,9 +114,14 @@ const CursorFollower = () => {
             }
         };
 
-        parent.addEventListener("mousemove", moveCursor);
+        parent.addEventListener("mouseenter", onEnter);
+        parent.addEventListener("mouseleave", onLeave);
+        parent.addEventListener("mousemove", moveCursor, { passive: true });
         return () => {
+            parent.removeEventListener("mouseenter", onEnter);
+            parent.removeEventListener("mouseleave", onLeave);
             parent.removeEventListener("mousemove", moveCursor);
+            onLeave();
         };
     }, []);
 
@@ -115,9 +129,9 @@ const CursorFollower = () => {
         <div ref={parentRef} className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
             <div
                 ref={cursorRef}
-                className="absolute top-0 left-0 z-40 flex items-center justify-center w-24 h-24 bg-white/10 backdrop-blur-md border border-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute top-0 left-0 z-40 flex items-center justify-center w-24 h-24 bg-white/15 border border-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
-                <div className={cn(playfair.className, "text-white italic text-sm")}>View Project</div>
+                <div className="font-playfair text-white italic text-sm">View Project</div>
             </div>
         </div>
     );
@@ -128,18 +142,21 @@ const WorkItem = ({ title, subtitle, image, index }: { title: string, subtitle: 
         <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: index * 0.2, duration: 0.5 }}
             className="group relative aspect-[4/3] overflow-hidden rounded-2xl cursor-pointer"
         >
             <Link href="/works" className="block w-full h-full relative">
                 <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/0 transition-colors z-10" />
-                <img
+                <Image
                     src={image}
-                    className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-700"
                     alt={title}
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
-                    <div className={cn(playfair.className, "text-4xl italic text-white")}>View</div>
+                    <div className="font-playfair text-4xl italic text-white">View</div>
                 </div>
                 <div className="absolute bottom-6 left-6 z-20">
                     <h4 className="text-2xl font-bold text-white">{title}</h4>

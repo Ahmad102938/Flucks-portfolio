@@ -10,7 +10,8 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				playfair: ["var(--font-playfair)"],
+				playfair: ["var(--font-playfair)", "Georgia", "serif"],
+				fraunces: ["var(--font-fraunces)", "Georgia", "serif"],
 			},
 			colors: {
 				background: 'hsl(var(--background))',

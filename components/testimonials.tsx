@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "motion/react";
 import { SERVICES_CONTENT, TestimonialItem } from "@/constants/services";
-import { Quote, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Quote, Play, Volume2, VolumeX } from "lucide-react";
 
 export const Testimonials = () => {
     const { testimonials } = SERVICES_CONTENT;
@@ -61,16 +61,20 @@ interface CardProps {
 const TestimonialCard = ({ item, index, isActive, onTogglePlay }: CardProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isMuted, setIsMuted] = useState(true);
+    const wasActive = useRef(false);
 
     useEffect(() => {
         if (!videoRef.current) return;
 
         if (isActive) {
+            wasActive.current = true;
             videoRef.current.currentTime = 0;
             videoRef.current.muted = true; // Still muted on start
             setIsMuted(true);
             videoRef.current.play().catch(() => { });
-        } else {
+        } else if (wasActive.current) {
+            // Only reset after a real stop; calling load() on mount would force a download
+            wasActive.current = false;
             videoRef.current.pause();
             videoRef.current.currentTime = 0;
             videoRef.current.load(); // Force poster to show
@@ -94,7 +98,7 @@ const TestimonialCard = ({ item, index, isActive, onTogglePlay }: CardProps) => 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
                 className="bg-zinc-900/40 backdrop-blur-md p-8 rounded-2xl border border-white/5 hover:border-white/10 transition-colors flex flex-col gap-6 group"
             >
                 <div className="relative">
@@ -132,7 +136,7 @@ const TestimonialCard = ({ item, index, isActive, onTogglePlay }: CardProps) => 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
                 className="relative w-full rounded-2xl overflow-hidden border border-white/5 bg-zinc-900 aspect-[9/16] group cursor-pointer"
                 onClick={onTogglePlay}
             >
@@ -141,6 +145,7 @@ const TestimonialCard = ({ item, index, isActive, onTogglePlay }: CardProps) => 
                     src={item.videoSrc}
                     poster={item.videoThumbnail}
                     className="w-full h-full object-cover"
+                    preload="none"
                     loop
                     muted
                     playsInline
@@ -153,6 +158,7 @@ const TestimonialCard = ({ item, index, isActive, onTogglePlay }: CardProps) => 
                         {isActive && (
                             <button
                                 onClick={toggleMute}
+                                aria-label={isMuted ? "Unmute video" : "Mute video"}
                                 className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 hover:bg-black/60 transition-colors z-20"
                             >
                                 {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}

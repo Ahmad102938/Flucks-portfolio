@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import { SERVICES_CONTENT } from "@/constants/services";
-import { smoothScrollTo } from "@/lib/scroll";
+import Link from "next/link";
 import { IconArrowRight } from "@tabler/icons-react";
 
 export const ServicesHero = () => {
@@ -31,13 +31,13 @@ export const ServicesHero = () => {
 
                 <div className="grid md:grid-cols-[1fr,1.5fr] gap-12 mt-16 items-end border-t border-white/10 pt-12">
                     <div>
-                        <button
-                            onClick={() => window.location.href = "/works"}
+                        <Link
+                            href="/works"
                             className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black text-sm font-medium hover:bg-slate-200 transition-all duration-300 overflow-hidden"
                         >
-                            <span className="relative z-10">See our works</span>
+                            <span className="relative z-10">See our work</span>
                             <IconArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform duration-300" />
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="space-y-6">

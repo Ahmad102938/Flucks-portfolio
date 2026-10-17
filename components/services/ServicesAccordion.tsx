@@ -9,11 +9,11 @@ interface ServicesAccordionProps {
 }
 
 export const ServicesAccordion = ({ items }: ServicesAccordionProps) => {
-    // Optional: Keep track of open items if we want multiply open. 
+    // Optional: Keep track of open items if we want multiple open. 
     // Here we'll just allow toggle on click. 
     // Usually services list is just a list, but user requested Accordion items.
     // If strict compliance with screenshot: screenshot shows items listed with a visually distinct arrow/chevron or underline.
-    // I will implementation individual items that are collapsible or just list items that look interactive.
+    // I will implement individual items that are collapsible or just list items that look interactive.
     // Re-reading request: "Accordion list of sub-services (expand/collapse)"
     // Okay, so each sub-service itself might have content? 
     // The data structure provided was just strings: "Web UI/UX Design".

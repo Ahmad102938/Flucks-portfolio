@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { IconMail, IconBrandWhatsapp, IconMapPin } from "@tabler/icons-react";
 import Link from "next/link";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
+import { DepthTunnel } from "@/components/ui/depth-tunnel";
 import PhoneInput, { getCountries, isValidPhoneNumber } from 'react-phone-number-input';
 import en from 'react-phone-number-input/locale/en.json';
 import 'react-phone-number-input/style.css';
@@ -34,6 +35,37 @@ export const LetsConnect = () => {
     });
 
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
+    // "Slide into" the form: the card enters tilted away like a ramp sloping into the
+    // screen and rises flat by the time its top reaches the upper part of the viewport.
+    const cardRef = useRef<HTMLDivElement>(null);
+    const reduceMotion = useReducedMotion();
+
+    // The depth effect is a laptop/desktop treatment; phones and tablets keep the original
+    // simple fade-up. Starts false so the server render matches the mobile layout.
+    const [isDesktop, setIsDesktop] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia("(min-width: 1024px)");
+        const update = () => setIsDesktop(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
+    const depth = isDesktop && !reduceMotion;
+    const { scrollYProgress: entry } = useScroll({
+        target: cardRef,
+        offset: ["start end", "start 0.2"],
+    });
+    const cardRotateX = useTransform(entry, [0, 1], [-26, 0]);
+    const cardScale = useTransform(entry, [0, 1], [0.88, 1]);
+    const cardY = useTransform(entry, [0, 1], [80, 0]);
+    const cardOpacity = useTransform(entry, [0, 0.35], [0, 1]);
+
+    // Depth travel through the tunnel for the whole time the card is on screen
+    const { scrollYProgress: travel } = useScroll({
+        target: cardRef,
+        offset: ["start end", "end start"],
+    });
 
     const budgetOptions = ["< $1k", "$1k - $3k", "$3k - $5k", "$5k - $10k", "$10k+"];
 
@@ -82,7 +114,7 @@ export const LetsConnect = () => {
     const validate = () => {
         const newErrors: Record<string, string> = {};
         if (!formData.name || formData.name.length < 2) newErrors.name = "Name must be at least 2 characters";
-        if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Valid email is required";
+        if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "A valid email is required";
         if (formData.phone && !isValidPhoneNumber(formData.phone)) {
             newErrors.phone = "Invalid phone number";
         }
@@ -150,17 +182,47 @@ export const LetsConnect = () => {
                     </h2>
                 </motion.div>
 
-                {/* Main Card Wrapper */}
+                {/* Main Card Wrapper - perspective stage for the tilt-in */}
+                <div style={depth ? { perspective: "1600px", perspectiveOrigin: "50% 0%" } : undefined}>
                 <motion.div
-                    initial={{ y: 40, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                    className="relative shadow-[inset_0_0_60px_rgba(0,0,0,0.6)] rounded-[2.5rem] border border-white/10 bg-black/60 backdrop-blur-xl"
+                    ref={cardRef}
+                    {...(depth
+                        ? {
+                            // Desktop: scroll-linked tilt-in
+                            style: {
+                                rotateX: cardRotateX,
+                                scale: cardScale,
+                                y: cardY,
+                                opacity: cardOpacity,
+                                transformOrigin: "50% 0%",
+                            },
+                        }
+                        : {
+                            // Mobile / reduced motion: the original fade-up
+                            initial: { y: 40, opacity: 0 },
+                            whileInView: { y: 0, opacity: 1 },
+                            viewport: { once: true, margin: "-100px" },
+                            transition: { duration: 0.8, ease: "easeOut", delay: 0.2 },
+                        })}
+                    className={
+                        depth
+                            ? "relative rounded-[2.5rem] border border-white/10 bg-black/60 shadow-[inset_0_0_60px_rgba(0,0,0,0.6),0_40px_120px_-40px_rgba(0,0,0,0.9)] will-change-transform"
+                            : "relative shadow-[inset_0_0_60px_rgba(0,0,0,0.6)] rounded-[2.5rem] border border-white/10 bg-black/70"
+                    }
                 >
                     {/* Background Container - Rounded & Clipped (Desktop Only / Global Parent) */}
-                    <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden rounded-[2.5rem]">
-                        <motion.div style={{ y }} className="absolute inset-0 h-[120%] w-full">
+                    <div className={`absolute inset-0 -z-10 h-full w-full overflow-hidden rounded-[2.5rem]${depth ? " bg-black" : ""}`}>
+                        {/* Far layer (desktop only): the tunnel you slide into */}
+                        {depth && <DepthTunnel progress={travel} />}
+                        {/* Near layer: dots; on desktop they clear around the vanishing point so the depth shows */}
+                        <motion.div
+                            style={{ y }}
+                            className={
+                                depth
+                                    ? "absolute inset-0 h-[120%] w-full opacity-50 [mask-image:radial-gradient(ellipse_65%_55%_at_50%_38%,transparent_35%,black_90%)]"
+                                    : "absolute inset-0 h-[120%] w-full"
+                            }
+                        >
                             <DottedGlowBackground
                                 color="rgba(255, 255, 255, 0.4)"
                                 glowColor="rgba(255, 255, 255, 1)"
@@ -239,6 +301,7 @@ export const LetsConnect = () => {
                                                     <button
                                                         type="button"
                                                         onClick={handleRevertCountry}
+                                                        aria-label="Clear country"
                                                         className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
                                                     >
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
@@ -307,6 +370,7 @@ export const LetsConnect = () => {
                                                     <button
                                                         type="button"
                                                         onClick={handleRevertProjectType}
+                                                        aria-label="Clear project type"
                                                         className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
                                                     >
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
@@ -450,7 +514,7 @@ export const LetsConnect = () => {
                                         <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
                                             <IconMail size={16} />
                                         </div>
-                                        <h4 className="mb-1 text-xs font-medium text-zinc-400">Give us a Mail/collaboration</h4>
+                                        <h4 className="mb-1 text-xs font-medium text-zinc-400">Email us for collaborations</h4>
                                         <Link href="mailto:contact@flucks.in" className="text-lg font-medium text-white transition-colors hover:text-cyan-400">contact@flucks.in</Link>
                                     </div>
 
@@ -469,7 +533,7 @@ export const LetsConnect = () => {
                                             <IconMapPin size={16} />
                                         </div>
                                         <h4 className="mb-1 text-xs font-medium text-zinc-400">Visit us</h4>
-                                        <p className="text-lg font-medium text-white">India - Working globally</p>
+                                        <p className="text-lg font-medium text-white">India — Working globally</p>
                                     </div>
                                 </div>
 
@@ -484,6 +548,7 @@ export const LetsConnect = () => {
                         </div>
                     </div>
                 </motion.div>
+                </div>
             </div>
         </section>
     );

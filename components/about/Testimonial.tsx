@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { ABOUT_CONTENT } from "@/constants/about";
 import Image from "next/image";

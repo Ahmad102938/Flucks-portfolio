@@ -1,7 +1,7 @@
 export const footerBranding = {
     logoText: "FLUCKS",
-    slogan: "Engineering With Teste,",
-    subSlogan: "build to Innovate.",
+    slogan: "Engineering With Taste,",
+    subSlogan: "Built to Innovate.",
     copyrightText: "© 2026 Flucks. All rights reserved."
 };
 

@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
     Navbar,
     NavBody,
@@ -12,6 +14,7 @@ import {
     NavbarButton,
     NavbarBrand,
 } from "@/components/ui/resizable-navbar";
+import { GlassButton } from "@/components/ui/glass-button";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import homeContent from "@/constants/home.json";
 import { smoothScrollTo } from "@/lib/scroll";
@@ -21,6 +24,16 @@ const NAV_ITEMS = homeContent.navItems;
 export function SiteHeader() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const ignoreScrollCloseUntilRef = React.useRef(0);
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const goToContact = () => {
+        if (pathname === "/") {
+            smoothScrollTo("lets-connect");
+        } else {
+            router.push("/?scroll=lets-connect");
+        }
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -62,24 +75,11 @@ export function SiteHeader() {
                     })}
                 />
 
-                <div className="flex items-center gap-2">
-                    <NavbarButton variant="secondary" href="/works">See our work</NavbarButton>
-                    <HoverBorderGradient
-                        containerClassName="rounded-full group"
-                        as="button"
-                        onClick={() => {
-                            if (window.location.pathname === "/") {
-                                smoothScrollTo("lets-connect");
-                            } else {
-                                window.location.href = "/?scroll=lets-connect";
-                            }
-                        }}
-                        className="bg-slate-950 text-white flex items-center space-x-2 transition-all duration-300 hover:bg-slate-800 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),inset_0_-1px_0_0_rgba(0,0,0,0.4)]"
-                    >
-                        <span className="inline-block transition-transform duration-300 group-hover:scale-110">
-                            Let&apos;s connect
-                        </span>
-                    </HoverBorderGradient>
+                <div className="flex items-center gap-4">
+                    <GlassButton variant="clear" href="/works">See our work</GlassButton>
+                    <GlassButton variant="tinted" onClick={goToContact}>
+                        Let&apos;s connect
+                    </GlassButton>
                 </div>
             </NavBody>
 
@@ -102,20 +102,21 @@ export function SiteHeader() {
                         if (item === "Services") link = "/services";
                         if (item === "About Us") link = "/about";
                         return (
-                            <a
+                            <Link
                                 key={idx}
                                 href={link}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="text-sm font-medium text-slate-200 hover:text-white transition-colors"
                             >
                                 {item}
-                            </a>
+                            </Link>
                         );
                     })}
                     <div className="mt-2 flex flex-col gap-2 items-center">
                         <NavbarButton
                             variant="secondary"
                             href="/works"
+                            onClick={() => setMobileMenuOpen(false)}
                             className="w-full rounded-full border border-white/20 hover:bg-white/10 hover:border-white/30 transition-all duration-300"
                         >
                             See our work
@@ -125,11 +126,7 @@ export function SiteHeader() {
                             as="button"
                             onClick={() => {
                                 setMobileMenuOpen(false);
-                                if (window.location.pathname === "/") {
-                                    smoothScrollTo("lets-connect");
-                                } else {
-                                    window.location.href = "/?scroll=lets-connect";
-                                }
+                                goToContact();
                             }}
                             className="bg-slate-950 text-white flex items-center justify-center space-x-2 w-full transition-all duration-300 hover:bg-slate-800 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),inset_0_-1px_0_0_rgba(0,0,0,0.4)]"
                         >

@@ -3,46 +3,47 @@
 import React, { useEffect, useState } from "react";
 import styles from "./site-preloader.module.css";
 import { cn } from "@/lib/utils";
+import { PRELOADER_SESSION_KEY } from "@/lib/preloader";
 
 export const SitePreloader = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [shouldRender, setShouldRender] = useState(true);
 
-    // Safety timeout to ensure loader doesn't stick forever
     useEffect(() => {
-        const safetyTimer = setTimeout(() => {
-            setIsLoading(false);
-        }, 8000); // 8 seconds max
-
-        return () => clearTimeout(safetyTimer);
-    }, []);
-
-    useEffect(() => {
-        // Simple loading logic - wait for everything
-        const handleLoad = () => {
-            // Add a small delay for smoothness before dismissing
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 800);
-        };
-
-        if (document.readyState === "complete") {
-            handleLoad();
-        } else {
-            window.addEventListener("load", handleLoad);
+        if (document.documentElement.hasAttribute("data-preloaded")) {
+            setShouldRender(false);
+            return;
         }
 
+        let cancelled = false;
+        const dismiss = () => {
+            if (cancelled) return;
+            cancelled = true;
+            setIsLoading(false);
+            try {
+                sessionStorage.setItem(PRELOADER_SESSION_KEY, "1");
+            } catch {
+                // Storage unavailable (private mode etc.) - the loader just shows again next visit
+            }
+        };
+
+        // The DOM is ready by the time we hydrate; wait for web fonts so the
+        // reveal doesn't swap typefaces, but never longer than the fallback.
+        const fallback = setTimeout(dismiss, 2500);
+        document.fonts?.ready.then(dismiss, dismiss) ?? dismiss();
+
         return () => {
-            window.removeEventListener("load", handleLoad);
+            cancelled = true;
+            clearTimeout(fallback);
         };
     }, []);
 
-    // Handle unmounting
+    // Unmount after the fade-out finishes
     useEffect(() => {
         if (!isLoading) {
             const timeout = setTimeout(() => {
                 setShouldRender(false);
-            }, 600); // Match CSS transition
+            }, 500); // Match CSS transition
             return () => clearTimeout(timeout);
         }
     }, [isLoading]);
@@ -50,13 +51,13 @@ export const SitePreloader = () => {
     if (!shouldRender) return null;
 
     return (
-        <div className={cn(styles.preloaderWrapper, !isLoading && styles.hidden)}>
+        <div className={cn(styles.preloaderWrapper, !isLoading && styles.hidden)} aria-hidden="true">
             {/* Loaders Container */}
             <div className="flex items-center gap-8">
                 {/* Circle Loader */}
                 <div className={styles.loader}>
                     <svg viewBox="0 0 80 80">
-                        <circle id="test" cx="40" cy="40" r="32"></circle>
+                        <circle cx="40" cy="40" r="32"></circle>
                     </svg>
                 </div>
 

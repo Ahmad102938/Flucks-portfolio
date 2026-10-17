@@ -1,20 +1,15 @@
-"use client";
-
-import React, { useState, useEffect, Suspense } from "react";
-import { motion, useMotionValue } from "motion/react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense } from "react";
+import Link from "next/link";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { SiteHeader } from "@/components/site-header";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
-import { InfiniteMarquee } from "@/components/ui/infinite-marquee";
-import { HeroParallax } from "@/components/ui/hero-parallax";
 import { OurWorks } from "@/components/ui/our-works";
 import { OurServices } from "@/components/ui/our-services";
-import { OurApproach } from "@/components/ui/our-approach";
-import { FaqSection } from "@/components/ui/faq-section";
-import { LetsConnect } from "@/components/ui/lets-connect";
 import { SiteFooter } from "@/components/site-footer";
-import { smoothScrollTo } from "@/lib/scroll";
+import { HeroCarousel } from "@/components/home/hero-carousel";
+import { ScrollHandler } from "@/components/home/scroll-handler";
+import { GetInTouchButton } from "@/components/home/get-in-touch-button";
+import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
+import { HeroParallax, OurApproach, FaqSection, LetsConnect } from "@/components/home/lazy-sections";
 import homeContent from "@/constants/home.json";
 
 const BRAND_STACK = [
@@ -27,12 +22,12 @@ const BRAND_STACK = [
   { name: "Adobe Illustrator", src: "/assets/techStack/AI.webp" },
   { name: "Next.js", src: "/assets/techStack/Next.webp" },
   { name: "Flutter", src: "/assets/techStack/flutter.webp" },
-  { name: "React-Native", src: "/assets/techStack/reactnative.png" },
+  { name: "React Native", src: "/assets/techStack/reactnative.png" },
   { name: "LangChain", src: "/assets/techStack/langchain.png" },
   { name: "LangGraph", src: "/assets/techStack/langgraph.png" },
-  { name: "N8N", src: "/assets/techStack/n8n.webp" },
+  { name: "n8n", src: "/assets/techStack/n8n.webp" },
   { name: "Google AI Studio", src: "/assets/techStack/google.jpeg" },
-  { name: "OpenAI", src: "/assets/techStack/openai.jpeg" },
+  { name: "OpenAI", src: "/assets/techStack/openAI.jpeg" },
 ];
 
 const PARALLAX_PRODUCTS = [
@@ -53,151 +48,16 @@ const PARALLAX_PRODUCTS = [
   { title: "Enterprise CRM", link: "/works", thumbnail: "/assets/featuredWork/aset.webp" },
 ];
 
-const NAV_ITEMS = homeContent.navItems;
-const FEATURED_WORKS = homeContent.featuredWorks;
-
 const HERO_SLIDER = homeContent.heroSlider;
 
-import Link from "next/link";
-import Image from "next/image";
-
-// Infinite carousel component using Framer Motion
-const InfiniteCarousel: React.FC<{
-  images: Array<{ src?: string; alt?: string; objectPosition?: string }>;
-}> = ({ images }) => {
-  const imageFallback = "/assets/UrbanGuest.png";
-
-  // Duplicate images for seamless loop: [A, B, C] -> [A, B, C, A, B, C]
-  const duplicatedImages = [...images, ...images];
-
-  const x = useMotionValue(0);
-  const [slideWidthPx, setSlideWidthPx] = useState(0);
-  const [cardHeightPx, setCardHeightPx] = useState(0);
-  const gapPx = 24; // 6 * 4px (gap-6)
-
-  useEffect(() => {
-    const updateWidth = () => {
-      const width = window.innerWidth;
-      const slideW = width < 768 ? width * 0.8 : width < 1024 ? width * 0.48 : width * 0.4;
-      setSlideWidthPx(slideW);
-      setCardHeightPx(slideW / 1.5); // width:height = 1.5x
-    };
-
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
-
-  useEffect(() => {
-    if (slideWidthPx === 0 || images.length === 0) return;
-
-    const totalSlideWidth = slideWidthPx + gapPx;
-    const halfWayPoint = totalSlideWidth * images.length;
-    const duration = images.length * 4 * 1000; // milliseconds
-
-    // Continuous animation with seamless reset
-    let startTime = performance.now();
-    let animationFrameId: number;
-    let isRunning = true;
-
-    const animate = (currentTime: number) => {
-      if (!isRunning) return;
-
-      const elapsed = currentTime - startTime;
-      const progress = (elapsed % duration) / duration;
-      const currentX = -progress * halfWayPoint;
-
-      // When we reach halfway, reset seamlessly (duplicated images make this invisible)
-      if (progress >= 1) {
-        startTime = currentTime;
-        x.set(0);
-      } else {
-        x.set(currentX);
-      }
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    return () => {
-      isRunning = false;
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [x, slideWidthPx, images.length]);
-
-  if (images.length === 0) {
-    return null;
-  }
-
+export default function Page() {
   return (
-    <motion.div
-      className="flex h-full items-center gap-6 pr-6"
-      style={{
-        x,
-      }}
-    >
-      {duplicatedImages.map((img, idx) => {
-        const src = img.src || imageFallback;
-        const alt = img.alt || "Project";
-        const objectPosition = img.objectPosition || "50% 50%";
-
-        return (
-          <div
-            key={`${src}-${idx}`}
-            className="flex-shrink-0 px-2 py-2 relative"
-            style={{
-              width: slideWidthPx || "40vw",
-              height: cardHeightPx || "26vw",
-            }}
-          >
-            <Image
-              src={src}
-              alt={alt}
-              fill
-              className="block rounded-3xl border border-white/10 object-cover shadow-[0_18px_80px_rgba(0,0,0,0.55)]"
-              style={{ objectPosition }}
-              loading="lazy"
-              sizes="(max-width: 768px) 80vw, (max-width: 1024px) 50vw, 40vw"
-            />
-          </div>
-        );
-      })}
-    </motion.div>
-  );
-};
-
-const ScrollHandler = () => {
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const scrollTarget = searchParams.get("scroll");
-    if (scrollTarget === "lets-connect") {
-      setTimeout(() => {
-        smoothScrollTo("lets-connect");
-      }, 100);
-
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, "", newUrl);
-    }
-  }, [searchParams]);
-
-  return null;
-};
-
-const Page: React.FC = () => {
-  // mobileMenuOpen logic moved to SiteHeader
-
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-slate-100">
+    <main className="relative min-h-screen overflow-x-clip bg-black text-slate-100">
       <Suspense fallback={null}>
         <ScrollHandler />
       </Suspense>
       {/* Background with slight grain or neutral gradient if desired, but sticking to black per request */}
       <div className="pointer-events-none fixed inset-0 -z-20 bg-black" />
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[url('/window.svg')] mix-blend-soft-light opacity-[0.15]" />
 
       {/* Navigation - Resizable navbar inspired by Aceternity UI */}
       <SiteHeader />
@@ -224,15 +84,7 @@ const Page: React.FC = () => {
             </div>
 
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-              <button
-                onClick={() => smoothScrollTo("lets-connect")}
-                className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-5 py-2 text-xs font-semibold text-slate-900 shadow-[0_0_35px_rgba(248,250,252,0.9)] transition hover:bg-white cursor-pointer"
-              >
-                Get in touch
-                <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-900 text-[9px] text-slate-50">
-                  →
-                </span>
-              </button>
+              <GetInTouchButton />
               <Link className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/15 transition hover:bg-zinc-800" href="/works">
                 See our work
               </Link>
@@ -242,7 +94,7 @@ const Page: React.FC = () => {
             <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-400">
               <div className="inline-flex items-center gap-2 rounded-full bg-zinc-900/80 px-3 py-1 ring-1 ring-white/10">
                 <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]" />
-                <span>Premium Product-grade builds</span>
+                <span>Premium, product-grade builds</span>
               </div>
               <span>Production-ready · Maintainable · Modern</span>
             </div>
@@ -276,8 +128,7 @@ const Page: React.FC = () => {
                   <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
                   <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10" />
 
-                  {/* Framer Motion infinite carousel */}
-                  <InfiniteCarousel images={HERO_SLIDER.length ? HERO_SLIDER : [{ src: "/assets/UrbanGuest.png", alt: "Preview" }]} />
+                  <HeroCarousel images={HERO_SLIDER} />
                 </div>
               </div>
             </div>
@@ -304,22 +155,7 @@ const Page: React.FC = () => {
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-950 to-transparent z-10" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-950 to-transparent z-10" />
 
-            <InfiniteMarquee
-              items={BRAND_STACK}
-              itemClassName="gap-20 px-4"
-              renderItem={(item) => (
-                <div className="flex items-center gap-4 opacity-80 hover:opacity-100 transition-opacity duration-300">
-                  <img
-                    src={item.src}
-                    alt={item.name}
-                    className="h-12 w-auto object-contain grayscale invert mix-blend-screen contrast-125"
-                  />
-                  <span className="text-xl font-semibold text-slate-200 tracking-tight">
-                    {item.name}
-                  </span>
-                </div>
-              )}
-            />
+            <TechStackMarquee items={BRAND_STACK} />
           </div>
         </section>
 
@@ -350,6 +186,4 @@ const Page: React.FC = () => {
       <SiteFooter />
     </main>
   );
-};
-
-export default Page;
+}

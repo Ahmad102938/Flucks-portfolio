@@ -1,16 +1,20 @@
 "use client";
 
 import React from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { IconMail } from "@tabler/icons-react";
 import Image from "next/image";
 import { smoothScrollTo } from "@/lib/scroll";
 
 export const ProjectCTA = () => {
+    const pathname = usePathname();
+    const router = useRouter();
+
     const handleStartProject = () => {
-        if (window.location.pathname === "/") {
+        if (pathname === "/") {
             smoothScrollTo("lets-connect");
         } else {
-            window.location.href = "/?scroll=lets-connect";
+            router.push("/?scroll=lets-connect");
         }
     };
 
@@ -28,7 +32,7 @@ export const ProjectCTA = () => {
                             <span className="text-zinc-400">in mind?</span>
                         </h2>
                         <p className="text-lg text-zinc-400 max-w-lg">
-                            Send us a message or schedule a call. Let's create something memorable together.
+                            Send us a message or schedule a call. Let&apos;s create something memorable together.
                         </p>
 
                         <div className="pt-4">
@@ -63,7 +67,7 @@ export const ProjectCTA = () => {
                             ))}
                         </div>
                         <div className="text-center sm:text-left">
-                            <p className="text-white font-medium">Get reply within 12 hours!</p>
+                            <p className="text-white font-medium">Get a reply within 12 hours!</p>
                             <p className="text-zinc-500 text-sm">Your personal success team</p>
                         </div>
                     </div>

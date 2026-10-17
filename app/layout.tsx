@@ -1,27 +1,39 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces, Playfair_Display } from "next/font/google"; // Import Playfair_Display
+import localFont from "next/font/local";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
+import { SitePreloader } from "@/components/site-preloader";
+import { preloaderInitScript } from "@/lib/preloader";
+import { MotionProvider } from "@/components/motion-provider";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
-const geistSans = Geist({
+// Fonts are self-hosted (app/fonts, latin variable woff2 from Google Fonts) so builds and
+// deploys never depend on fetching fonts.googleapis.com at build time.
+const geistSans = localFont({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  src: [{ path: "./fonts/geist-normal.woff2", weight: "100 900", style: "normal" }],
+  fallback: ["system-ui", "arial"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const fraunces = Fraunces({
+// Accent fonts are only used below the fold, so don't compete with the hero for bandwidth
+const fraunces = localFont({
   variable: "--font-fraunces",
-  subsets: ["latin"],
-  style: ["normal", "italic"],
+  src: [
+    { path: "./fonts/fraunces-normal.woff2", weight: "100 900", style: "normal" },
+    { path: "./fonts/fraunces-italic.woff2", weight: "100 900", style: "italic" },
+  ],
+  fallback: ["Georgia", "serif"],
+  preload: false,
 });
 
-const playfair = Playfair_Display({
+const playfair = localFont({
   variable: "--font-playfair",
-  subsets: ["latin"],
+  src: [
+    { path: "./fonts/playfair-normal.woff2", weight: "400 900", style: "normal" },
+    { path: "./fonts/playfair-italic.woff2", weight: "400 900", style: "italic" },
+  ],
+  fallback: ["Georgia", "serif"],
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -35,12 +47,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: preloaderInitScript }} />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${playfair.variable} antialiased`}
+        className={`${geistSans.variable} ${fraunces.variable} ${playfair.variable} antialiased`}
       >
+        <SitePreloader />
         <SmoothScroll />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

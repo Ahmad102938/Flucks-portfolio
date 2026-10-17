@@ -18,14 +18,14 @@ import Link from "next/link";
 import { smoothScrollTo } from "@/lib/scroll";
 
 const SERVICES = [
-    { title: "Crafted Webs \n& Mobile Apps", icon: IconWorld },
+    { title: "Crafted Websites \n& Mobile Apps", icon: IconWorld },
     { title: "Web & App Redesign", icon: IconEdit },
     { title: "eCommerce \nWebsite Design", icon: IconShoppingCart },
     { title: "CMS & \nDynamic Websites", icon: IconLayoutDashboard },
     { title: "Landing Pages \n& Microsites", icon: IconSend },
     { title: "Consistent \nIdentity", icon: IconPuzzle },
     { title: "AI Automation & \nAI Integration", icon: IconBolt },
-    { title: "UX Centric \nStrategy", icon: IconCompass },
+    { title: "UX-Centric \nStrategy", icon: IconCompass },
     { title: "Performance \nOptimization", icon: IconRocket },
     { title: "Maintenance & \nOngoing Support", icon: IconTools },
 ];
