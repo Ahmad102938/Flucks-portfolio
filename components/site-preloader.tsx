@@ -51,7 +51,12 @@ export const SitePreloader = () => {
     if (!shouldRender) return null;
 
     return (
-        <div className={cn(styles.preloaderWrapper, !isLoading && styles.hidden)} aria-hidden="true">
+        <div
+            className={cn(styles.preloaderWrapper, !isLoading && styles.hidden)}
+            aria-hidden="true"
+            data-site-preloader=""
+            data-leaving={isLoading ? undefined : ""}
+        >
             {/* Loaders Container */}
             <div className="flex items-center gap-8">
                 {/* Circle Loader */}

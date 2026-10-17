@@ -1,17 +1,16 @@
 "use client";
 
 import React from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { smoothScrollTo } from "@/lib/scroll";
+import { useGoToContact } from "@/lib/use-go-to-contact";
 import { ABOUT_CONTENT } from "@/constants/about";
 
 import { IconArrowRight } from "@tabler/icons-react";
 
 export const Hero = () => {
     const { title, subtitle, description, cta } = ABOUT_CONTENT.hero;
-    const pathname = usePathname();
-    const router = useRouter();
+    const goToContact = useGoToContact();
 
     return (
         <section className="relative w-full flex flex-col pt-32 sm:pt-40 px-6 md:px-12 bg-black text-white overflow-hidden pb-12">
@@ -36,13 +35,7 @@ export const Hero = () => {
                 <div className="grid md:grid-cols-[1fr,1.5fr] gap-12 mt-12 items-end">
                     <div>
                         <button
-                            onClick={() => {
-                                if (pathname === "/") {
-                                    smoothScrollTo("lets-connect");
-                                } else {
-                                    router.push("/?scroll=lets-connect");
-                                }
-                            }}
+                            onClick={goToContact}
                             className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black text-sm font-medium hover:bg-slate-200 transition-all duration-300 overflow-hidden"
                         >
                             <span className="relative z-10">{cta}</span>

@@ -1,22 +1,12 @@
 "use client";
 
 import React from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { IconMail } from "@tabler/icons-react";
 import Image from "next/image";
-import { smoothScrollTo } from "@/lib/scroll";
+import { useGoToContact } from "@/lib/use-go-to-contact";
 
 export const ProjectCTA = () => {
-    const pathname = usePathname();
-    const router = useRouter();
-
-    const handleStartProject = () => {
-        if (pathname === "/") {
-            smoothScrollTo("lets-connect");
-        } else {
-            router.push("/?scroll=lets-connect");
-        }
-    };
+    const goToContact = useGoToContact();
 
     return (
         <section className="w-full py-24 px-6 md:px-12 bg-black text-white border-t border-white/5 relative overflow-hidden">
@@ -37,7 +27,7 @@ export const ProjectCTA = () => {
 
                         <div className="pt-4">
                             <button
-                                onClick={handleStartProject}
+                                onClick={goToContact}
                                 className="group flex items-center gap-3 px-8 py-4 rounded-full bg-slate-200 hover:bg-white text-black text-lg font-medium transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:-translate-y-1"
                             >
                                 <IconMail className="w-6 h-6" />

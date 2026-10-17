@@ -494,3 +494,97 @@ main {
     }
   }
 }
+
+/* Reviews showcase: matte black panel + silver CD (see components/reviews-showcase.tsx) */
+@layer components {
+  .matte-panel {
+    background:
+      radial-gradient(120% 80% at 85% 0%, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 60%),
+      linear-gradient(180deg, #121214, #0a0a0b);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  /* Silver CD: brushed-metal sheen, fine grooves, grey centre ring and a hole
+     that shows the matte panel through it. Fades out toward the bottom-left. */
+  .cd-disc {
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    background:
+      radial-gradient(circle at center, #0f0f11 0 3.4%, transparent 3.6%),
+      radial-gradient(circle at center, transparent 0 9%, rgba(0, 0, 0, 0.35) 9.2% 9.6%, transparent 9.8%),
+      radial-gradient(circle at center, #e4e4e7 0 15.5%, #a1a1aa 15.8% 16.4%, transparent 16.6%),
+      repeating-radial-gradient(circle at center, rgba(255, 255, 255, 0.06) 0 1px, rgba(0, 0, 0, 0.07) 1px 3px),
+      conic-gradient(
+        from 200deg,
+        #fafafa,
+        #8e8e96 10%,
+        #e4e4e7 22%,
+        #52525b 36%,
+        #f4f4f5 50%,
+        #6b6b73 62%,
+        #d4d4d8 75%,
+        #3f3f46 88%,
+        #fafafa
+      );
+    box-shadow:
+      0 50px 100px -30px rgba(0, 0, 0, 0.9),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+      inset 0 0 80px rgba(0, 0, 0, 0.35);
+    -webkit-mask-image: radial-gradient(130% 130% at 85% 15%, #000 45%, transparent 78%);
+    mask-image: radial-gradient(130% 130% at 85% 15%, #000 45%, transparent 78%);
+  }
+
+  /* Phones show the disc as a band across the top of the panel: fade its lower edge instead */
+  @media (max-width: 639px) {
+    .cd-disc {
+      -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 97%);
+      mask-image: linear-gradient(to bottom, #000 60%, transparent 97%);
+    }
+  }
+
+  /* Specular reflection on the grooves: two opposed white glints, rotated from JS with the
+     scroll (and pointer), so the light travels as the page moves up or down */
+  .cd-disc__sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg,
+      rgba(255, 255, 255, 0) 0deg,
+      rgba(255, 255, 255, 0.15) 14deg,
+      rgba(255, 255, 255, 0.75) 28deg,
+      rgba(255, 255, 255, 0.15) 42deg,
+      rgba(255, 255, 255, 0) 64deg 180deg,
+      rgba(255, 255, 255, 0.1) 194deg,
+      rgba(255, 255, 255, 0.5) 208deg,
+      rgba(255, 255, 255, 0.1) 222deg,
+      rgba(255, 255, 255, 0) 244deg
+    );
+    mix-blend-mode: overlay;
+    /* The silver hub doesn't catch the groove reflection */
+    -webkit-mask-image: radial-gradient(circle at center, transparent 0 16.6%, #000 20%);
+    mask-image: radial-gradient(circle at center, transparent 0 16.6%, #000 20%);
+    will-change: transform;
+  }
+}
+
+/* Hard load of /?scroll=...: keep the page covered until the arrival handler parks it near
+   the target (lib/scroll.ts arriveAt). Fades away on its own if scripts never run. */
+html[data-scroll-arrival]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: #000;
+  pointer-events: none;
+  animation: scroll-arrival-failsafe 0.4s ease 3s forwards;
+}
+
+@keyframes scroll-arrival-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

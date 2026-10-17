@@ -168,6 +168,7 @@ export const LetsConnect = () => {
             <div className="mx-auto max-w-7xl">
                 {/* Header Title */}
                 <motion.div
+                    data-scroll-anchor=""
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
