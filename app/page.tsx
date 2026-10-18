@@ -10,6 +10,8 @@ import { ScrollHandler } from "@/components/home/scroll-handler";
 import { GetInTouchButton } from "@/components/home/get-in-touch-button";
 import { TechStackMarquee } from "@/components/home/tech-stack-marquee";
 import { HeroParallax, OurApproach, FaqSection, LetsConnect } from "@/components/home/lazy-sections";
+import { SectionIndex } from "@/components/home/section-index";
+import { CONTACT_ID } from "@/lib/scroll";
 import homeContent from "@/constants/home.json";
 
 const BRAND_STACK = [
@@ -50,6 +52,16 @@ const PARALLAX_PRODUCTS = [
 
 const HERO_SLIDER = homeContent.heroSlider;
 
+// The right-edge section index; each id is on a wrapper below (the contact form sets its own)
+const HOME_SECTIONS = [
+  { id: "home-intro", label: "Intro" },
+  { id: "home-work", label: "Work" },
+  { id: "home-services", label: "Services" },
+  { id: "home-approach", label: "Approach" },
+  { id: "home-faq", label: "FAQ" },
+  { id: CONTACT_ID, label: "Contact" },
+];
+
 export default function Page() {
   return (
     <main className="relative min-h-screen overflow-x-clip bg-black text-slate-100">
@@ -61,9 +73,11 @@ export default function Page() {
 
       {/* Navigation - Resizable navbar inspired by Aceternity UI */}
       <SiteHeader />
+      <SectionIndex sections={HOME_SECTIONS} />
 
       <div className="mx-auto max-w-6xl px-4 pb-20 pt-32 md:px-6 md:pb-28 md:pt-40">
         {/* Hero */}
+        <div id="home-intro">
         <BackgroundLines
           className="rounded-[2rem] py-2"
           svgOptions={{ duration: 10 }}
@@ -158,25 +172,32 @@ export default function Page() {
             <TechStackMarquee items={BRAND_STACK} />
           </div>
         </section>
+        </div>
 
         {/* Featured works */}
         {/* Featured works with Hero Parallax */}
-        <section className="relative w-full">
-          <HeroParallax products={PARALLAX_PRODUCTS} />
-        </section>
+        <div id="home-work">
+          <section className="relative w-full">
+            <HeroParallax products={PARALLAX_PRODUCTS} />
+          </section>
 
-        {/* Our Works (Visuvate Style) */}
-        <OurWorks />
+          {/* Our Works (Visuvate Style) */}
+          <OurWorks />
+        </div>
 
         {/* Our Services */}
-        <OurServices />
+        <div id="home-services">
+          <OurServices />
+        </div>
 
         {/* Our Approach (New) */}
-        <OurApproach />
+        <div id="home-approach">
+          <OurApproach />
+        </div>
 
-
-
-        <FaqSection />
+        <div id="home-faq">
+          <FaqSection />
+        </div>
 
         {/* CTA Form - LetsConnect Component */}
         <LetsConnect />

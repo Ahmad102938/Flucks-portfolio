@@ -7,6 +7,7 @@ import {
   AnimatePresence,
   LayoutGroup,
   useScroll,
+  useSpring,
   useMotionValueEvent,
 } from "motion/react";
 import { HamburgerToggle } from "@/components/ui/hamburger-toggle";
@@ -145,6 +146,29 @@ const GlassSurface = ({ visible }: { visible: boolean }) => (
   <span aria-hidden className="glass-surface" data-visible={visible} />
 );
 
+// How far down the page you are, as a hairline of light along the bottom rim of the floating
+// pill. Inset from the ends so it stays on the straight part of the rounded edge.
+const NavProgress = ({ visible, inset }: { visible: boolean; inset: string }) => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.5 });
+  return (
+    <span
+      aria-hidden
+      style={{ left: inset, right: inset }}
+      className={cn(
+        "pointer-events-none absolute -bottom-px z-10 h-px overflow-hidden transition-opacity duration-500",
+        visible ? "opacity-100" : "opacity-0",
+      )}
+    >
+      <span className="absolute inset-0 bg-white/[0.07]" />
+      <motion.span
+        style={{ scaleX }}
+        className="absolute inset-0 origin-left bg-gradient-to-r from-white/10 via-white/60 to-white shadow-[0_0_8px_rgba(255,255,255,0.6)]"
+      />
+    </span>
+  );
+};
+
 export const NavBody = ({ children, className }: NavBodyProps) => {
   const { visible } = useNavbarContext();
   return (
@@ -157,6 +181,7 @@ export const NavBody = ({ children, className }: NavBodyProps) => {
       )}
     >
       <GlassSurface visible={visible} />
+      <NavProgress visible={visible} inset="2.25rem" />
       {children}
     </div>
   );
@@ -259,6 +284,7 @@ export const MobileNav = ({ children, className }: MobileNavProps) => {
         className,
       )}
     >
+      <NavProgress visible={visible} inset="1.25rem" />
       {children}
     </div>
   );
