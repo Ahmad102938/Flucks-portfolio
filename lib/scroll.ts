@@ -16,6 +16,7 @@ export const CONTACT_HREF = `/?scroll=${CONTACT_ID}`;
 // Breathing room between the bottom of the floating navbar and the landing anchor
 const LANDING_GAP = 16;
 const CURTAIN_FADE_MS = 220;
+const CURTAIN_LIFT_MS = 720;
 
 const prefersReducedMotion = () =>
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -149,6 +150,11 @@ const createCurtain = (opacity: number) => {
         opacity: String(opacity),
         transition: `opacity ${CURTAIN_FADE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
     });
+    // Brand mark, shown only if the next page takes a moment to arrive
+    const mark = document.createElement("span");
+    mark.textContent = "FLUCKS";
+    mark.className = "scroll-curtain__mark";
+    curtain.appendChild(mark);
     document.body.appendChild(curtain);
     // Never leave the page covered if navigation stalls or fails
     clearTimeout(curtainFailsafe);
@@ -157,7 +163,7 @@ const createCurtain = (opacity: number) => {
 };
 
 /** Fades a curtain in; resolves once the screen is fully covered. */
-const showCurtain = () =>
+export const showCurtain = () =>
     new Promise<void>((resolve) => {
         const curtain = getCurtain() ?? createCurtain(0);
         void curtain.offsetWidth; // commit the starting opacity so the fade runs
@@ -172,6 +178,18 @@ export const hideCurtain = () => {
     curtain.id = ""; // a new curtain can be created while this one fades out
     curtain.style.opacity = "0";
     setTimeout(() => curtain.remove(), CURTAIN_FADE_MS + 50);
+};
+
+/** Page transitions: slides the curtain up and away, revealing the page that loaded behind it. */
+export const liftCurtain = () => {
+    clearTimeout(curtainFailsafe);
+    const curtain = getCurtain();
+    if (!curtain) return;
+    curtain.id = "";
+    curtain.classList.add("scroll-curtain--lifting");
+    curtain.style.transition = `transform ${CURTAIN_LIFT_MS}ms cubic-bezier(0.76, 0, 0.24, 1)`;
+    curtain.style.transform = "translate3d(0, -100%, 0)";
+    setTimeout(() => curtain.remove(), CURTAIN_LIFT_MS + 60);
 };
 
 let leavingForContact = false;

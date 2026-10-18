@@ -1,4 +1,6 @@
 import React from "react";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -12,6 +14,12 @@ import { Awards } from "@/components/about/Awards";
 import { Testimonial } from "@/components/about/Testimonial";
 import { ProjectCTA } from "@/components/about/ProjectCTA";
 // import { TeamSection } from "@/components/about/TeamSection"; // Hidden for now
+
+export const metadata: Metadata = pageMetadata({
+    title: "About",
+    description: "Meet Flucks: a team of designers and engineers who build with taste.",
+    path: "/about",
+});
 
 export default function AboutPage() {
     return (

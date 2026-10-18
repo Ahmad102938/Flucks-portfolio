@@ -1,10 +1,18 @@
 import React from "react";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ServicesHero } from "@/components/services/ServicesHero";
 import { ServiceBlock } from "@/components/services/ServiceBlock";
 import { ServicesCTA } from "@/components/services/ServicesCTA";
 import { SERVICES_CONTENT } from "@/constants/services";
+
+export const metadata: Metadata = pageMetadata({
+    title: "Services",
+    description: "Web and app experiences, AI automation and workflow integrations, designed and engineered by Flucks.",
+    path: "/services",
+});
 
 export default function ServicesPage() {
     return (

@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { WorkCard } from "@/components/ui/work-card";
+import { isInProgress } from "@/constants/projects";
 import type { WorkItem } from "@/lib/works";
 
 export function WorksHeading() {
@@ -38,6 +39,7 @@ export function WorksGrid({ works }: { works: WorkItem[] }) {
                         href={work.link || "#"}
                         showLink={!!work.link}
                         slug={work.slug}
+                        inProgress={isInProgress(work.slug)}
                     />
                 </motion.div>
             ))}
