@@ -66,3 +66,21 @@ export async function getWorks(): Promise<WorkItem[]> {
         return [];
     }
 }
+
+/** The Cloudinary project for a slug plus the one after it in the grid (wrapping), or null. */
+export async function getWorkWithNext(
+    slug: string,
+): Promise<{ work: WorkItem; next: WorkItem | null; index: number; total: number } | null> {
+    const works = await getWorks();
+    const index = works.findIndex((w) => w.slug === slug.toLowerCase().trim());
+    if (index === -1) return null;
+    const next = works.length > 1 ? works[(index + 1) % works.length] : null;
+    return { work: works[index], next, index, total: works.length };
+}
+
+/** Cloudinary links are sometimes saved without a scheme ("www.example.com") */
+export const toExternalUrl = (link: string | null | undefined) => {
+    const trimmed = link?.trim();
+    if (!trimmed) return null;
+    return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+};

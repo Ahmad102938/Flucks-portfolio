@@ -15,7 +15,7 @@ export const Hero = () => {
     return (
         <section className="relative w-full flex flex-col pt-32 sm:pt-40 px-6 md:px-12 bg-black text-white overflow-hidden pb-12">
             {/* Background Noise / Texture could go here */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat mix-blend-overlay"></div>
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('/textures/noise.svg')] bg-repeat mix-blend-overlay"></div>
 
             <motion.div
                 initial={{ opacity: 0, y: 50 }}

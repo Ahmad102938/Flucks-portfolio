@@ -2,10 +2,21 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
-import { IconMail, IconBrandWhatsapp, IconMapPin } from "@tabler/icons-react";
+import { IconMail, IconBrandWhatsapp, IconMapPin, IconCheck, IconArrowRight } from "@tabler/icons-react";
 import Link from "next/link";
 import { DottedGlowBackground } from "@/components/ui/dotted-glow-background";
 import { DepthTunnel } from "@/components/ui/depth-tunnel";
+import { socialLinks } from "@/constants/footer";
+
+// Right-hand column of the form: edit freely
+const CONTACT_ASIDE = {
+    availability: "Taking on new projects",
+    nextSteps: [
+        { title: "We read every enquiry", detail: "A real person on the team reviews your brief, not a bot." },
+        { title: "A quick conversation", detail: "We reply with questions or a link to book a short call." },
+        { title: "A clear proposal", detail: "Scope, timeline and cost in writing, before any work starts." },
+    ],
+};
 import PhoneInput, { getCountries, isValidPhoneNumber } from 'react-phone-number-input';
 import en from 'react-phone-number-input/locale/en.json';
 import 'react-phone-number-input/style.css';
@@ -208,24 +219,27 @@ export const LetsConnect = () => {
                     className={
                         depth
                             ? "relative rounded-[2.5rem] border border-white/10 bg-black/60 shadow-[inset_0_0_60px_rgba(0,0,0,0.6),0_40px_120px_-40px_rgba(0,0,0,0.9)] will-change-transform"
-                            : "relative shadow-[inset_0_0_60px_rgba(0,0,0,0.6)] rounded-[2.5rem] border border-white/10 bg-black/70"
+                            : // isolate: keeps the background layers above this fill once the fade-up's transform is gone
+                              "relative isolate shadow-[inset_0_0_60px_rgba(0,0,0,0.6)] rounded-[2.5rem] border border-white/10 bg-black/70"
                     }
                 >
                     {/* Background Container - Rounded & Clipped (Desktop Only / Global Parent) */}
                     <div className={`absolute inset-0 -z-10 h-full w-full overflow-hidden rounded-[2.5rem]${depth ? " bg-black" : ""}`}>
                         {/* Far layer (desktop only): the tunnel you slide into */}
                         {depth && <DepthTunnel progress={travel} />}
+                        {/* Slow drifting light; carries the atmosphere on phones, where there's no tunnel */}
+                        {!depth && <div className="connect-aurora absolute inset-0" />}
                         {/* Near layer: dots; on desktop they clear around the vanishing point so the depth shows */}
                         <motion.div
                             style={{ y }}
                             className={
                                 depth
-                                    ? "absolute inset-0 h-[120%] w-full opacity-50 [mask-image:radial-gradient(ellipse_65%_55%_at_50%_38%,transparent_35%,black_90%)]"
-                                    : "absolute inset-0 h-[120%] w-full"
+                                    ? "absolute inset-x-0 -top-[20%] h-[140%] w-full opacity-80 [mask-image:radial-gradient(ellipse_65%_55%_at_50%_38%,transparent_35%,black_90%)]"
+                                    : "absolute inset-x-0 -top-[20%] h-[140%] w-full opacity-60 [mask-image:linear-gradient(to_bottom,transparent_8%,black_30%)]"
                             }
                         >
                             <DottedGlowBackground
-                                color="rgba(255, 255, 255, 0.4)"
+                                color="rgba(255, 255, 255, 0.5)"
                                 glowColor="rgba(255, 255, 255, 1)"
                                 gap={15}
                                 speedMin={0.5}
@@ -233,6 +247,9 @@ export const LetsConnect = () => {
                             />
                         </motion.div>
                     </div>
+
+                    {/* Fine highlight along the top edge, like light catching a glass rim */}
+                    <div className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
                     <div className="grid gap-4 lg:gap-0 lg:grid-cols-[1.5fr,1fr]">
                         {/* Left Column: Form */}
@@ -252,8 +269,8 @@ export const LetsConnect = () => {
 
                             <form className="space-y-4" onSubmit={handleSubmit}>
                                 <div className="grid gap-4 md:grid-cols-2">
-                                    <div className="space-y-1.5">
-                                        <label className="text-xs font-medium text-white">
+                                    <div className="group/field space-y-1.5">
+                                        <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                             Name
                                         </label>
                                         <input
@@ -262,12 +279,12 @@ export const LetsConnect = () => {
                                             value={formData.name}
                                             onChange={handleChange}
                                             placeholder="Your Name"
-                                            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                            className="w-full rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 placeholder:text-zinc-500 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                         />
                                         {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <label className="text-xs font-medium text-white">
+                                    <div className="group/field space-y-1.5">
+                                        <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                             Email
                                         </label>
                                         <input
@@ -276,15 +293,15 @@ export const LetsConnect = () => {
                                             value={formData.email}
                                             onChange={handleChange}
                                             placeholder="your@email.com"
-                                            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                            className="w-full rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 placeholder:text-zinc-500 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                         />
                                         {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
                                     </div>
                                 </div>
 
                                 <div className="grid gap-4 md:grid-cols-2">
-                                    <div className="space-y-1.5">
-                                        <label className="text-xs font-medium text-white">
+                                    <div className="group/field space-y-1.5">
+                                        <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                             Country
                                         </label>
                                         <div className="relative">
@@ -297,7 +314,7 @@ export const LetsConnect = () => {
                                                         onChange={handleChange}
                                                         placeholder="Enter Country"
                                                         autoFocus
-                                                        className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                                        className="w-full rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 placeholder:text-zinc-500 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                                     />
                                                     <button
                                                         type="button"
@@ -314,7 +331,7 @@ export const LetsConnect = () => {
                                                         name="country"
                                                         value={formData.country}
                                                         onChange={handleChange}
-                                                        className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                                        className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                                     >
                                                         <option value="">Select Country</option>
                                                         {countryList.map((country) => (
@@ -331,11 +348,11 @@ export const LetsConnect = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <label className="text-xs font-medium text-white">
+                                    <div className="group/field space-y-1.5">
+                                        <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                             Phone
                                         </label>
-                                        <div className="rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all focus-within:bg-zinc-800 focus-within:border-white focus-within:ring-2 focus-within:ring-white/20">
+                                        <div className="rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 focus-within:border-white/40 focus-within:bg-zinc-900 focus-within:ring-4 focus-within:ring-white/[0.06]">
                                             <PhoneInput
                                                 placeholder="Enter phone number"
                                                 value={formData.phone}
@@ -352,8 +369,8 @@ export const LetsConnect = () => {
                                 </div>
 
                                 <div className="grid gap-4 md:grid-cols-2">
-                                    <div className="space-y-1.5">
-                                        <label className="text-xs font-medium text-white">
+                                    <div className="group/field space-y-1.5">
+                                        <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                             Project Type
                                         </label>
                                         <div className="relative">
@@ -366,7 +383,7 @@ export const LetsConnect = () => {
                                                         onChange={handleChange}
                                                         placeholder="Enter Project Type"
                                                         autoFocus
-                                                        className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                                        className="w-full rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 placeholder:text-zinc-500 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                                     />
                                                     <button
                                                         type="button"
@@ -383,7 +400,7 @@ export const LetsConnect = () => {
                                                         name="projectType"
                                                         value={formData.projectType}
                                                         onChange={handleChange}
-                                                        className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                                        className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                                     >
                                                         <option value="">Select...</option>
                                                         <option value="Web Design & Development">Web Design & Development</option>
@@ -401,8 +418,8 @@ export const LetsConnect = () => {
                                         </div>
                                         {errors.projectType && <p className="text-xs text-red-500">{errors.projectType}</p>}
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <label className="text-xs font-medium text-white">
+                                    <div className="group/field space-y-1.5">
+                                        <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                             Number of pages
                                         </label>
                                         <div className="relative">
@@ -410,7 +427,7 @@ export const LetsConnect = () => {
                                                 name="numberOfPages"
                                                 value={formData.numberOfPages}
                                                 onChange={handleChange}
-                                                className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                                className="w-full appearance-none rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                             >
                                                 <option value="">Select...</option>
                                                 <option value="1-5">1-5</option>
@@ -426,7 +443,7 @@ export const LetsConnect = () => {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="text-xs font-medium text-white">
+                                    <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                         Budget range
                                     </label>
                                     <div className="flex flex-wrap gap-2">
@@ -435,19 +452,27 @@ export const LetsConnect = () => {
                                                 type="button"
                                                 key={option}
                                                 onClick={() => handleBudgetChange(option)}
-                                                className={`rounded-full border px-5 py-2 text-xs font-medium transition-all duration-300 ${formData.budget === option
-                                                    ? "border-cyan-500 bg-cyan-500/10 text-cyan-400"
-                                                    : "border-white/10 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                                                aria-pressed={formData.budget === option}
+                                                className={`relative rounded-full border px-5 py-2 text-xs font-medium transition-colors duration-300 ${formData.budget === option
+                                                    ? "border-white text-black"
+                                                    : "border-white/10 bg-zinc-950/90 text-zinc-300 hover:border-white/25 hover:text-white"
                                                     }`}
                                             >
-                                                {option}
+                                                {formData.budget === option && (
+                                                    <motion.span
+                                                        layoutId="budget-pill"
+                                                        transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                                                        className="absolute inset-0 rounded-full bg-white shadow-[0_0_24px_rgba(255,255,255,0.25)]"
+                                                    />
+                                                )}
+                                                <span className="relative">{option}</span>
                                             </button>
                                         ))}
                                     </div>
                                 </div>
 
-                                <div className="space-y-1.5 pt-1">
-                                    <label className="text-xs font-medium text-white">
+                                <div className="group/field space-y-1.5 pt-1">
+                                    <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                         What do you need help with?
                                     </label>
                                     <div className="relative">
@@ -457,29 +482,29 @@ export const LetsConnect = () => {
                                             onChange={handleChange}
                                             placeholder="Tell us what you're looking to create..."
                                             rows={2}
-                                            className="w-full rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-zinc-200 outline-none transition-all placeholder:text-zinc-500 focus:bg-zinc-800 focus:border-white focus:ring-2 focus:ring-white/20"
+                                            className="w-full rounded-xl border border-white/10 bg-zinc-950/90 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-all duration-300 hover:border-white/20 placeholder:text-zinc-500 focus:border-white/40 focus:bg-zinc-900 focus:ring-4 focus:ring-white/[0.06]"
                                         />
                                         {errors.message && <p className="text-xs text-red-500">{errors.message}</p>}
                                     </div>
                                 </div>
 
                                 <div className="space-y-3 pt-2">
-                                    <label className="text-xs font-medium text-white">
+                                    <label className="text-xs font-medium tracking-wide text-zinc-400 transition-colors duration-300 group-focus-within/field:text-white">
                                         Preferred Response Method
                                     </label>
                                     <div className="flex gap-6">
                                         <label className="flex cursor-pointer items-center gap-2" onClick={() => handleMethodChange("email")}>
-                                            <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${formData.preferredResponseMethod === "email" ? "border-cyan-500" : "border-white/20"}`}>
+                                            <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${formData.preferredResponseMethod === "email" ? "border-white" : "border-white/20"}`}>
                                                 {formData.preferredResponseMethod === "email" && (
-                                                    <motion.div layoutId="radio-indicator" className="h-2.5 w-2.5 rounded-full bg-cyan-400" />
+                                                    <motion.div layoutId="radio-indicator" className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.6)]" />
                                                 )}
                                             </div>
                                             <span className={`text-sm transition-colors ${formData.preferredResponseMethod === "email" ? "text-white" : "text-zinc-400"}`}>Email</span>
                                         </label>
                                         <label className="flex cursor-pointer items-center gap-2" onClick={() => handleMethodChange("whatsapp")}>
-                                            <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${formData.preferredResponseMethod === "whatsapp" ? "border-emerald-500" : "border-white/20"}`}>
+                                            <div className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors ${formData.preferredResponseMethod === "whatsapp" ? "border-white" : "border-white/20"}`}>
                                                 {formData.preferredResponseMethod === "whatsapp" && (
-                                                    <motion.div layoutId="radio-indicator" className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                                                    <motion.div layoutId="radio-indicator" className="h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.6)]" />
                                                 )}
                                             </div>
                                             <span className={`text-sm transition-colors ${formData.preferredResponseMethod === "whatsapp" ? "text-white" : "text-zinc-400"}`}>WhatsApp</span>
@@ -495,12 +520,27 @@ export const LetsConnect = () => {
                                         <p className="mb-2 text-sm text-red-400">Something went wrong. Please try again.</p>
                                     )}
                                     <motion.button
-                                        whileHover={{ scale: 1.02 }}
+                                        whileHover={{ scale: 1.01 }}
                                         whileTap={{ scale: 0.98 }}
                                         disabled={status === "sending"}
-                                        className="flex w-full items-center justify-center gap-2 rounded-full bg-white py-3.5 text-sm font-bold text-black transition-colors hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="submit-sheen group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-white py-3.5 text-sm font-semibold text-black shadow-[0_10px_40px_-12px_rgba(255,255,255,0.45)] transition-shadow duration-500 hover:shadow-[0_14px_50px_-10px_rgba(255,255,255,0.6)] disabled:cursor-not-allowed disabled:opacity-60"
                                     >
-                                        {status === "sending" ? "Sending..." : "Submit"}
+                                        {status === "sending" ? (
+                                            <>
+                                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/20 border-t-black" />
+                                                Sending…
+                                            </>
+                                        ) : status === "success" ? (
+                                            <>
+                                                <IconCheck size={16} stroke={2.5} />
+                                                Sent. Talk soon
+                                            </>
+                                        ) : (
+                                            <>
+                                                Send enquiry
+                                                <IconArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                                            </>
+                                        )}
                                     </motion.button>
                                 </div>
                             </form>
@@ -510,13 +550,22 @@ export const LetsConnect = () => {
                         <div className="relative p-6 sm:p-8 lg:p-10">
                             <div className="static lg:sticky lg:top-24 space-y-8 flex flex-col justify-between">
                                 <div className="space-y-8">
+                                    {/* Availability */}
+                                    <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-zinc-300">
+                                        <span className="relative flex h-2 w-2">
+                                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+                                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                                        </span>
+                                        {CONTACT_ASIDE.availability}
+                                    </div>
+
                                     {/* Email */}
                                     <div className="group">
-                                        <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-cyan-500/20 group-hover:text-cyan-400">
+                                        <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-white group-hover:text-black">
                                             <IconMail size={16} />
                                         </div>
                                         <h4 className="mb-1 text-xs font-medium text-zinc-400">Email us for collaborations</h4>
-                                        <Link href="mailto:contact@flucks.in" className="text-lg font-medium text-white transition-colors hover:text-cyan-400">contact@flucks.in</Link>
+                                        <Link href="mailto:contact@flucks.in" className="text-lg font-medium text-white underline decoration-white/0 underline-offset-4 transition-colors hover:decoration-white/60">contact@flucks.in</Link>
                                     </div>
 
                                     {/* WhatsApp */}
@@ -530,7 +579,7 @@ export const LetsConnect = () => {
 
                                     {/* Location */}
                                     <div className="group">
-                                        <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-purple-500/20 group-hover:text-purple-400">
+                                        <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-white transition-colors group-hover:bg-white group-hover:text-black">
                                             <IconMapPin size={16} />
                                         </div>
                                         <h4 className="mb-1 text-xs font-medium text-zinc-400">Visit us</h4>
@@ -538,12 +587,35 @@ export const LetsConnect = () => {
                                     </div>
                                 </div>
 
+                                {/* What happens next */}
+                                <div className="border-t border-white/10 pt-8">
+                                    <h4 className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">What happens next</h4>
+                                    <ol className="relative space-y-5 border-l border-white/10 pl-6">
+                                        {CONTACT_ASIDE.nextSteps.map((step, i) => (
+                                            <li key={step.title} className="relative">
+                                                <span className="absolute -left-[31px] top-0 flex h-[15px] w-[15px] items-center justify-center rounded-full border border-white/20 bg-black font-mono text-[8px] text-zinc-400">
+                                                    {i + 1}
+                                                </span>
+                                                <p className="text-sm font-medium leading-none text-white">{step.title}</p>
+                                                <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">{step.detail}</p>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                </div>
+
                                 {/* Footer Links */}
                                 <div className="mt-8 lg:mt-12 flex flex-wrap gap-x-5 gap-y-2 text-xs text-zinc-500">
-                                    <Link href="https://www.facebook.com/flucksCo" className="hover:text-white hover:underline">Facebook</Link>
-                                    <Link href="https://www.instagram.com/flucksCo" className="hover:text-white hover:underline">Instagram</Link>
-                                    <Link href="https://www.linkedin.com/in/md-masum-ahmad-36a474265/" className="hover:text-white hover:underline">LinkedIn</Link>
-                                    <Link href="https://x.com/flucksCo" className="hover:text-white hover:underline">Twitter</Link>
+                                    {socialLinks.map((link) => (
+                                        <a
+                                            key={link.label}
+                                            href={link.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="hover:text-white hover:underline"
+                                        >
+                                            {link.label}
+                                        </a>
+                                    ))}
                                 </div>
                             </div>
                         </div>

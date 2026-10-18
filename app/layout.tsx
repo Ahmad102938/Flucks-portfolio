@@ -4,6 +4,10 @@ import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import { SitePreloader } from "@/components/site-preloader";
 import { preloaderInitScript } from "@/lib/preloader";
 import { MotionProvider } from "@/components/motion-provider";
+import { PageTransition } from "@/components/page-transition";
+import { SiteCursor } from "@/components/site-cursor";
+import { SITE_NAME, SITE_URL } from "@/constants/site";
+import { pageMetadata } from "@/lib/metadata";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -37,8 +41,11 @@ const playfair = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Flucks",
-  description: "A team of designers and engineers delivering web & app experiences, AI automation, and workflow integrations",
+  metadataBase: new URL(SITE_URL),
+  title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
+  applicationName: SITE_NAME,
+  // Description and sharing tags; the sharing image comes from app/opengraph-image.tsx
+  ...pageMetadata({ path: "/" }),
 };
 
 export default function RootLayout({
@@ -56,6 +63,8 @@ export default function RootLayout({
       >
         <SitePreloader />
         <SmoothScroll />
+        <PageTransition />
+        <SiteCursor />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

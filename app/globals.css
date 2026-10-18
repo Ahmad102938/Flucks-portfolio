@@ -588,3 +588,241 @@ html[data-scroll-arrival]::after {
     visibility: hidden;
   }
 }
+
+/* 404 page: outlined digits with a spotlight that reveals a lit copy (components/not-found-hero.tsx) */
+.not-found-stage {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  display: grid;
+}
+
+.not-found-digits {
+  grid-area: 1 / 1;
+  font-size: clamp(9rem, 34vw, 30rem);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+}
+
+.not-found-digits--outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.14);
+}
+
+.not-found-digits--lit {
+  color: transparent;
+  background: linear-gradient(to bottom, #fff, #71717a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-mask-image: radial-gradient(circle at var(--spot-x) var(--spot-y), #000 0, rgba(0, 0, 0, 0.35) 18%, transparent 38%);
+  mask-image: radial-gradient(circle at var(--spot-x) var(--spot-y), #000 0, rgba(0, 0, 0, 0.35) 18%, transparent 38%);
+  animation: not-found-drift 14s ease-in-out infinite;
+}
+
+/* Once the mouse takes over, the light stops drifting and follows it */
+.not-found-stage[data-pointer] .not-found-digits--lit {
+  animation: none;
+}
+
+@keyframes not-found-drift {
+  0%, 100% { --spot-x: 22%; --spot-y: 35%; }
+  33% { --spot-x: 78%; --spot-y: 60%; }
+  66% { --spot-x: 48%; --spot-y: 30%; }
+}
+
+@property --spot-x {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
+@property --spot-y {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-digits--lit {
+    animation: none;
+  }
+}
+
+/* Let's Connect tunnel (components/ui/depth-tunnel.tsx): a soft band of light that travels along
+   each wall toward the viewer, revealing a brighter copy of the grid as it passes */
+.tunnel-pulse {
+  --pulse: linear-gradient(var(--pulse-dir), transparent 0%, #000 50%, transparent 100%);
+  -webkit-mask-image: var(--pulse);
+  mask-image: var(--pulse);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: tunnel-pulse-y 9s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+/* The far end of each wall is where the band starts; it fades in from the distance */
+.tunnel-pulse--down { --pulse-dir: to bottom; -webkit-mask-size: 100% 35%; mask-size: 100% 35%; }
+.tunnel-pulse--up { --pulse-dir: to bottom; -webkit-mask-size: 100% 35%; mask-size: 100% 35%; animation-name: tunnel-pulse-y-reverse; }
+.tunnel-pulse--right { --pulse-dir: to right; -webkit-mask-size: 35% 100%; mask-size: 35% 100%; animation-name: tunnel-pulse-x; }
+.tunnel-pulse--left { --pulse-dir: to right; -webkit-mask-size: 35% 100%; mask-size: 35% 100%; animation-name: tunnel-pulse-x-reverse; }
+
+@keyframes tunnel-pulse-y { from { -webkit-mask-position: 0 -60%; mask-position: 0 -60%; } to { -webkit-mask-position: 0 160%; mask-position: 0 160%; } }
+@keyframes tunnel-pulse-y-reverse { from { -webkit-mask-position: 0 160%; mask-position: 0 160%; } to { -webkit-mask-position: 0 -60%; mask-position: 0 -60%; } }
+@keyframes tunnel-pulse-x { from { -webkit-mask-position: -60% 0; mask-position: -60% 0; } to { -webkit-mask-position: 160% 0; mask-position: 160% 0; } }
+@keyframes tunnel-pulse-x-reverse { from { -webkit-mask-position: 160% 0; mask-position: 160% 0; } to { -webkit-mask-position: -60% 0; mask-position: -60% 0; } }
+
+/* Phones and tablets: two soft white lights drifting slowly behind the form */
+.connect-aurora {
+  background:
+    radial-gradient(40% 30% at 20% 15%, rgba(255, 255, 255, 0.1), transparent 70%),
+    radial-gradient(45% 30% at 85% 60%, rgba(255, 255, 255, 0.07), transparent 70%);
+  background-size: 140% 140%;
+  animation: connect-aurora-drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes connect-aurora-drift {
+  from { background-position: 0% 0%; }
+  to { background-position: 100% 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tunnel-pulse { animation: none; opacity: 0; }
+  .connect-aurora { animation: none; }
+}
+
+/* Let's Connect submit button: a soft band of light sweeps across on hover */
+.submit-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* A white button can't get lighter, so the glint is drawn by its soft grey edges */
+  background: linear-gradient(110deg, transparent 38%, rgba(0, 0, 0, 0.07) 46%, rgba(255, 255, 255, 0.9) 50%, rgba(0, 0, 0, 0.07) 54%, transparent 62%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.submit-sheen:hover:not(:disabled)::after {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(120%);
+}
+
+/* Page transition curtain (lib/scroll.ts): brand mark for slow loads, soft lit edge while lifting */
+.scroll-curtain__mark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.6em;
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  animation: curtain-mark-in 0.6s ease 0.45s forwards;
+}
+
+.scroll-curtain--lifting {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18), 0 40px 80px 20px rgba(0, 0, 0, 0.55);
+}
+
+.scroll-curtain--lifting .scroll-curtain__mark {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+@keyframes curtain-mark-in {
+  to { opacity: 1; }
+}
+
+/* Signature cursor (components/site-cursor.tsx), active on desktop pointers only */
+html[data-custom-cursor] [data-cursor],
+html[data-custom-cursor] [data-cursor] * {
+  cursor: none;
+}
+
+.site-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9997;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.site-cursor__bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 12px 40px -12px rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  opacity: 0;
+  transform: scale(0.2);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.site-cursor[data-active] .site-cursor__bubble {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.site-cursor__label {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #fff;
+  text-align: center;
+  line-height: 1.1;
+  padding: 0 10px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-cursor__bubble { transition: opacity 0.2s ease; transform: none; }
+}
+
+/* ---- Next project preview (case-study pages) ----
+   Closed: an inset frame with the shot slightly zoomed and dimmed. On hover the frame opens to
+   full width while the shot settles back and brightens, like a lens coming into focus.
+   Opening is slow and eased at both ends; closing waits a beat (so a passing cursor doesn't make it
+   flicker) and is a touch quicker. Touch screens and reduced motion show it fully open. */
+.next-reveal {
+  clip-path: inset(10% 7% 10% 7% round 24px);
+  transition: clip-path 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.18s;
+}
+.next-reveal__image {
+  transform: scale(1.1);
+  transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.18s;
+}
+.next-reveal__veil {
+  opacity: 0.3;
+  transition: opacity 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.18s;
+}
+
+.group:hover .next-reveal,
+.group:focus-visible .next-reveal {
+  clip-path: inset(0% 0% 0% 0% round 24px);
+  transition: clip-path 1.6s cubic-bezier(0.77, 0, 0.18, 1) 0.06s;
+}
+.group:hover .next-reveal__image,
+.group:focus-visible .next-reveal__image {
+  transform: scale(1);
+  transition: transform 2s cubic-bezier(0.22, 1, 0.36, 1) 0.06s;
+}
+.group:hover .next-reveal__veil,
+.group:focus-visible .next-reveal__veil {
+  opacity: 0;
+  transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.06s;
+}
+
+@media (max-width: 767px), (hover: none), (prefers-reduced-motion: reduce) {
+  .next-reveal,
+  .group:hover .next-reveal { clip-path: inset(0% 0% 0% 0% round 24px); }
+  .next-reveal__image,
+  .group:hover .next-reveal__image { transform: none; }
+  .next-reveal__veil { opacity: 0; }
+}

@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Testimonials } from "@/components/testimonials";
@@ -6,6 +8,12 @@ import { WorksGrid, WorksHeading } from "@/components/works/works-grid";
 import { getWorks } from "@/lib/works";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = pageMetadata({
+    title: "Works",
+    description: "Selected websites, apps and automation systems designed and built by Flucks.",
+    path: "/works",
+});
 
 // "Loved by Builders" (video + text testimonials, desktop and mobile layouts) is parked for
 // now, not deleted. Flip this to true to bring it back; ReviewsShowcase replaces it meanwhile.

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,7 +33,7 @@ export const OurWorks = () => {
             </div>
 
             {/* Parallax Image Section */}
-            <div className="w-full max-w-[90vw] mx-auto relative group cursor-none">
+            <div className="w-full max-w-[90vw] mx-auto relative group" data-cursor="View Project">
                 <motion.div
                     style={{ scale, opacity: imageOpacity }}
                     className="relative aspect-video w-full overflow-hidden rounded-2xl"
@@ -63,9 +63,6 @@ export const OurWorks = () => {
                         </div>
                     </Link>
                 </motion.div>
-
-                {/* Custom Cursor Follower */}
-                <CursorFollower />
             </div>
 
             <div className="container mx-auto px-4 mt-24 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -86,57 +83,6 @@ export const OurWorks = () => {
     );
 };
 
-const CursorFollower = () => {
-    const parentRef = useRef<HTMLDivElement>(null);
-    const cursorRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const parent = parentRef.current?.parentElement;
-        if (!parent) return;
-
-        // Cache the rect while hovered instead of forcing layout on every mousemove
-        let rect = parent.getBoundingClientRect();
-        const cacheRect = () => {
-            rect = parent.getBoundingClientRect();
-        };
-        const onEnter = () => {
-            cacheRect();
-            window.addEventListener("scroll", cacheRect, { passive: true });
-        };
-        const onLeave = () => window.removeEventListener("scroll", cacheRect);
-
-        const moveCursor = (e: MouseEvent) => {
-            if (cursorRef.current) {
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-            }
-        };
-
-        parent.addEventListener("mouseenter", onEnter);
-        parent.addEventListener("mouseleave", onLeave);
-        parent.addEventListener("mousemove", moveCursor, { passive: true });
-        return () => {
-            parent.removeEventListener("mouseenter", onEnter);
-            parent.removeEventListener("mouseleave", onLeave);
-            parent.removeEventListener("mousemove", moveCursor);
-            onLeave();
-        };
-    }, []);
-
-    return (
-        <div ref={parentRef} className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-            <div
-                ref={cursorRef}
-                className="absolute top-0 left-0 z-40 flex items-center justify-center w-24 h-24 bg-white/15 border border-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-                <div className="font-playfair text-white italic text-sm">View Project</div>
-            </div>
-        </div>
-    );
-};
-
 const WorkItem = ({ title, subtitle, image, index }: { title: string, subtitle: string, image: string, index: number }) => {
     return (
         <motion.div
@@ -146,7 +92,7 @@ const WorkItem = ({ title, subtitle, image, index }: { title: string, subtitle: 
             transition={{ delay: index * 0.2, duration: 0.5 }}
             className="group relative aspect-[4/3] overflow-hidden rounded-2xl cursor-pointer"
         >
-            <Link href="/works" className="block w-full h-full relative">
+            <Link href="/works" data-cursor="View" className="block w-full h-full relative">
                 <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/0 transition-colors z-10" />
                 <Image
                     src={image}
@@ -155,7 +101,8 @@ const WorkItem = ({ title, subtitle, image, index }: { title: string, subtitle: 
                     className="object-cover transform group-hover:scale-110 transition-transform duration-700"
                     alt={title}
                 />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
+                {/* With the custom cursor on, the cursor carries the "View" label instead */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 [[data-custom-cursor]_a:hover_&]:hidden">
                     <div className="font-playfair text-4xl italic text-white">View</div>
                 </div>
                 <div className="absolute bottom-6 left-6 z-20">

@@ -5,6 +5,13 @@ export const footerBranding = {
     copyrightText: "© 2026 Flucks. All rights reserved."
 };
 
+// Social profiles, shown in the footer ("The Cool") and under the Let's Connect form
+export const socialLinks = [
+    { label: "Twitter", href: "https://x.com/imexyyyyy?s=11" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/md-masum-ahmad-36a474265/" },
+    { label: "GitHub", href: "https://github.com/Flucks-Hub" },
+];
+
 export const footerLinks = [
     {
         title: "The Good",
@@ -18,19 +25,14 @@ export const footerLinks = [
     {
         title: "The Boring",
         links: [
-            { label: "Terms of Use", href: "/" },
-            { label: "Privacy Policy", href: "/" },
-            { label: "Legal", href: "/" },
-            { label: "Credits", href: "/" },
+            { label: "Terms of Use", href: "/terms" },
+            { label: "Privacy Policy", href: "/privacy" },
+            { label: "Legal", href: "/legal" },
+            { label: "Credits", href: "/credits" },
         ]
     },
     {
         title: "The Cool",
-        links: [
-            { label: "Instagram", href: "https://instagram.com" },
-            { label: "Twitter", href: "https://twitter.com/flucks" },
-            { label: "LinkedIn", href: "https://linkedin.com" },
-            { label: "GitHub", href: "https://github.com/Flucks-Hub" },
-        ]
+        links: socialLinks,
     },
 ];
