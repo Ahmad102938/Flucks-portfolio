@@ -11,7 +11,6 @@ import {
     CountUp,
     FadeUp,
     NextProject,
-    ReadingProgress,
     RevealRow,
     ScrollQuote,
     StoryChapter,
@@ -141,7 +140,6 @@ export default async function WorkDetailsPage({ params }: { params: Promise<{ sl
 
     return (
         <div className="min-h-screen bg-black text-white selection:bg-cyan-500/30">
-            <ReadingProgress />
             <SiteHeader />
 
             <main className="pt-32 pb-24">

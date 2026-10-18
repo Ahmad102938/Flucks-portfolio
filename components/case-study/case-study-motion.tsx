@@ -241,19 +241,6 @@ export const FadeUp = ({ children, delay = 0, className = "" }: { children: Reac
     </motion.div>
 );
 
-/** Thin line along the top of the window that fills as you read down the page. */
-export const ReadingProgress = () => {
-    const { scrollYProgress } = useScroll();
-    const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 });
-    return (
-        <motion.div
-            aria-hidden
-            style={{ scaleX }}
-            className="fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-gradient-to-r from-white/30 via-white/80 to-white"
-        />
-    );
-};
-
 // "10+", "100%", "3x" count up; things like "24/7" or "iOS" are shown as they are
 const COUNTABLE = /^(\D*?)(\d+(?:[.,]\d+)?)([+%xXkKmM]{0,2})$/;
 
