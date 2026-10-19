@@ -27,21 +27,21 @@ export const REVIEWS_CONTENT = {
     // Exactly three cards, shown left to right (stacked top to bottom on phones)
     cards: [
         {
-            quote: "Flucks transformed our digital presence completely. The attention to detail in the UI and the smoothness of the animations are just world-class.",
-            name: "Sarah Jenkins",
-            designation: "CMO, BrightPath",
+            quote: "I had a clear idea of what I wanted for Urban Guest, and Flucks turned it into something even better. They listened, asked the right questions, and stayed involved at every step. The website feels welcoming and trustworthy, which matters a lot when people are looking for a place to live. It’s been a genuine pleasure working with them.",
+            name: "Vikash Kumar",
+            designation: "Founder, Urban Guest Pune",
             rating: 5,
         },
         {
-            quote: "From the initial design concepts to the final mobile app deployment, the process was seamless. Highly recommended for any serious startup.",
-            name: "Michael Chen",
-            designation: "CTO, FinFlow",
+            quote: "Working with Flucks on Dreamblend was one of the best decisions I made for this project. I came to them with a very personal idea: an app that helps people fall asleep faster, shaped by my own struggle with insomnia. They understood the vision from day one. Flucks managed every part of Dreamblend with clear communication and structure, designed a calm, creative bedtime experience, and built it with real technical skill, so the app runs smoothly offline and launched without a hitch. I highly recommend them.",
+            name: "Tanmay Kumar",
+            designation: "Founder, Dreamblend (Nemnite Studios)",
             rating: 5,
         },
         {
-            quote: "The AI integration they built for our internal dashboard saved us 20 hours a week per employee. It's not just code; it's business logic perfected.",
-            name: "Emily White",
-            designation: "VP of Product, DataSync",
+            quote: "The moment it clicked for me was watching a group at a lounge send a birthday shout-out to their friend, then cheer when her song came on a few minutes later. That’s exactly what I’d imagined, and Flucks made it real. They never treated this like just another project. They asked questions I hadn’t thought of, pushed back when something wouldn’t work for users, and kept me updated without me having to chase them. The app feels simple, but I know how much went into making song requests, the queue, and DJ gifting all work live. I’m genuinely grateful I found this team.",
+            name: "Atul",
+            designation: "Project Team",
             rating: 5,
         },
     ] satisfies [ReviewCard, ReviewCard, ReviewCard],
