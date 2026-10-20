@@ -14,6 +14,8 @@ interface WorkCardProps {
     showLink?: boolean;
     /** Still being built: shows an "In development" chip and hides "Visit site" */
     inProgress?: boolean;
+    /** Load the image straight away (for cards on screen at load) */
+    priority?: boolean;
 }
 
 // How far the "View Project" label drifts toward the mouse, as a share of the pointer's offset
@@ -41,7 +43,7 @@ const recentreLabel = (event: React.PointerEvent<HTMLElement>) => {
     event.currentTarget.style.setProperty("--label-y", "0px");
 };
 
-export function WorkCard({ imageSrc, title, category, href = "#", showLink = false, inProgress = false, slug }: WorkCardProps & { slug?: string }) {
+export function WorkCard({ imageSrc, title, category, href = "#", showLink = false, inProgress = false, priority = false, slug }: WorkCardProps & { slug?: string }) {
     const safeHref = href && href !== "#" && !href.startsWith("http") ? `https://${href}` : href;
     const internalLink = slug ? `/works/${slug}` : "#";
 
@@ -57,8 +59,9 @@ export function WorkCard({ imageSrc, title, category, href = "#", showLink = fal
             >
                 <Image
                     src={imageSrc}
-                    alt={title}
+                    alt={`${title}: ${category} by Flucks`}
                     fill
+                    priority={priority}
                     className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />

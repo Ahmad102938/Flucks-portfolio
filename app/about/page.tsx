@@ -16,8 +16,8 @@ import { ProjectCTA } from "@/components/about/ProjectCTA";
 // import { TeamSection } from "@/components/about/TeamSection"; // Hidden for now
 
 export const metadata: Metadata = pageMetadata({
-    title: "About",
-    description: "Meet Flucks: a team of designers and engineers who build with taste.",
+    title: "About Us: Design & Engineering Studio in India",
+    description: "Meet Flucks: a team of designers and engineers in India building websites, apps, MVPs and AI automation for clients worldwide. Engineers, not freelancers.",
     path: "/about",
 });
 

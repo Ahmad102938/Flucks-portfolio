@@ -10,8 +10,8 @@ import { getWorks } from "@/lib/works";
 export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
-    title: "Works",
-    description: "Selected websites, apps and automation systems designed and built by Flucks.",
+    title: "Case Studies: Web, App & AI Projects",
+    description: "Case studies of websites, web apps, mobile apps, MVPs and AI automation systems designed and engineered by Flucks for clients in India and worldwide.",
     path: "/works",
 });
 

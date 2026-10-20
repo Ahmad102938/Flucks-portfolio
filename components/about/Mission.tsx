@@ -14,8 +14,10 @@ export const Mission = () => {
 
                 {/* Text Layout */}
                 <div className="grid lg:grid-cols-[1.5fr,1fr] gap-12 lg:gap-24 mb-24">
+                    {/* Starts faintly visible rather than hidden: on phones it's on screen at load, and
+                        a fully hidden heading would count as not loaded until JavaScript runs */}
                     <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0.3, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}

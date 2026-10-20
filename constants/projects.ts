@@ -110,16 +110,16 @@ export const PROJECTS: Record<string, ProjectContent> = {
             }
         ],
         gallery: [
-            { type: "image", url: "/assets/workAsset/Dreamblend1.png" },
-            { type: "image", url: "/assets/workAsset/dreamblend2.png" },
-            { type: "image", url: "/assets/workAsset/dreamblend3.png" },
-            { type: "image", url: "/assets/workAsset/dreamblend4.png" },
+            { type: "image", url: "/assets/workAsset/dreamblend-sleep-app-1.webp" },
+            { type: "image", url: "/assets/workAsset/dreamblend-sleep-app-2.webp" },
+            { type: "image", url: "/assets/workAsset/dreamblend-sleep-app-3.webp" },
+            { type: "image", url: "/assets/workAsset/dreamblend-sleep-app-4.webp" },
         ],
         testimonial: { quote: "Working with Flucks on Dreamblend was one of the best decisions I made for this project. I came to them with a very personal idea: an app that helps people fall asleep faster, shaped by my own struggle with insomnia. They understood the vision from day one. Flucks managed every part of Dreamblend with clear communication and structure, designed a calm, creative bedtime experience, and built it with real technical skill, so the app runs smoothly offline and launched without a hitch. I highly recommend them.", name: "Tanmay Kumar", role: "Founder, Dreamblend (Nemnite Studios)" },
     },
     flenzo: {
         summary: "An AI-powered maintenance dispatch platform that transforms everyday issue reporting into intelligent ticket routing, provider matching, and faster resolutions — all through one streamlined workflow.",
-        heroMedia: { type: "image", url: "/assets/workAsset/flenzo1.png" },
+        heroMedia: { type: "image", url: "/assets/workAsset/flenzo-ai-maintenance-dispatch-1.webp" },
         liveUrl: "https://audition.flucks.in",
         client: "",
         industry: "Maintenance Dispatch Platform",
@@ -164,15 +164,15 @@ export const PROJECTS: Record<string, ProjectContent> = {
             }
         ],
         gallery: [
-            { type: "image", url: "/assets/workAsset/flenzo2.png" },
-            { type: "image", url: "/assets/workAsset/flenzo3.png" },
-            { type: "image", url: "/assets/workAsset/flenzo4.png" },
+            { type: "image", url: "/assets/workAsset/flenzo-ai-maintenance-dispatch-2.webp" },
+            { type: "image", url: "/assets/workAsset/flenzo-ai-maintenance-dispatch-3.webp" },
+            { type: "image", url: "/assets/workAsset/flenzo-ai-maintenance-dispatch-4.webp" },
         ],
         testimonial: { quote: "“Flucks turned a complex AI dispatch system into a clean, intuitive product, with organised project management, standout creative design, and the technical skill to make every role and workflow run smoothly.", name: "Aryan Raj", role: "Independent Entrepreneur:" },
     },
     "urban-guest": {
         summary: "A modern accommodation discovery platform that helps students and working professionals explore PGs and hostels, compare pricing, discover amenities, and find a place that feels like home.",
-        heroMedia: { type: "image", url: "/assets/workAsset/urbanguest1.png" },
+        heroMedia: { type: "image", url: "/assets/workAsset/urban-guest-pg-hostel-platform-1.webp" },
         liveUrl: "https://urbanguest.in",
         client: "UrbanGuest Pune",
         industry: "Real Estate & Accommodation",
@@ -218,8 +218,8 @@ export const PROJECTS: Record<string, ProjectContent> = {
             },
         ],
         gallery: [
-            { type: "image", url: "/assets/workAsset/urbanguest2.png" },
-            { type: "image", url: "/assets/workAsset/urbanguest3.png" },
+            { type: "image", url: "/assets/workAsset/urban-guest-pg-hostel-platform-2.webp" },
+            { type: "image", url: "/assets/workAsset/urban-guest-pg-hostel-platform-3.webp" },
         ],
         testimonial: { quote: "I had a clear idea of what I wanted for Urban Guest, and Flucks turned it into something even better. They listened, asked the right questions, and stayed involved at every step. The website feels welcoming and trustworthy, which matters a lot when people are looking for a place to live. It’s been a genuine pleasure working with them.", name: "Vikash Kumar", role: "Founder, UrbanGuest Pune" },
     },
@@ -276,15 +276,15 @@ export const PROJECTS: Record<string, ProjectContent> = {
         ],
 
         gallery: [
-            { type: "image", url: "/assets/workAsset/videolab1.png" },
-            { type: "image", url: "/assets/workAsset/videolab2.png" },
-            { type: "image", url: "/assets/workAsset/videolab3.png" },
+            { type: "image", url: "/assets/workAsset/videolab-ai-video-podcast-studio-1.webp" },
+            { type: "image", url: "/assets/workAsset/videolab-ai-video-podcast-studio-2.webp" },
+            { type: "image", url: "/assets/workAsset/videolab-ai-video-podcast-studio-3.webp" },
         ],
         testimonial: { quote: "Honestly, I wasn’t sure multi-speaker AI podcasts could sound this natural, until Flucks built VideoLab. They took on a technically demanding idea, using Amazon Polly to generate conversations between multiple synthetic voices alongside avatar video creation, and made it feel effortless for the user. What impressed me most was how they solved problems before I even noticed them. Sharp engineering, thoughtful design, and a team that cares about getting it right.", name: "Project Team", role: "VideoLab" },
     },
     registration: {
         summary: "A thoughtfully designed audition platform for the Centre for Cognitive Activities, making it easier for students to explore teams, discover opportunities, and become part of a thriving campus community.",
-        heroMedia: { type: "image", url: "/assets/workAsset/registration1.png" },
+        heroMedia: { type: "image", url: "/assets/workAsset/registration-audition-platform-1.webp" },
         liveUrl: "https://audition.flucks.in/",
         client: "",
         industry: "Education & Social",
@@ -335,8 +335,8 @@ export const PROJECTS: Record<string, ProjectContent> = {
         ],
 
         gallery: [
-            { type: "image", url: "/assets/workAsset/registration2.png" },
-            { type: "image", url: "/assets/workAsset/registration3.png" },
+            { type: "image", url: "/assets/workAsset/registration-audition-platform-2.webp" },
+            { type: "image", url: "/assets/workAsset/registration-audition-platform-3.webp" },
         ],
         testimonial: { quote: "", name: "", role: "" },
     },
@@ -393,10 +393,10 @@ export const PROJECTS: Record<string, ProjectContent> = {
         ],
 
         gallery: [
-            { type: "image", url: "/assets/workAsset/Music1.png" },
-            { type: "image", url: "/assets/workAsset/music2.png" },
-            { type: "image", url: "/assets/workAsset/music3.png" },
-            { type: "image", url: "/assets/workAsset/music4.png" },
+            { type: "image", url: "/assets/workAsset/music-streaming-nightlife-app-1.webp" },
+            { type: "image", url: "/assets/workAsset/music-streaming-nightlife-app-2.webp" },
+            { type: "image", url: "/assets/workAsset/music-streaming-nightlife-app-3.webp" },
+            { type: "image", url: "/assets/workAsset/music-streaming-nightlife-app-4.webp" },
         ],
         testimonial: { quote: "The moment it clicked for me was watching a group at a lounge send a birthday shout-out to their friend, then cheer when her song came on a few minutes later. That’s exactly what I’d imagined, and Flucks made it real. They never treated this like just another project. They asked questions I hadn’t thought of, pushed back when something wouldn’t work for users, and kept me updated without me having to chase them. The app feels simple, but I know how much went into making song requests, the queue, and DJ gifting all work live. I’m genuinely grateful I found this team.", name: "Atul", role: "" },
     }
