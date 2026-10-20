@@ -1,7 +1,8 @@
 // Site-wide facts used by metadata, the sitemap, sharing previews and the legal pages.
 
-/** Public address of the site. Set NEXT_PUBLIC_SITE_URL to override (e.g. for a staging deploy). */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://flucks.in").replace(/\/$/, "");
+/** Public address of the site. It must match the domain the host serves (flucks.in redirects to www),
+    or canonicals and the sitemap point at a redirect. Set NEXT_PUBLIC_SITE_URL to override (e.g. staging). */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.flucks.in").replace(/\/$/, "");
 
 export const SITE_NAME = "Flucks";
 export const SITE_TAGLINE = "Engineering With Taste, Built to Innovate.";
