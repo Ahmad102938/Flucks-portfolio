@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import { SERVICE_PAGES } from "@/constants/service-pages";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -67,7 +68,7 @@ export const SiteFooter = () => {
         <footer ref={footerRef} className="relative w-full bg-black md:min-h-[40vh] flex flex-col justify-center overflow-hidden px-5 pt-12 md:pt-0 md:px-12">
             <div className="relative z-10 mx-auto max-w-[1400px] w-full flex-grow flex flex-col justify-center">
                 {/* Phones: brand on top, then all three link columns side by side, then the copyright */}
-                <div className="grid grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-9 md:gap-8 lg:gap-12 mb-[24vw] md:mb-32 w-full">
+                <div className="grid grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-9 md:gap-8 lg:gap-12 mb-10 md:mb-14 w-full">
                     {/* Column 1: Logo/Brand */}
                     <div className="flex flex-col gap-6 col-span-3 md:col-span-1 items-center text-center">
                         <div className="flex flex-col gap-3 md:gap-4 items-center">
@@ -113,27 +114,37 @@ export const SiteFooter = () => {
                         </div>
                     ))}
 
-                    <p className="col-span-3 md:hidden text-center text-xs text-zinc-600">
+                    <p className="col-span-3 md:hidden text-center text-xs text-zinc-600 order-last">
                         {footerBranding.copyrightText}
                     </p>
                 </div>
+
+                {/* Every service page, linked from every page */}
+                <nav aria-label="Services" className="mb-[24vw] md:mb-32 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-white/10 pt-8 text-xs md:text-sm">
+                    <span className="w-full text-center text-[11px] uppercase tracking-[0.25em] text-zinc-600 md:w-auto">What we build</span>
+                    {SERVICE_PAGES.map((service) => (
+                        <Link key={service.slug} href={`/services/${service.slug}`} className="text-zinc-500 transition-colors duration-200 hover:text-white">
+                            {service.name}
+                        </Link>
+                    ))}
+                </nav>
             </div>
 
             {/* Massive Bottom Text */}
             <div className="absolute bottom-0 left-0 w-full flex justify-center items-end pointer-events-none">
                 {reduceMotion ? (
-                    <h1 className="text-[22vw] md:text-[15vw] leading-[0.8] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500 select-none translate-y-[40%]">
+                    <div aria-hidden className="text-[22vw] md:text-[15vw] leading-[0.8] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500 select-none translate-y-[40%]">
                         {WORDMARK}
-                    </h1>
+                    </div>
                 ) : (
-                    <h1
-                        aria-label={WORDMARK}
+                    <div
+                        aria-hidden
                         className="text-[22vw] md:text-[15vw] leading-[0.8] font-bold tracking-tighter select-none translate-y-[40%]"
                     >
                         {WORDMARK.split("").map((letter, i) => (
                             <WordmarkLetter key={i} letter={letter} index={i} progress={progress} />
                         ))}
-                    </h1>
+                    </div>
                 )}
             </div>
         </footer>

@@ -5,6 +5,8 @@ import { ServiceItem } from "@/constants/services";
 import { ServicesAccordion } from "./ServicesAccordion";
 import { motion } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 interface ServiceBlockProps {
     service: ServiceItem;
@@ -34,6 +36,14 @@ export const ServiceBlock = ({ service, index }: ServiceBlockProps) => {
                     </p>
 
                     <ServicesAccordion items={service.subServices} />
+
+                    <Link
+                        href={`/services/${service.slug}`}
+                        className="group mt-10 inline-flex items-center gap-2 border-b border-white/20 pb-1 text-sm font-medium text-white transition-colors hover:border-white"
+                    >
+                        Explore {service.title.toLowerCase()}
+                        <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
+                    </Link>
                 </motion.div>
 
                 {/* Abstract Visual Content with Image Integration */}

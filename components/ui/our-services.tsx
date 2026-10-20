@@ -17,15 +17,16 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { smoothScrollTo } from "@/lib/scroll";
 
-const SERVICES = [
-    { title: "Crafted Websites \n& Mobile Apps", icon: IconWorld },
-    { title: "Web & App Redesign", icon: IconEdit },
+// Cards with an href open that service's landing page
+const SERVICES: { title: string; icon: typeof IconWorld; href?: string }[] = [
+    { title: "Crafted Websites \n& Mobile Apps", icon: IconWorld, href: "/services/web-development" },
+    { title: "Web & App Redesign", icon: IconEdit, href: "/services/mobile-app-development" },
     { title: "eCommerce \nWebsite Design", icon: IconShoppingCart },
     { title: "CMS & \nDynamic Websites", icon: IconLayoutDashboard },
     { title: "Landing Pages \n& Microsites", icon: IconSend },
-    { title: "Consistent \nIdentity", icon: IconPuzzle },
-    { title: "AI Automation & \nAI Integration", icon: IconBolt },
-    { title: "UX-Centric \nStrategy", icon: IconCompass },
+    { title: "MVP & Product \nDevelopment", icon: IconPuzzle, href: "/services/mvp-development" },
+    { title: "AI Automation & \nAI Integration", icon: IconBolt, href: "/services/ai-automation" },
+    { title: "UX-Centric \nStrategy", icon: IconCompass, href: "/services/product-design" },
     { title: "Performance \nOptimization", icon: IconRocket },
     { title: "Maintenance & \nOngoing Support", icon: IconTools },
 ];
@@ -77,15 +78,18 @@ export const OurServices = () => {
     );
 };
 
-const ServiceCard = ({ title, icon: Icon, index }: { title: string, icon: any, index: number }) => {
-    return (
+const ServiceCard = ({ title, icon: Icon, index, href }: { title: string, icon: any, index: number, href?: string }) => {
+    const card = (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.05 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="group relative flex flex-col items-center justify-center text-center p-4 md:p-6 lg:h-52 rounded-2xl md:rounded-3xl border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02] cursor-default overflow-hidden"
+            className={cn(
+                "group relative flex flex-col items-center justify-center text-center p-4 md:p-6 lg:h-52 rounded-2xl md:rounded-3xl border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02] overflow-hidden",
+                href ? "cursor-pointer h-full" : "cursor-default",
+            )}
         >
             {/* Hover Glow Effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -97,5 +101,12 @@ const ServiceCard = ({ title, icon: Icon, index }: { title: string, icon: any, i
                 {title}
             </h3>
         </motion.div>
+    );
+    return href ? (
+        <Link href={href} className="block h-full rounded-2xl md:rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-white/60">
+            {card}
+        </Link>
+    ) : (
+        card
     );
 };

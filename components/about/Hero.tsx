@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
 import { smoothScrollTo } from "@/lib/scroll";
 import { useGoToContact } from "@/lib/use-go-to-contact";
 import { ABOUT_CONTENT } from "@/constants/about";
@@ -17,12 +16,8 @@ export const Hero = () => {
             {/* Background Noise / Texture could go here */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('/textures/noise.svg')] bg-repeat mix-blend-overlay"></div>
 
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-7xl mx-auto z-10 w-full"
-            >
+            {/* CSS entrance, so it plays from first paint rather than after JavaScript loads */}
+            <div className="enter-rise max-w-7xl mx-auto z-10 w-full" style={{ "--enter-y": "50px" } as React.CSSProperties}>
                 <div className="flex items-center gap-4 mb-6">
                     <span className="w-2 h-2 rounded-full bg-slate-100/50"></span>
                     <span className="uppercase tracking-[0.2em] text-xs text-slate-400 font-medium">FLUCKS / Culture</span>
@@ -59,7 +54,7 @@ export const Hero = () => {
                         </button>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
 };

@@ -88,10 +88,10 @@ export default function Page() {
             </p>
 
             <div className="space-y-3">
-              <div className="text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-slate-50 sm:text-[3.1rem] md:text-[3.6rem]">
-                <span className="block">Digital products.</span>
+              <h1 className="text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-slate-50 sm:text-[3.1rem] md:text-[3.6rem]">
+                <span className="block">Web, app & AI products.</span>
                 <span className="block text-slate-300">Built with precision.</span>
-              </div>
+              </h1>
               <p className="mx-auto max-w-xl text-sm text-slate-300/90 md:text-[0.97rem]">
                 A team of designers and engineers delivering web & app experiences, AI automation, and workflow integrations — with obsessive attention to detail.
               </p>

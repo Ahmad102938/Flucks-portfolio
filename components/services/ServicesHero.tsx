@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
 import { SERVICES_CONTENT } from "@/constants/services";
 import Link from "next/link";
 import { IconArrowRight } from "@tabler/icons-react";
@@ -14,12 +13,8 @@ export const ServicesHero = () => {
             {/* Background Noise / Texture to match About page */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('/textures/noise.svg')] bg-repeat mix-blend-overlay"></div>
 
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-7xl mx-auto z-10 w-full"
-            >
+            {/* CSS entrance, so it plays from first paint rather than after JavaScript loads */}
+            <div className="enter-rise max-w-7xl mx-auto z-10 w-full" style={{ "--enter-y": "50px" } as React.CSSProperties}>
                 <div className="flex items-center gap-4 mb-6">
                     <span className="w-2 h-2 rounded-full bg-blue-500/50"></span>
                     <span className="uppercase tracking-[0.2em] text-xs text-slate-400 font-medium">FLUCKS / Services</span>
@@ -41,15 +36,15 @@ export const ServicesHero = () => {
                     </div>
 
                     <div className="space-y-6">
-                        <h3 className="text-xl md:text-3xl font-normal text-slate-200 leading-snug">
+                        <p className="text-xl md:text-3xl font-normal text-slate-200 leading-snug">
                             {subtitle}
-                        </h3>
+                        </p>
                         <p className="text-zinc-400 text-sm md:text-lg leading-relaxed max-w-2xl">
                             {description}
                         </p>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         </section>
     );
 };

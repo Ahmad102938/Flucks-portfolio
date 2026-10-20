@@ -110,9 +110,9 @@ export const Header = () => {
       <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-400 mb-4">
         Featured works
       </p>
-      <h1 className="text-3xl md:text-7xl font-bold dark:text-white text-slate-50 leading-tight">
+      <h2 className="text-3xl md:text-7xl font-bold dark:text-white text-slate-50 leading-tight">
         Bold, conversion‑ready <br /> experiences.
-      </h1>
+      </h2>
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-slate-400 text-slate-400">
         From websites and mobile apps to AI integrations and automation workflows — every build is crafted with detail, speed, and performance.
       </p>

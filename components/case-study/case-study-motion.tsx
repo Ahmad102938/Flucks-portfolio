@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import {
@@ -47,23 +48,18 @@ export const CaseHeroMedia = ({ type, url, alt }: { type: MediaType; url: string
         <div className="relative isolate">
             {/* The shot's own colours, blurred and spilling softly onto the page around it */}
             {type === "image" && (
-                <motion.div
+                <div
                     aria-hidden
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.45 }}
-                    transition={{ duration: 2, ease: EASE, delay: 0.6 }}
-                    className="pointer-events-none absolute inset-x-[4%] -bottom-[8%] top-[12%] -z-10 blur-[90px] saturate-150"
+                    style={{ "--enter-y": "0px", "--enter-delay": "0.4s", "--enter-opacity": "0.01" } as React.CSSProperties}
+                    className="enter-rise pointer-events-none absolute inset-x-[4%] -bottom-[8%] top-[12%] -z-10 opacity-45 blur-[90px] saturate-150"
                 >
                     <Image src={url} alt="" fill sizes="320px" className="object-cover" />
-                </motion.div>
+                </div>
             )}
             <motion.div
                 ref={ref}
-                initial={{ opacity: 0, y: 60 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.1, ease: EASE, delay: 0.5 }}
-                style={reduceMotion ? undefined : { scale, borderRadius: radius }}
-                className="relative aspect-[16/11] w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-900 sm:aspect-video"
+                style={{ "--enter-y": "60px", "--enter-delay": "0.3s", "--enter-opacity": "0.01", ...(reduceMotion ? {} : { scale, borderRadius: radius }) } as never}
+                className="enter-rise relative aspect-[16/11] w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-900 sm:aspect-video"
             >
                 <motion.div style={reduceMotion ? undefined : { y: drift }} className="absolute -inset-y-[7%] inset-x-0">
                     <Media type={type} url={url} alt={alt} sizes="(max-width: 1280px) 100vw, 1280px" priority onError={() => setFailed(true)} />
@@ -199,7 +195,6 @@ export const StoryChapter = ({ index, title, paragraphs }: { index: number; titl
 
 /** Project title whose letters rise out of a mask one after another. */
 export const TitleReveal = ({ text, className = "" }: { text: string; className?: string }) => {
-    const reduceMotion = useReducedMotion();
     let letterIndex = 0;
 
     return (
@@ -211,14 +206,12 @@ export const TitleReveal = ({ text, className = "" }: { text: string; className?
                         return (
                             // Padding keeps descenders (p, g, y) inside the mask despite the tight leading
                             <span key={l} className="-mb-[0.18em] inline-block overflow-hidden pb-[0.18em] align-bottom">
-                                <motion.span
-                                    className="inline-block"
-                                    initial={reduceMotion ? false : { y: "105%", rotate: 6 }}
-                                    animate={{ y: "0%", rotate: 0 }}
-                                    transition={{ duration: 1.1, ease: EASE, delay: 0.1 + i * 0.04 }}
+                                <span
+                                    className="enter-mask inline-block"
+                                    style={{ "--enter-delay": `${0.1 + i * 0.04}s`, "--enter-rotate": "6deg" } as React.CSSProperties}
                                 >
                                     {letter}
-                                </motion.span>
+                                </span>
                             </span>
                         );
                     })}
@@ -230,15 +223,11 @@ export const TitleReveal = ({ text, className = "" }: { text: string; className?
 };
 
 /** Content that fades up into place on load, after the title. */
+// CSS rather than motion so it plays from first paint, before JavaScript loads (see .enter-rise)
 export const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: EASE, delay }}
-        className={className}
-    >
+    <div className={cn("enter-rise", className)} style={{ "--enter-delay": `${delay}s` } as React.CSSProperties}>
         {children}
-    </motion.div>
+    </div>
 );
 
 // "10+", "100%", "3x" count up; things like "24/7" or "iOS" are shown as they are

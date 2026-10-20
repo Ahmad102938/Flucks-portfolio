@@ -5,8 +5,10 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://flucks.in"
 
 export const SITE_NAME = "Flucks";
 export const SITE_TAGLINE = "Engineering With Taste, Built to Innovate.";
+/** Home page title in search results and the default browser tab title */
+export const SITE_TITLE = "Flucks | Web, App & AI Development Studio · India & Worldwide";
 export const SITE_DESCRIPTION =
-    "A team of designers and engineers delivering web & app experiences, AI automation, and workflow integrations";
+    "Flucks is a team of designers and engineers building websites, web apps, mobile apps, MVPs and AI automation for startups and businesses in India and worldwide.";
 
 export const CONTACT_EMAIL = "contact@flucks.in";
 export const LOCATION = "India — Working globally";

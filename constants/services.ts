@@ -22,13 +22,15 @@ export type ServiceItem = {
     subServices: string[];
     iconType: "web" | "app" | "ai" | "automation";
     imageSrc: string;
+    /** Landing page with the full details, /services/<slug> (see constants/service-pages.ts) */
+    slug: string;
 };
 
 export const SERVICES_CONTENT = {
     hero: {
         title: "Our Services",
-        subtitle: "Comprehensive digital solutions for modern brands",
-        description: "We combine aesthetic excellence with technical precision to build digital products that stand out. From core web platforms to advanced AI integrations, we have the expertise to scale your vision."
+        subtitle: "Web, app, MVP and AI development for startups and businesses in India and worldwide",
+        description: "We are a team of designers and engineers, not freelancers. We build full-stack websites and apps from scratch, redesign and extend existing products, and automate work with AI chatbots, RAG pipelines and custom workflows, then keep everything running with ongoing maintenance."
     },
     services: [
         {
@@ -36,6 +38,7 @@ export const SERVICES_CONTENT = {
             description: "Native-quality mobile experiences for iOS and Android. We build responsive, intuitive applications that users love to touch and interact with.",
             iconType: "app",
             imageSrc: "/assets/services/appdesign.jpg",
+            slug: "mobile-app-development",
             subServices: [
                 "Mobile UI/UX Design",
                 "Cross-platform Development (React Native/Flutter)",
@@ -49,6 +52,7 @@ export const SERVICES_CONTENT = {
             description: "We craft immersive, high-performance websites that captivate audiences and convert visitors. Our web solutions are built on modern stacks for speed, SEO, and scalability.",
             iconType: "web",
             imageSrc: "/assets/services/aset2.webp",
+            slug: "web-development",
             subServices: [
                 "Web UI/UX Design",
                 "Frontend Development (Next.js/React)",
@@ -62,6 +66,7 @@ export const SERVICES_CONTENT = {
             description: "Future-proof your business with cutting-edge Artificial Intelligence. We integrate smart agents and workflows that automate tasks and provide actionable insights.",
             iconType: "ai",
             imageSrc: "/assets/services/aiautomation.webp",
+            slug: "ai-automation",
             subServices: [
                 "RAG + Knowledge Base Chatbots",
                 "AI Assistants for internal tools",
@@ -75,6 +80,7 @@ export const SERVICES_CONTENT = {
             description: "Streamline operations and reduce manual error. We build custom automation pipelines that connect your favorite tools and save you countless hours.",
             iconType: "automation",
             imageSrc: "/assets/services/aiworkflow.png",
+            slug: "ai-automation",
             subServices: [
                 "Automation pipelines (Zapier/n8n/custom)",
                 "CRM + Email automation",

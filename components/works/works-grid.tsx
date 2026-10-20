@@ -7,16 +7,11 @@ import type { WorkItem } from "@/lib/works";
 
 export function WorksHeading() {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-16 md:mb-24"
-        >
+        <div className="enter-rise mb-16 md:mb-24" style={{ "--enter-y": "20px" } as React.CSSProperties}>
             <h1 className="font-serif text-5xl font-medium sm:text-6xl md:text-7xl lg:text-8xl">
                 Our Works
             </h1>
-        </motion.div>
+        </div>
     );
 }
 
@@ -26,7 +21,10 @@ export function WorksGrid({ works }: { works: WorkItem[] }) {
             {works.map((work, index) => (
                 <motion.div
                     key={work.id}
-                    initial={{ opacity: 0, y: 30 }}
+                    // The first row is on screen at load, so it rises in with CSS from first paint
+                    initial={index < 3 ? false : { opacity: 0, y: 30 }}
+                    className={index < 3 ? "enter-rise" : undefined}
+                    style={index < 3 ? ({ "--enter-y": "30px", "--enter-opacity": "0.01", "--enter-delay": `${0.1 + index * 0.1}s` } as React.CSSProperties) : undefined}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     // Stagger only within a row so later cards don't wait seconds
@@ -40,6 +38,7 @@ export function WorksGrid({ works }: { works: WorkItem[] }) {
                         showLink={!!work.link}
                         slug={work.slug}
                         inProgress={isInProgress(work.slug)}
+                        priority={index < 3}
                     />
                 </motion.div>
             ))}

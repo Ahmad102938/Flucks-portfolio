@@ -19,6 +19,9 @@ import {
 } from "@/components/case-study/case-study-motion";
 import { InProgressBadge, InProgressNotice } from "@/components/case-study/in-progress-notice";
 import { getProjectContent, isInProgress, type GalleryItem } from "@/constants/projects";
+import { servicesForProject } from "@/constants/service-pages";
+import { JsonLd } from "@/components/json-ld";
+import { breadcrumbSchema, caseStudySchema } from "@/lib/structured-data";
 import { getLocalImageRatio } from "@/lib/image-size";
 import { getWorks, getWorkWithNext, toExternalUrl } from "@/lib/works";
 
@@ -35,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!found) return {};
     const { work } = found;
     return pageMetadata({
-        title: work.title,
+        title: `${work.title}: ${work.category} Case Study`,
         description:
             getProjectContent(work.slug)?.summary ||
             (isInProgress(work.slug)
@@ -108,6 +111,8 @@ export default async function WorkDetailsPage({ params }: { params: Promise<{ sl
 
     // A list, so it gets its own line of chips instead of a cramped column in the facts row
     const services = (content?.services ?? []).filter(filled);
+    // The service pages this project is proof for (and that link back here)
+    const servicePages = servicesForProject(work.slug);
 
     const metrics = (content?.metrics ?? []).filter((m) => filled(m.value) && filled(m.label)).slice(0, 4);
 
@@ -122,10 +127,10 @@ export default async function WorkDetailsPage({ params }: { params: Promise<{ sl
     const gallery: RevealRowItem[] = await Promise.all(
         (content?.gallery ?? [])
             .filter((item: GalleryItem) => filled(item.url))
-            .map(async (item: GalleryItem) => ({
+            .map(async (item: GalleryItem, i: number) => ({
                 type: item.type,
                 url: item.type === "video" ? optimizedVideoUrl(item.url) : item.url,
-                alt: item.caption ?? `${work.title} screen`,
+                alt: item.caption ?? `${work.title} ${work.category} by Flucks, screen ${i + 1}`,
                 caption: item.caption,
                 // Local images are measured so their frame fits them; videos and remote media use 16:9
                 ratio: item.type === "image" ? ((await getLocalImageRatio(item.url)) ?? undefined) : undefined,
@@ -140,6 +145,23 @@ export default async function WorkDetailsPage({ params }: { params: Promise<{ sl
 
     return (
         <div className="min-h-screen bg-black text-white selection:bg-cyan-500/30">
+            <JsonLd
+                data={[
+                    caseStudySchema({
+                        title: work.title,
+                        description: content?.summary.trim() || `${work.title}: ${work.category} by Flucks.`,
+                        path: `/works/${work.slug}`,
+                        image: hero.type === "image" ? hero.url : work.image,
+                        year: content?.year.trim() || undefined,
+                        keywords: [work.category, ...services],
+                    }),
+                    breadcrumbSchema([
+                        { name: "Home", path: "/" },
+                        { name: "Works", path: "/works" },
+                        { name: work.title, path: `/works/${work.slug}` },
+                    ]),
+                ]}
+            />
             <SiteHeader />
 
             <main className="pt-32 pb-24">
@@ -202,11 +224,11 @@ export default async function WorkDetailsPage({ params }: { params: Promise<{ sl
                     <CaseHeroMedia
                         type={hero.type}
                         url={hero.type === "video" ? optimizedVideoUrl(hero.url) : hero.url}
-                        alt={`${work.title} project`}
+                        alt={`${work.title}: ${work.category} by Flucks`}
                     />
 
                     {/* Facts */}
-                    {(facts.length > 0 || services.length > 0) && (
+                    {(facts.length > 0 || services.length > 0 || servicePages.length > 0) && (
                         <div className="divide-y divide-white/10 border-y border-white/10">
                             {facts.length > 0 && (
                                 <dl className="flex flex-wrap justify-center gap-y-8 py-10 text-center">
@@ -236,6 +258,22 @@ export default async function WorkDetailsPage({ params }: { params: Promise<{ sl
                                         ))}
                                     </ul>
                                 </div>
+                            )}
+                            {servicePages.length > 0 && (
+                                <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 py-6 text-sm text-zinc-500">
+                                    <span>Built with our</span>
+                                    {servicePages.map((service) => (
+                                        <Link
+                                            key={service.slug}
+                                            href={`/services/${service.slug}`}
+                                            className="group inline-flex items-center gap-1 text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-white"
+                                        >
+                                            {service.name}
+                                            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-45" />
+                                        </Link>
+                                    ))}
+                                    <span>services</span>
+                                </p>
                             )}
                         </div>
                     )}
